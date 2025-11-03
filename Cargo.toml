@@ -7,7 +7,7 @@ repository = "https://github.com/cyrup-ai/kodegen-mcp-schema"
 readme = "README.md"
 keywords = ["ai", "ml", "agents", "candle", "inference"]
 categories = ["science", "mathematics", "algorithms", "api-bindings"]
-version = "0.1.0"
+version = "0.1.1"
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
