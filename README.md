@@ -161,7 +161,7 @@ src/
 Several tools use async session patterns for long-running operations:
 
 - **Browser Research**: `start_browser_research` → `get_research_status` → `get_research_result`
-- **File Search**: `start_search` → `get_more_search_results` → `stop_search`
+- **File Search**: `start_search` → `get_search_results` → `stop_search`
 - **Web Crawling**: `start_crawl` → `get_crawl_results` → `search_crawl_results`
 - **Terminal Commands**: `start_terminal_command` → `read_terminal_output` → `send_terminal_input`
 - **Claude Agents**: `spawn_claude_agent` → `read_claude_agent_output` → `send_claude_agent_prompt`

@@ -525,7 +525,7 @@ fn default_length() -> usize {
     100
 }
 
-/// Arguments for `get_more_search_results` tool
+/// Arguments for `get_search_results` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct GetMoreSearchResultsArgs {
     /// Search session ID from `start_search`
@@ -543,7 +543,7 @@ pub struct GetMoreSearchResultsArgs {
     pub length: usize,
 }
 
-/// Prompt arguments for `get_more_search_results` tool
+/// Prompt arguments for `get_search_results` tool
 #[derive(Debug, Clone, Deserialize, JsonSchema)]
 pub struct GetMoreSearchResultsPromptArgs {}
 
