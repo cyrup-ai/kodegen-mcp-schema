@@ -4,23 +4,23 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
-// GET USAGE STATS
+// INSPECT USAGE STATS
 // ============================================================================
 
-/// Arguments for `get_usage_stats` tool
+/// Arguments for `inspect_usage_stats` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct GetUsageStatsArgs {
+pub struct InspectUsageStatsArgs {
     // No arguments needed
 }
 
-/// Prompt arguments for `get_usage_stats` tool
+/// Prompt arguments for `inspect_usage_stats` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct GetUsageStatsPromptArgs {
+pub struct InspectUsageStatsPromptArgs {
     // No arguments needed
 }
 
 // ============================================================================
-// GET RECENT TOOL CALLS
+// INSPECT TOOL CALLS
 // ============================================================================
 
 /// Default value for max_results
@@ -28,9 +28,9 @@ fn default_max_results() -> usize {
     50
 }
 
-/// Arguments for `get_recent_tool_calls` tool
+/// Arguments for `inspect_tool_calls` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct GetRecentToolCallsArgs {
+pub struct InspectToolCallsArgs {
     /// Maximum number of results to return (default: 50, max: 1000)
     /// Ignored when offset is negative
     #[serde(default = "default_max_results")]
@@ -51,8 +51,8 @@ pub struct GetRecentToolCallsArgs {
     pub since: Option<String>,
 }
 
-/// Prompt arguments for `get_recent_tool_calls` tool
+/// Prompt arguments for `inspect_tool_calls` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct GetRecentToolCallsPromptArgs {
+pub struct InspectToolCallsPromptArgs {
     // No arguments needed
 }

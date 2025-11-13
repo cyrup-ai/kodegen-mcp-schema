@@ -7,9 +7,9 @@ use serde::{Deserialize, Serialize};
 // READ FILE
 // ============================================================================
 
-/// Arguments for `read_file` tool
+/// Arguments for `fs_read_file` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ReadFileArgs {
+pub struct FsReadFileArgs {
     /// Path to the file to read (or URL if `is_url` is true)
     pub path: String,
 
@@ -29,9 +29,9 @@ pub struct ReadFileArgs {
     pub is_url: bool,
 }
 
-/// Prompt arguments for `read_file` tool
+/// Prompt arguments for `fs_read_file` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ReadFilePromptArgs {
+pub struct FsReadFilePromptArgs {
     /// Optional: specific file type to focus examples on
     #[serde(default)]
     pub file_type: Option<String>,
@@ -41,9 +41,9 @@ pub struct ReadFilePromptArgs {
 // READ MULTIPLE FILES
 // ============================================================================
 
-/// Arguments for `read_multiple_files` tool
+/// Arguments for `fs_read_multiple_files` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ReadMultipleFilesArgs {
+pub struct FsReadMultipleFilesArgs {
     /// List of file paths to read
     pub paths: Vec<String>,
 
@@ -59,17 +59,17 @@ pub struct ReadMultipleFilesArgs {
     pub length: Option<usize>,
 }
 
-/// Prompt arguments for `read_multiple_files` tool
+/// Prompt arguments for `fs_read_multiple_files` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ReadMultipleFilesPromptArgs {}
+pub struct FsReadMultipleFilesPromptArgs {}
 
 // ============================================================================
 // WRITE FILE
 // ============================================================================
 
-/// Arguments for `write_file` tool
+/// Arguments for `fs_write_file` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct WriteFileArgs {
+pub struct FsWriteFileArgs {
     /// Path to the file to write
     pub path: String,
 
@@ -85,9 +85,9 @@ fn default_mode() -> String {
     "rewrite".to_string()
 }
 
-/// Prompt arguments for `write_file` tool
+/// Prompt arguments for `fs_write_file` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct WriteFilePromptArgs {
+pub struct FsWriteFilePromptArgs {
     #[serde(default)]
     pub example_type: Option<String>,
 }
@@ -96,9 +96,9 @@ pub struct WriteFilePromptArgs {
 // MOVE FILE
 // ============================================================================
 
-/// Arguments for `move_file` tool
+/// Arguments for `fs_move_file` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct MoveFileArgs {
+pub struct FsMoveFileArgs {
     /// Source path (file or directory to move)
     pub source: String,
 
@@ -106,32 +106,32 @@ pub struct MoveFileArgs {
     pub destination: String,
 }
 
-/// Prompt arguments for `move_file` tool
+/// Prompt arguments for `fs_move_file` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct MoveFilePromptArgs {}
+pub struct FsMoveFilePromptArgs {}
 
 // ============================================================================
 // DELETE FILE
 // ============================================================================
 
-/// Arguments for `delete_file` tool
+/// Arguments for `fs_delete_file` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct DeleteFileArgs {
+pub struct FsDeleteFileArgs {
     /// Path to the file to delete
     pub path: String,
 }
 
-/// Prompt arguments for `delete_file` tool
+/// Prompt arguments for `fs_delete_file` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct DeleteFilePromptArgs {}
+pub struct FsDeleteFilePromptArgs {}
 
 // ============================================================================
 // DELETE DIRECTORY
 // ============================================================================
 
-/// Arguments for `delete_directory` tool
+/// Arguments for `fs_delete_directory` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct DeleteDirectoryArgs {
+pub struct FsDeleteDirectoryArgs {
     /// Path to the directory to delete
     pub path: String,
 
@@ -140,17 +140,17 @@ pub struct DeleteDirectoryArgs {
     pub recursive: bool,
 }
 
-/// Prompt arguments for `delete_directory` tool
+/// Prompt arguments for `fs_delete_directory` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct DeleteDirectoryPromptArgs {}
+pub struct FsDeleteDirectoryPromptArgs {}
 
 // ============================================================================
 // LIST DIRECTORY
 // ============================================================================
 
-/// Arguments for `list_directory` tool
+/// Arguments for `fs_list_directory` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListDirectoryArgs {
+pub struct FsListDirectoryArgs {
     /// Path to the directory to list
     pub path: String,
 
@@ -159,9 +159,9 @@ pub struct ListDirectoryArgs {
     pub include_hidden: bool,
 }
 
-/// Prompt arguments for `list_directory` tool
+/// Prompt arguments for `fs_list_directory` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListDirectoryPromptArgs {
+pub struct FsListDirectoryPromptArgs {
     #[serde(default)]
     pub show_advanced: Option<bool>,
 }
@@ -170,39 +170,39 @@ pub struct ListDirectoryPromptArgs {
 // CREATE DIRECTORY
 // ============================================================================
 
-/// Arguments for `create_directory` tool
+/// Arguments for `fs_create_directory` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct CreateDirectoryArgs {
+pub struct FsCreateDirectoryArgs {
     /// Path to the directory to create
     pub path: String,
 }
 
-/// Prompt arguments for `create_directory` tool
+/// Prompt arguments for `fs_create_directory` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct CreateDirectoryPromptArgs {}
+pub struct FsCreateDirectoryPromptArgs {}
 
 // ============================================================================
 // GET FILE INFO
 // ============================================================================
 
-/// Arguments for `get_file_info` tool
+/// Arguments for `fs_get_file_info` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetFileInfoArgs {
+pub struct FsGetFileInfoArgs {
     /// Path to the file or directory
     pub path: String,
 }
 
-/// Prompt arguments for `get_file_info` tool
+/// Prompt arguments for `fs_get_file_info` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetFileInfoPromptArgs {}
+pub struct FsGetFileInfoPromptArgs {}
 
 // ============================================================================
 // EDIT BLOCK
 // ============================================================================
 
-/// Arguments for `edit_block` tool
+/// Arguments for `fs_edit_block` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct EditBlockArgs {
+pub struct FsEditBlockArgs {
     /// Path to the file to edit
     pub file_path: String,
 
@@ -221,9 +221,9 @@ fn default_expected_replacements() -> usize {
     1
 }
 
-/// Prompt arguments for `edit_block` tool
+/// Prompt arguments for `fs_edit_block` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct EditBlockPromptArgs {}
+pub struct FsEditBlockPromptArgs {}
 
 // ============================================================================
 // SEARCH TYPES AND ENUMS
@@ -335,9 +335,9 @@ fn default_search_type() -> SearchType {
     SearchType::Files
 }
 
-/// Arguments for `start_search` tool
+/// Arguments for `fs_start_search` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct StartSearchArgs {
+pub struct FsStartSearchArgs {
     /// Root directory to search
     pub path: String,
 
@@ -513,9 +513,9 @@ pub struct StartSearchArgs {
     pub encoding: Option<String>,
 }
 
-/// Prompt arguments for `start_search` tool
+/// Prompt arguments for `fs_start_search` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct StartSearchPromptArgs {}
+pub struct FsStartSearchPromptArgs {}
 
 // ============================================================================
 // GET MORE SEARCH RESULTS
@@ -525,9 +525,9 @@ fn default_length() -> usize {
     100
 }
 
-/// Arguments for `get_search_results` tool
+/// Arguments for `fs_get_search_results` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetMoreSearchResultsArgs {
+pub struct FsGetMoreSearchResultsArgs {
     /// Search session ID from `start_search`
     pub session_id: String,
 
@@ -543,33 +543,33 @@ pub struct GetMoreSearchResultsArgs {
     pub length: usize,
 }
 
-/// Prompt arguments for `get_search_results` tool
+/// Prompt arguments for `fs_get_search_results` tool
 #[derive(Debug, Clone, Deserialize, JsonSchema)]
-pub struct GetMoreSearchResultsPromptArgs {}
+pub struct FsGetMoreSearchResultsPromptArgs {}
 
 // ============================================================================
 // STOP SEARCH
 // ============================================================================
 
-/// Arguments for `stop_search` tool
+/// Arguments for `fs_stop_search` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct StopSearchArgs {
+pub struct FsStopSearchArgs {
     /// Search session ID to stop
     pub session_id: String,
 }
 
-/// Prompt arguments for `stop_search` tool
+/// Prompt arguments for `fs_stop_search` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct StopSearchPromptArgs {}
+pub struct FsStopSearchPromptArgs {}
 
 // ============================================================================
 // LIST SEARCHES
 // ============================================================================
 
-/// Arguments for `list_searches` tool
+/// Arguments for `fs_list_searches` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct ListSearchesArgs {}
+pub struct FsListSearchesArgs {}
 
-/// Prompt arguments for `list_searches` tool
+/// Prompt arguments for `fs_list_searches` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct ListSearchesPromptArgs {}
+pub struct FsListSearchesPromptArgs {}

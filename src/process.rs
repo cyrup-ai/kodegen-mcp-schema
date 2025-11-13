@@ -4,12 +4,12 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
-// LIST PROCESSES
+// PROCESS LIST
 // ============================================================================
 
-/// Arguments for `list_processes` tool
+/// Arguments for `process_list` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListProcessesArgs {
+pub struct ProcessListArgs {
     /// Optional: filter by name (case-insensitive substring match)
     #[serde(default)]
     pub filter: Option<String>,
@@ -19,21 +19,21 @@ pub struct ListProcessesArgs {
     pub limit: usize,
 }
 
-/// Prompt arguments for `list_processes` tool
+/// Prompt arguments for `process_list` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListProcessesPromptArgs {}
+pub struct ProcessListPromptArgs {}
 
 // ============================================================================
-// KILL PROCESS
+// PROCESS KILL
 // ============================================================================
 
-/// Arguments for `kill_process` tool
+/// Arguments for `process_kill` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct KillProcessArgs {
+pub struct ProcessKillArgs {
     /// Process ID to terminate
     pub pid: u32,
 }
 
-/// Prompt arguments for `kill_process` tool
+/// Prompt arguments for `process_kill` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct KillProcessPromptArgs {}
+pub struct ProcessKillPromptArgs {}

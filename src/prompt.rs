@@ -22,7 +22,7 @@ pub enum GetPromptAction {
     Render,
 }
 
-/// Arguments for `get_prompt` tool
+/// Arguments for `prompt_get` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct GetPromptArgs {
     /// Action to perform

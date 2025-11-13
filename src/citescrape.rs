@@ -4,7 +4,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
-// START CRAWL
+// SCRAPE URL
 // ============================================================================
 
 fn default_max_depth() -> u8 {
@@ -19,9 +19,9 @@ fn default_crawl_rate() -> f64 {
     2.0
 }
 
-/// Arguments for `start_crawl` tool
+/// Arguments for `scrape_url` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct StartCrawlArgs {
+pub struct ScrapeUrlArgs {
     /// Target URL to crawl (required)
     pub url: String,
 
@@ -62,22 +62,22 @@ pub struct StartCrawlArgs {
     pub content_types: Option<Vec<String>>,
 }
 
-/// Prompt arguments for `start_crawl` tool
+/// Prompt arguments for `scrape_url` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct StartCrawlPromptArgs {}
+pub struct ScrapeUrlPromptArgs {}
 
 // ============================================================================
-// GET CRAWL RESULTS
+// SCRAPE CHECK RESULTS
 // ============================================================================
 
 fn default_true_get() -> bool {
     true
 }
 
-/// Arguments for `get_crawl_results` tool
+/// Arguments for `scrape_check_results` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetCrawlResultsArgs {
-    /// Crawl ID from `start_crawl` (for active crawls)
+pub struct ScrapeCheckResultsArgs {
+    /// Crawl ID from `scrape_url` (for active crawls)
     #[serde(default)]
     pub crawl_id: Option<String>,
 
@@ -98,12 +98,12 @@ pub struct GetCrawlResultsArgs {
     pub file_types: Option<Vec<String>>,
 }
 
-/// Prompt arguments for `get_crawl_results` tool
+/// Prompt arguments for `scrape_check_results` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetCrawlResultsPromptArgs {}
+pub struct ScrapeCheckResultsPromptArgs {}
 
 // ============================================================================
-// SEARCH CRAWL RESULTS
+// SCRAPE SEARCH RESULTS
 // ============================================================================
 
 fn default_search_limit() -> usize {
@@ -114,9 +114,9 @@ fn default_true_search() -> bool {
     true
 }
 
-/// Arguments for `search_crawl_results` tool
+/// Arguments for `scrape_search_results` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SearchCrawlResultsArgs {
+pub struct ScrapeSearchResultsArgs {
     /// Search query string
     pub query: String,
 
@@ -141,9 +141,9 @@ pub struct SearchCrawlResultsArgs {
     pub highlight: bool,
 }
 
-/// Prompt arguments for `search_crawl_results` tool
+/// Prompt arguments for `scrape_search_results` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SearchCrawlResultsPromptArgs {}
+pub struct ScrapeSearchResultsPromptArgs {}
 
 // ============================================================================
 // WEB SEARCH

@@ -4,10 +4,10 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
-// GET STORED PROCEDURES
+// DB_STORED_PROCEDURES
 // ============================================================================
 
-/// Arguments for get_stored_procedures tool
+/// Arguments for db_stored_procedures tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct GetStoredProceduresArgs {
     /// Schema name (optional, uses default if not provided)
@@ -20,15 +20,15 @@ pub struct GetStoredProceduresArgs {
     pub include_details: bool,
 }
 
-/// Prompt arguments for get_stored_procedures tool
+/// Prompt arguments for db_stored_procedures tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct GetStoredProceduresPromptArgs {}
 
 // ============================================================================
-// GET TABLE INDEXES
+// DB_TABLE_INDEXES
 // ============================================================================
 
-/// Arguments for get_table_indexes tool
+/// Arguments for db_table_indexes tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct GetTableIndexesArgs {
     /// Table name to inspect
@@ -39,12 +39,12 @@ pub struct GetTableIndexesArgs {
     pub schema: Option<String>,
 }
 
-/// Prompt arguments for get_table_indexes tool
+/// Prompt arguments for db_table_indexes tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct GetTableIndexesPromptArgs {}
 
 // ============================================================================
-// LIST SCHEMAS
+// DB_LIST_SCHEMAS
 // ============================================================================
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
@@ -56,7 +56,7 @@ pub struct ListSchemasArgs {
 pub struct ListSchemasPromptArgs {}
 
 // ============================================================================
-// LIST TABLES
+// DB_LIST_TABLES
 // ============================================================================
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
@@ -74,7 +74,7 @@ pub struct ListTablesArgs {
 pub struct ListTablesPromptArgs {}
 
 // ============================================================================
-// GET POOL STATS
+// DB_POOL_STATS
 // ============================================================================
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
@@ -84,10 +84,10 @@ pub struct GetPoolStatsArgs {}
 pub struct GetPoolStatsPromptArgs {}
 
 // ============================================================================
-// GET TABLE SCHEMA
+// DB_TABLE_SCHEMA
 // ============================================================================
 
-/// Arguments for get_table_schema tool
+/// Arguments for db_table_schema tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct GetTableSchemaArgs {
     /// Table name to inspect
@@ -102,12 +102,12 @@ pub struct GetTableSchemaArgs {
     pub schema: Option<String>,
 }
 
-/// Prompt arguments for get_table_schema tool
+/// Prompt arguments for db_table_schema tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct GetTableSchemaPromptArgs {}
 
 // ============================================================================
-// EXECUTE SQL
+// DB_EXECUTE_SQL
 // ============================================================================
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
