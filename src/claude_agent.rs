@@ -33,6 +33,22 @@ pub struct PromptTemplateInput {
 }
 
 // ============================================================================
+// TOOL NAME CONSTANTS (Memory Tools)
+// ============================================================================
+
+/// Tool name constant for memory_memorize
+pub const MEMORY_MEMORIZE: &str = "memory_memorize";
+
+/// Tool name constant for memory_check_memorize_status
+pub const MEMORY_CHECK_MEMORIZE_STATUS: &str = "memory_check_memorize_status";
+
+/// Tool name constant for memory_recall
+pub const MEMORY_RECALL: &str = "memory_recall";
+
+/// Tool name constant for memory_list_libraries
+pub const MEMORY_LIST_LIBRARIES: &str = "memory_list_libraries";
+
+// ============================================================================
 // SPAWN CLAUDE AGENT
 // ============================================================================
 

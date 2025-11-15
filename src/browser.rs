@@ -4,6 +4,33 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
+// CANONICAL TOOL NAME CONSTANTS
+// ============================================================================
+// These constants provide a single source of truth for browser tool names,
+// eliminating string duplication across tool implementations and metadata.
+
+// Core browser automation tools
+pub const BROWSER_NAVIGATE: &str = "browser_navigate";
+pub const BROWSER_CLICK: &str = "browser_click";
+pub const BROWSER_TYPE_TEXT: &str = "browser_type_text";
+pub const BROWSER_SCREENSHOT: &str = "browser_screenshot";
+pub const BROWSER_EXTRACT_TEXT: &str = "browser_extract_text";
+pub const BROWSER_SCROLL: &str = "browser_scroll";
+
+// Advanced browser tools
+pub const BROWSER_AGENT: &str = "browser_agent";
+
+// Research session management
+pub const BROWSER_START_RESEARCH: &str = "browser_start_research";
+pub const BROWSER_GET_RESEARCH_STATUS: &str = "browser_get_research_status";
+pub const BROWSER_GET_RESEARCH_RESULT: &str = "browser_get_research_result";
+pub const BROWSER_STOP_RESEARCH: &str = "browser_stop_research";
+pub const BROWSER_LIST_RESEARCH_SESSIONS: &str = "browser_list_research_sessions";
+
+// Web search
+pub const BROWSER_WEB_SEARCH: &str = "browser_web_search";
+
+// ============================================================================
 // WAIT FOR
 // ============================================================================
 

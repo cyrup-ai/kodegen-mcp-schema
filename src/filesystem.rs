@@ -313,7 +313,7 @@ pub enum SortDirection {
 }
 
 /// Search output mode - determines how results are formatted
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum SearchOutputMode {
     /// Full match details including file path, line number, and match content (default)
@@ -325,6 +325,31 @@ pub enum SearchOutputMode {
     /// Return file paths with match counts (like rg -c)
     /// line field contains the count, match field will be None
     CountPerFile,
+}
+
+// Custom deserializer with helpful error messages
+impl<'de> serde::Deserialize<'de> for SearchOutputMode {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        match s.as_str() {
+            "full" => Ok(SearchOutputMode::Full),
+            "files_only" => Ok(SearchOutputMode::FilesOnly),
+            "count_per_file" => Ok(SearchOutputMode::CountPerFile),
+            "content" => Err(serde::de::Error::custom(
+                "Invalid output_mode 'content'. Did you mean search_type='content'? \
+                 Valid output_mode values are: 'full' (default, full match details), \
+                 'files_only' (just file paths, like rg -l), or \
+                 'count_per_file' (file paths with counts, like rg -c)"
+            )),
+            other => Err(serde::de::Error::custom(format!(
+                "Invalid output_mode '{}'. Valid values are: 'full', 'files_only', 'count_per_file'",
+                other
+            ))),
+        }
+    }
 }
 
 // ============================================================================
@@ -434,10 +459,23 @@ pub struct FsStartSearchArgs {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub word_boundary: Option<bool>,
 
-    /// Output mode: "full", "`files_only`", or "`count_per_file`" (default: "full")
-    /// full: Complete match details with file, line, and content
-    /// `files_only`: Only unique file paths (like rg -l)
-    /// `count_per_file`: File paths with match counts (like rg -c)
+    /// Output mode: "full", "files_only", or "count_per_file" (default: "full")
+    ///
+    /// ⚠️  WARNING: This is NOT the same as `search_type`!
+    /// - `search_type` controls WHAT to search (files vs content)
+    /// - `output_mode` controls HOW results are formatted
+    ///
+    /// Do NOT use `output_mode: "content"` - "content" is only valid for `search_type`.
+    ///
+    /// Valid values:
+    /// - "full": Complete match details with file, line, and content (DEFAULT)
+    /// - "files_only": Only unique file paths (like rg -l)
+    /// - "count_per_file": File paths with match counts (like rg -c)
+    ///
+    /// Examples:
+    /// - Search content, return full details: search_type="content", output_mode="full"
+    /// - Search content, return just paths: search_type="content", output_mode="files_only"
+    /// - Find files, return full info: search_type="files", output_mode="full"
     #[serde(default)]
     pub output_mode: SearchOutputMode,
 
