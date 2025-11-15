@@ -4,6 +4,16 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
+// CANONICAL TOOL NAME CONSTANTS
+// ============================================================================
+
+/// Canonical tool names for all process tools
+/// These constants are the single source of truth for process tool names.
+/// All tool implementations, metadata, and clients MUST reference these constants.
+pub const PROCESS_KILL: &str = "process_kill";
+pub const PROCESS_LIST: &str = "process_list";
+
+// ============================================================================
 // PROCESS LIST
 // ============================================================================
 

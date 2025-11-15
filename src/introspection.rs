@@ -4,6 +4,16 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
+// TOOL NAME CONSTANTS
+// ============================================================================
+
+/// Canonical name for the inspect_tool_calls tool
+pub const INSPECT_TOOL_CALLS: &str = "inspect_tool_calls";
+
+/// Canonical name for the inspect_usage_stats tool
+pub const INSPECT_USAGE_STATS: &str = "inspect_usage_stats";
+
+// ============================================================================
 // INSPECT USAGE STATS
 // ============================================================================
 

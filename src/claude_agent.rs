@@ -48,6 +48,22 @@ pub const MEMORY_RECALL: &str = "memory_recall";
 /// Tool name constant for memory_list_libraries
 pub const MEMORY_LIST_LIBRARIES: &str = "memory_list_libraries";
 
+// Agent Management Tools
+/// Tool name constant for claude_spawn_agent
+pub const CLAUDE_SPAWN_AGENT: &str = "claude_spawn_agent";
+
+/// Tool name constant for claude_read_agent_output
+pub const CLAUDE_READ_AGENT_OUTPUT: &str = "claude_read_agent_output";
+
+/// Tool name constant for claude_send_agent_prompt
+pub const CLAUDE_SEND_AGENT_PROMPT: &str = "claude_send_agent_prompt";
+
+/// Tool name constant for claude_terminate_agent_session
+pub const CLAUDE_TERMINATE_AGENT_SESSION: &str = "claude_terminate_agent_session";
+
+/// Tool name constant for claude_list_agents
+pub const CLAUDE_LIST_AGENTS: &str = "claude_list_agents";
+
 // ============================================================================
 // SPAWN CLAUDE AGENT
 // ============================================================================

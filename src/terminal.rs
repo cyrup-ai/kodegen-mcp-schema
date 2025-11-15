@@ -4,6 +4,17 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
+// CANONICAL TOOL NAME CONSTANTS
+// ============================================================================
+
+/// Canonical tool names for all terminal tools
+pub const TERMINAL_START_COMMAND: &str = "terminal_start_command";
+pub const TERMINAL_READ_OUTPUT: &str = "terminal_read_output";
+pub const TERMINAL_SEND_INPUT: &str = "terminal_send_input";
+pub const TERMINAL_STOP_COMMAND: &str = "terminal_stop_command";
+pub const TERMINAL_LIST_COMMANDS: &str = "terminal_list_commands";
+
+// ============================================================================
 // START TERMINAL COMMAND
 // ============================================================================
 

@@ -4,6 +4,16 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
+// CANONICAL TOOL NAMES
+// ============================================================================
+
+/// Canonical name for the config_get tool
+pub const CONFIG_GET: &str = "config_get";
+
+/// Canonical name for the config_set tool
+pub const CONFIG_SET: &str = "config_set";
+
+// ============================================================================
 // CONFIG VALUE TYPE
 // ============================================================================
 

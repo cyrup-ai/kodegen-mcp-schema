@@ -4,6 +4,14 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
+// CANONICAL TOOL NAME CONSTANTS
+// ============================================================================
+
+/// Canonical tool names for reasoning tools
+pub const SEQUENTIAL_THINKING: &str = "sequential_thinking";
+pub const REASONER: &str = "reasoner";
+
+// ============================================================================
 // SEQUENTIAL THINKING
 // ============================================================================
 

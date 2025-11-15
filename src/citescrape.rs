@@ -4,6 +4,16 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
+// CANONICAL TOOL NAME CONSTANTS
+// ============================================================================
+
+/// Canonical tool names for citescrape tools
+pub const SCRAPE_URL: &str = "scrape_url";
+pub const SCRAPE_CHECK_RESULTS: &str = "scrape_check_results";
+pub const SCRAPE_SEARCH_RESULTS: &str = "scrape_search_results";
+pub const WEB_SEARCH: &str = "web_search";
+
+// ============================================================================
 // SCRAPE URL
 // ============================================================================
 

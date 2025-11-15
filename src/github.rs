@@ -7,6 +7,57 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 // ============================================================================
+// TOOL NAME CONSTANTS
+// ============================================================================
+// Define each tool name exactly once to eliminate string duplication across
+// tool implementations and metadata. These constants are imported by:
+// - kodegen-tools-github/src/tool/*.rs (for Tool::name() implementation)
+// - kodegen/src/stdio/metadata/category_metadata/version_control.rs (for routing)
+
+// Issue Operations
+pub const GITHUB_ADD_ISSUE_COMMENT: &str = "github_add_issue_comment";
+pub const GITHUB_CREATE_ISSUE: &str = "github_create_issue";
+pub const GITHUB_GET_ISSUE: &str = "github_get_issue";
+pub const GITHUB_GET_ISSUE_COMMENTS: &str = "github_get_issue_comments";
+pub const GITHUB_LIST_ISSUES: &str = "github_list_issues";
+pub const GITHUB_SEARCH_ISSUES: &str = "github_search_issues";
+pub const GITHUB_UPDATE_ISSUE: &str = "github_update_issue";
+
+// Pull Request Operations
+pub const GITHUB_ADD_PULL_REQUEST_REVIEW_COMMENT: &str = "github_add_pull_request_review_comment";
+pub const GITHUB_CREATE_PULL_REQUEST: &str = "github_create_pull_request";
+pub const GITHUB_CREATE_PULL_REQUEST_REVIEW: &str = "github_create_pull_request_review";
+pub const GITHUB_GET_PULL_REQUEST_FILES: &str = "github_get_pull_request_files";
+pub const GITHUB_GET_PULL_REQUEST_REVIEWS: &str = "github_get_pull_request_reviews";
+pub const GITHUB_GET_PULL_REQUEST_STATUS: &str = "github_get_pull_request_status";
+pub const GITHUB_MERGE_PULL_REQUEST: &str = "github_merge_pull_request";
+pub const GITHUB_REQUEST_COPILOT_REVIEW: &str = "github_request_copilot_review";
+pub const GITHUB_UPDATE_PULL_REQUEST: &str = "github_update_pull_request";
+
+// Repository Operations
+pub const GITHUB_CREATE_BRANCH: &str = "github_create_branch";
+pub const GITHUB_CREATE_OR_UPDATE_FILE: &str = "github_create_or_update_file";
+pub const GITHUB_CREATE_REPOSITORY: &str = "github_create_repository";
+pub const GITHUB_FORK_REPOSITORY: &str = "github_fork_repository";
+pub const GITHUB_GET_COMMIT: &str = "github_get_commit";
+pub const GITHUB_GET_FILE_CONTENTS: &str = "github_get_file_contents";
+pub const GITHUB_LIST_BRANCHES: &str = "github_list_branches";
+pub const GITHUB_LIST_COMMITS: &str = "github_list_commits";
+pub const GITHUB_PUSH_FILES: &str = "github_push_files";
+
+// Search Operations
+pub const GITHUB_SEARCH_CODE: &str = "github_search_code";
+pub const GITHUB_SEARCH_REPOSITORIES: &str = "github_search_repositories";
+pub const GITHUB_SEARCH_USERS: &str = "github_search_users";
+
+// Security Operations
+pub const GITHUB_CODE_SCANNING_ALERTS: &str = "github_code_scanning_alerts";
+pub const GITHUB_SECRET_SCANNING_ALERTS: &str = "github_secret_scanning_alerts";
+
+// User Operations
+pub const GITHUB_GET_ME: &str = "github_get_me";
+
+// ============================================================================
 // CREATE_PULL_REQUEST
 // ============================================================================
 

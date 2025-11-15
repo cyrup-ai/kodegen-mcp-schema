@@ -4,6 +4,28 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
+// CANONICAL TOOL NAME CONSTANTS
+// ============================================================================
+
+/// Canonical tool names for all filesystem tools
+/// These constants are the single source of truth for filesystem tool names.
+/// All tool implementations, metadata, and utilities MUST reference these constants.
+pub const FS_CREATE_DIRECTORY: &str = "fs_create_directory";
+pub const FS_DELETE_DIRECTORY: &str = "fs_delete_directory";
+pub const FS_DELETE_FILE: &str = "fs_delete_file";
+pub const FS_EDIT_BLOCK: &str = "fs_edit_block";
+pub const FS_GET_FILE_INFO: &str = "fs_get_file_info";
+pub const FS_GET_SEARCH_RESULTS: &str = "fs_get_search_results";
+pub const FS_LIST_DIRECTORY: &str = "fs_list_directory";
+pub const FS_LIST_SEARCHES: &str = "fs_list_searches";
+pub const FS_MOVE_FILE: &str = "fs_move_file";
+pub const FS_READ_FILE: &str = "fs_read_file";
+pub const FS_READ_MULTIPLE_FILES: &str = "fs_read_multiple_files";
+pub const FS_START_SEARCH: &str = "fs_start_search";
+pub const FS_STOP_SEARCH: &str = "fs_stop_search";
+pub const FS_WRITE_FILE: &str = "fs_write_file";
+
+// ============================================================================
 // READ FILE
 // ============================================================================
 

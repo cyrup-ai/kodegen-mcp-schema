@@ -4,6 +4,34 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
+// CANONICAL TOOL NAME CONSTANTS
+// ============================================================================
+// These constants are the single source of truth for database tool names.
+// Reference these constants in tool implementations and metadata registration
+// to ensure consistency and enable compile-time verification.
+
+/// Tool name: Execute SQL queries
+pub const DB_EXECUTE_SQL: &str = "db_execute_sql";
+
+/// Tool name: Get connection pool statistics
+pub const DB_POOL_STATS: &str = "db_pool_stats";
+
+/// Tool name: List stored procedures
+pub const DB_STORED_PROCEDURES: &str = "db_stored_procedures";
+
+/// Tool name: Get table index information
+pub const DB_TABLE_INDEXES: &str = "db_table_indexes";
+
+/// Tool name: Get table schema (column information)
+pub const DB_TABLE_SCHEMA: &str = "db_table_schema";
+
+/// Tool name: List database schemas
+pub const DB_LIST_SCHEMAS: &str = "db_list_schemas";
+
+/// Tool name: List tables in a schema
+pub const DB_LIST_TABLES: &str = "db_list_tables";
+
+// ============================================================================
 // DB_STORED_PROCEDURES
 // ============================================================================
 

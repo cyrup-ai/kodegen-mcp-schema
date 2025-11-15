@@ -4,6 +4,70 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
+// CANONICAL TOOL NAME CONSTANTS
+// ============================================================================
+
+/// Canonical name for git_add tool
+pub const GIT_ADD: &str = "git_add";
+
+/// Canonical name for git_branch_create tool
+pub const GIT_BRANCH_CREATE: &str = "git_branch_create";
+
+/// Canonical name for git_branch_delete tool
+pub const GIT_BRANCH_DELETE: &str = "git_branch_delete";
+
+/// Canonical name for git_branch_list tool
+pub const GIT_BRANCH_LIST: &str = "git_branch_list";
+
+/// Canonical name for git_branch_rename tool
+pub const GIT_BRANCH_RENAME: &str = "git_branch_rename";
+
+/// Canonical name for git_checkout tool
+pub const GIT_CHECKOUT: &str = "git_checkout";
+
+/// Canonical name for git_clone tool
+pub const GIT_CLONE: &str = "git_clone";
+
+/// Canonical name for git_commit tool
+pub const GIT_COMMIT: &str = "git_commit";
+
+/// Canonical name for git_discover tool
+pub const GIT_DISCOVER: &str = "git_discover";
+
+/// Canonical name for git_fetch tool
+pub const GIT_FETCH: &str = "git_fetch";
+
+/// Canonical name for git_init tool
+pub const GIT_INIT: &str = "git_init";
+
+/// Canonical name for git_log tool
+pub const GIT_LOG: &str = "git_log";
+
+/// Canonical name for git_merge tool
+pub const GIT_MERGE: &str = "git_merge";
+
+/// Canonical name for git_open tool
+pub const GIT_OPEN: &str = "git_open";
+
+/// Canonical name for git_worktree_add tool
+pub const GIT_WORKTREE_ADD: &str = "git_worktree_add";
+
+/// Canonical name for git_worktree_list tool
+pub const GIT_WORKTREE_LIST: &str = "git_worktree_list";
+
+/// Canonical name for git_worktree_lock tool
+pub const GIT_WORKTREE_LOCK: &str = "git_worktree_lock";
+
+/// Canonical name for git_worktree_prune tool
+pub const GIT_WORKTREE_PRUNE: &str = "git_worktree_prune";
+
+/// Canonical name for git_worktree_remove tool
+pub const GIT_WORKTREE_REMOVE: &str = "git_worktree_remove";
+
+/// Canonical name for git_worktree_unlock tool
+pub const GIT_WORKTREE_UNLOCK: &str = "git_worktree_unlock";
+
+// ============================================================================
 // GIT INIT
 // ============================================================================
 

@@ -5,6 +5,22 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 // ============================================================================
+// TOOL NAME CONSTANTS - Canonical Source of Truth
+// ============================================================================
+
+/// Canonical tool name for prompt_add
+pub const PROMPT_ADD: &str = "prompt_add";
+
+/// Canonical tool name for prompt_delete
+pub const PROMPT_DELETE: &str = "prompt_delete";
+
+/// Canonical tool name for prompt_edit
+pub const PROMPT_EDIT: &str = "prompt_edit";
+
+/// Canonical tool name for prompt_get
+pub const PROMPT_GET: &str = "prompt_get";
+
+// ============================================================================
 // GET PROMPT
 // ============================================================================
 
