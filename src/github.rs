@@ -30,6 +30,7 @@ pub const GITHUB_CREATE_PULL_REQUEST_REVIEW: &str = "github_create_pull_request_
 pub const GITHUB_GET_PULL_REQUEST_FILES: &str = "github_get_pull_request_files";
 pub const GITHUB_GET_PULL_REQUEST_REVIEWS: &str = "github_get_pull_request_reviews";
 pub const GITHUB_GET_PULL_REQUEST_STATUS: &str = "github_get_pull_request_status";
+pub const GITHUB_LIST_PULL_REQUESTS: &str = "github_list_pull_requests";
 pub const GITHUB_MERGE_PULL_REQUEST: &str = "github_merge_pull_request";
 pub const GITHUB_REQUEST_COPILOT_REVIEW: &str = "github_request_copilot_review";
 pub const GITHUB_UPDATE_PULL_REQUEST: &str = "github_update_pull_request";
@@ -38,6 +39,7 @@ pub const GITHUB_UPDATE_PULL_REQUEST: &str = "github_update_pull_request";
 pub const GITHUB_CREATE_BRANCH: &str = "github_create_branch";
 pub const GITHUB_CREATE_OR_UPDATE_FILE: &str = "github_create_or_update_file";
 pub const GITHUB_CREATE_REPOSITORY: &str = "github_create_repository";
+pub const GITHUB_DELETE_BRANCH: &str = "github_delete_branch";
 pub const GITHUB_FORK_REPOSITORY: &str = "github_fork_repository";
 pub const GITHUB_GET_COMMIT: &str = "github_get_commit";
 pub const GITHUB_GET_FILE_CONTENTS: &str = "github_get_file_contents";
@@ -144,6 +146,35 @@ pub struct ListIssuesArgs {
 /// Prompt arguments for `list_issues` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct ListIssuesPromptArgs {}
+
+// ============================================================================
+// LIST_PULL_REQUESTS
+// ============================================================================
+
+/// Arguments for `list_pull_requests` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ListPullRequestsArgs {
+    /// Repository owner (user or organization)
+    pub owner: String,
+    /// Repository name
+    pub repo: String,
+    /// Filter by state: "open", "closed", or "all" (optional)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub state: Option<String>,
+    /// Filter by labels (optional)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub labels: Option<Vec<String>>,
+    /// Page number for pagination (optional)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub page: Option<u32>,
+    /// Results per page, max 100 (optional)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub per_page: Option<u32>,
+}
+
+/// Prompt arguments for `list_pull_requests` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ListPullRequestsPromptArgs {}
 
 // ============================================================================
 // GET_ISSUE
@@ -467,6 +498,21 @@ pub struct CreateBranchArgs {
     pub branch_name: String,
     /// SHA to create branch from
     pub sha: String,
+}
+
+// ============================================================================
+// DELETE_BRANCH
+// ============================================================================
+
+/// Arguments for deleting a branch
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct DeleteBranchArgs {
+    /// Repository owner
+    pub owner: String,
+    /// Repository name
+    pub repo: String,
+    /// Branch name to delete
+    pub branch_name: String,
 }
 
 // ============================================================================

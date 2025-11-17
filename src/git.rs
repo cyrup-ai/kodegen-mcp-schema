@@ -31,6 +31,9 @@ pub const GIT_CLONE: &str = "git_clone";
 /// Canonical name for git_commit tool
 pub const GIT_COMMIT: &str = "git_commit";
 
+/// Canonical name for git_diff tool
+pub const GIT_DIFF: &str = "git_diff";
+
 /// Canonical name for git_discover tool
 pub const GIT_DISCOVER: &str = "git_discover";
 
@@ -49,6 +52,12 @@ pub const GIT_MERGE: &str = "git_merge";
 /// Canonical name for git_open tool
 pub const GIT_OPEN: &str = "git_open";
 
+/// Canonical name for git_pull tool
+pub const GIT_PULL: &str = "git_pull";
+
+/// Canonical name for git_push tool
+pub const GIT_PUSH: &str = "git_push";
+
 /// Canonical name for git_worktree_add tool
 pub const GIT_WORKTREE_ADD: &str = "git_worktree_add";
 
@@ -66,6 +75,27 @@ pub const GIT_WORKTREE_REMOVE: &str = "git_worktree_remove";
 
 /// Canonical name for git_worktree_unlock tool
 pub const GIT_WORKTREE_UNLOCK: &str = "git_worktree_unlock";
+
+/// Canonical name for git_remote_add tool
+pub const GIT_REMOTE_ADD: &str = "git_remote_add";
+
+/// Canonical name for git_remote_list tool
+pub const GIT_REMOTE_LIST: &str = "git_remote_list";
+
+/// Canonical name for git_remote_remove tool
+pub const GIT_REMOTE_REMOVE: &str = "git_remote_remove";
+
+/// Canonical name for git_reset tool
+pub const GIT_RESET: &str = "git_reset";
+
+/// Canonical name for git_status tool
+pub const GIT_STATUS: &str = "git_status";
+
+/// Canonical name for git_stash tool
+pub const GIT_STASH: &str = "git_stash";
+
+/// Canonical name for git_tag tool
+pub const GIT_TAG: &str = "git_tag";
 
 // ============================================================================
 // GIT INIT
@@ -229,6 +259,28 @@ pub struct GitLogArgs {
 /// Prompt arguments for `git_log` tool
 #[derive(Deserialize, JsonSchema)]
 pub struct GitLogPromptArgs {}
+
+// ============================================================================
+// GIT DIFF
+// ============================================================================
+
+/// Arguments for `git_diff` tool
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct GitDiffArgs {
+    /// Path to repository
+    pub path: String,
+
+    /// Source revision (commit hash, branch name, or 'HEAD')
+    pub from: String,
+
+    /// Target revision (optional, defaults to working directory)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub to: Option<String>,
+}
+
+/// Prompt arguments for `git_diff` tool
+#[derive(Deserialize, JsonSchema)]
+pub struct GitDiffPromptArgs {}
 
 // ============================================================================
 // GIT BRANCH CREATE
@@ -535,3 +587,247 @@ pub struct GitWorktreeRemoveArgs {
 /// Prompt arguments for `git_worktree_remove` tool
 #[derive(Deserialize, JsonSchema)]
 pub struct GitWorktreeRemovePromptArgs {}
+
+// ============================================================================
+// GIT PULL
+// ============================================================================
+
+/// Arguments for `git_pull` tool
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct GitPullArgs {
+    /// Path to repository
+    pub path: String,
+
+    /// Remote name (defaults to "origin")
+    #[serde(default = "default_remote")]
+    pub remote: String,
+
+    /// Allow fast-forward merges (default: true)
+    #[serde(default = "default_true")]
+    pub fast_forward: bool,
+
+    /// Automatically create merge commit (default: true)
+    #[serde(default = "default_true")]
+    pub auto_commit: bool,
+}
+
+/// Prompt arguments for `git_pull` tool
+#[derive(Deserialize, JsonSchema)]
+pub struct GitPullPromptArgs {}
+
+// ============================================================================
+// GIT PUSH
+// ============================================================================
+
+/// Arguments for `git_push` tool
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct GitPushArgs {
+    /// Path to repository
+    pub path: String,
+
+    /// Remote name (defaults to "origin")
+    #[serde(default = "default_remote")]
+    pub remote: String,
+
+    /// Refspecs to push (e.g., ["refs/heads/main", "refs/tags/v1.0"]).
+    /// Empty list pushes the current branch to the remote.
+    #[serde(default)]
+    pub refspecs: Vec<String>,
+
+    /// Force push (use with caution in shared repositories)
+    #[serde(default)]
+    pub force: bool,
+
+    /// Push all tags to the remote
+    #[serde(default)]
+    pub tags: bool,
+
+    /// Push operation timeout in seconds (default: 300 for 5 minutes)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub timeout_secs: Option<u64>,
+}
+
+/// Prompt arguments for `git_push` tool
+#[derive(Deserialize, JsonSchema)]
+pub struct GitPushPromptArgs {}
+
+// ============================================================================
+// GIT REMOTE ADD
+// ============================================================================
+
+/// Arguments for `git_remote_add` tool
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct GitRemoteAddArgs {
+    /// Path to repository
+    pub path: String,
+
+    /// Remote name (e.g., "origin", "upstream")
+    pub name: String,
+
+    /// Remote URL (https, git, ssh, or file URL)
+    pub url: String,
+
+    /// Force add (overwrite existing remote with same name)
+    #[serde(default)]
+    pub force: bool,
+}
+
+/// Prompt arguments for `git_remote_add` tool
+#[derive(Deserialize, JsonSchema)]
+pub struct GitRemoteAddPromptArgs {}
+
+// ============================================================================
+// GIT REMOTE LIST
+// ============================================================================
+
+/// Arguments for `git_remote_list` tool
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct GitRemoteListArgs {
+    /// Path to repository
+    pub path: String,
+}
+
+/// Prompt arguments for `git_remote_list` tool
+#[derive(Deserialize, JsonSchema)]
+pub struct GitRemoteListPromptArgs {}
+
+// ============================================================================
+// GIT REMOTE REMOVE
+// ============================================================================
+
+/// Arguments for `git_remote_remove` tool
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct GitRemoteRemoveArgs {
+    /// Path to repository
+    pub path: String,
+
+    /// Remote name to remove (e.g., "origin", "upstream")
+    pub name: String,
+}
+
+/// Prompt arguments for `git_remote_remove` tool
+#[derive(Deserialize, JsonSchema)]
+pub struct GitRemoteRemovePromptArgs {}
+
+// ============================================================================
+// GIT RESET
+// ============================================================================
+
+/// Reset mode for git reset operation
+#[derive(Debug, Clone, Copy, Deserialize, Serialize, JsonSchema, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum ResetMode {
+    /// Soft reset - move HEAD only
+    Soft,
+    /// Mixed reset - move HEAD and reset index
+    Mixed,
+    /// Hard reset - move HEAD, reset index, and reset working directory
+    Hard,
+}
+
+fn default_reset_mode() -> ResetMode {
+    ResetMode::Mixed
+}
+
+/// Arguments for `git_reset` tool
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct GitResetArgs {
+    /// Path to repository
+    pub path: String,
+
+    /// Target commit (hash, ref, or symbolic name like "HEAD~1")
+    pub target: String,
+
+    /// Reset mode: soft, mixed, or hard (default: mixed)
+    #[serde(default = "default_reset_mode")]
+    pub mode: ResetMode,
+}
+
+/// Prompt arguments for `git_reset` tool
+#[derive(Deserialize, JsonSchema)]
+pub struct GitResetPromptArgs {}
+
+// ============================================================================
+// GIT STATUS
+// ============================================================================
+
+/// Arguments for `git_status` tool
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct GitStatusArgs {
+    /// Path to repository
+    pub path: String,
+}
+
+/// Prompt arguments for `git_status` tool
+#[derive(Deserialize, JsonSchema)]
+pub struct GitStatusPromptArgs {}
+
+// ============================================================================
+// GIT TAG
+// ============================================================================
+
+/// Arguments for `git_tag` tool
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct GitTagArgs {
+    /// Path to repository
+    pub path: String,
+
+    /// Operation: "create", "delete", or "list" (default: "list")
+    #[serde(default = "default_tag_operation")]
+    pub operation: String,
+
+    /// Tag name (required for create and delete operations)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+
+    /// Tag message for annotated tags (if provided, creates annotated tag)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
+
+    /// Target commit (defaults to HEAD if not specified)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub target: Option<String>,
+
+    /// Force create/delete (overwrite if exists)
+    #[serde(default)]
+    pub force: bool,
+}
+
+fn default_tag_operation() -> String {
+    "list".to_string()
+}
+
+/// Prompt arguments for `git_tag` tool
+#[derive(Deserialize, JsonSchema)]
+pub struct GitTagPromptArgs {}
+
+// ============================================================================
+// GIT STASH
+// ============================================================================
+
+/// Arguments for `git_stash` tool
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct GitStashArgs {
+    /// Path to repository
+    pub path: String,
+
+    /// Operation: "save" or "pop" (default: "save")
+    #[serde(default = "default_stash_operation")]
+    pub operation: String,
+
+    /// Optional stash message (for save operation)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
+
+    /// Include untracked files (default: true)
+    #[serde(default = "default_true")]
+    pub include_untracked: bool,
+}
+
+fn default_stash_operation() -> String {
+    "save".to_string()
+}
+
+/// Prompt arguments for `git_stash` tool
+#[derive(Deserialize, JsonSchema)]
+pub struct GitStashPromptArgs {}
