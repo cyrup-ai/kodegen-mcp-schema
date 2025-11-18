@@ -251,12 +251,16 @@ pub struct FsEditBlockPromptArgs {}
 // SEARCH TYPES AND ENUMS
 // ============================================================================
 
-/// Search type enum
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
-#[serde(rename_all = "snake_case")]
-pub enum SearchType {
-    Files,
+/// Where to search
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Default)]
+#[serde(rename_all = "lowercase")]
+pub enum SearchIn {
+    /// Search inside file contents (default, matches ripgrep default)
+    #[default]
     Content,
+    
+    /// Search file names/paths
+    Filenames,
 }
 
 /// Case matching mode for searches
@@ -334,53 +338,24 @@ pub enum SortDirection {
     Descending,
 }
 
-/// Search output mode - determines how results are formatted
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema, Default)]
-#[serde(rename_all = "snake_case")]
-pub enum SearchOutputMode {
-    /// Full match details including file path, line number, and match content (default)
+/// What to return from search
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Default)]
+#[serde(rename_all = "lowercase")]
+pub enum ReturnMode {
+    /// Full match details: file path, line number, match content (default)
     #[default]
-    Full,
-    /// Only return unique file paths that contain matches (like rg -l)
-    /// line field will be None, match field will be None
-    FilesOnly,
-    /// Return file paths with match counts (like rg -c)
-    /// line field contains the count, match field will be None
-    CountPerFile,
-}
-
-// Custom deserializer with helpful error messages
-impl<'de> serde::Deserialize<'de> for SearchOutputMode {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let s = String::deserialize(deserializer)?;
-        match s.as_str() {
-            "full" => Ok(SearchOutputMode::Full),
-            "files_only" => Ok(SearchOutputMode::FilesOnly),
-            "count_per_file" => Ok(SearchOutputMode::CountPerFile),
-            "content" => Err(serde::de::Error::custom(
-                "Invalid output_mode 'content'. Did you mean search_type='content'? \
-                 Valid output_mode values are: 'full' (default, full match details), \
-                 'files_only' (just file paths, like rg -l), or \
-                 'count_per_file' (file paths with counts, like rg -c)"
-            )),
-            other => Err(serde::de::Error::custom(format!(
-                "Invalid output_mode '{}'. Valid values are: 'full', 'files_only', 'count_per_file'",
-                other
-            ))),
-        }
-    }
+    Matches,
+    
+    /// Only return unique file paths (like rg -l)
+    Paths,
+    
+    /// Return match counts per file (like rg -c)
+    Counts,
 }
 
 // ============================================================================
 // START SEARCH
 // ============================================================================
-
-fn default_search_type() -> SearchType {
-    SearchType::Files
-}
 
 /// Arguments for `fs_start_search` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
@@ -391,9 +366,10 @@ pub struct FsStartSearchArgs {
     /// Pattern to search for
     pub pattern: String,
 
-    /// Search type: "files" or "content"
-    #[serde(default = "default_search_type")]
-    pub search_type: SearchType,
+    /// Where to search: "content" (inside files) or "filenames" (file paths)
+    /// Default: "content" (matches ripgrep default behavior)
+    #[serde(default)]
+    pub search_in: SearchIn,
 
     /// File pattern filter (e.g., "*.rs", "*.{ts,js}")
     #[serde(default)]
@@ -481,30 +457,20 @@ pub struct FsStartSearchArgs {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub word_boundary: Option<bool>,
 
-    /// Output mode: "full", "files_only", or "count_per_file" (default: "full")
+    /// What to return: "matches" (full details), "paths" (file paths only), or "counts" (match counts)
+    /// Default: "matches" (matches ripgrep default behavior)
     ///
-    /// ⚠️  WARNING: This is NOT the same as `search_type`!
-    /// - `search_type` controls WHAT to search (files vs content)
-    /// - `output_mode` controls HOW results are formatted
-    ///
-    /// Do NOT use `output_mode: "content"` - "content" is only valid for `search_type`.
-    ///
-    /// Valid values:
-    /// - "full": Complete match details with file, line, and content (DEFAULT)
-    /// - "files_only": Only unique file paths (like rg -l)
-    /// - "count_per_file": File paths with match counts (like rg -c)
+    /// This is INDEPENDENT of search_in:
+    /// - search_in controls WHERE you search (content vs filenames)
+    /// - return_only controls WHAT you get back (matches vs paths vs counts)
     ///
     /// Examples:
-    /// - Search content, return full details: search_type="content", output_mode="full"
-    /// - Search content, return just paths: search_type="content", output_mode="files_only"
-    /// - Find files, return full info: search_type="files", output_mode="full"
+    /// - search_in="content", return_only="matches" → matching lines with context
+    /// - search_in="content", return_only="paths" → files containing matches
+    /// - search_in="content", return_only="counts" → match counts per file
+    /// - search_in="filenames", return_only="matches" → matching files with metadata
     #[serde(default)]
-    pub output_mode: SearchOutputMode,
-
-    /// DEPRECATED: Use `output_mode="files_only`" instead. Provided for backward compatibility.
-    /// If set to true, overrides `output_mode` to `FilesOnly`
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub files_with_matches: Option<bool>,
+    pub return_only: ReturnMode,
 
     /// Invert match - show lines/files that DON'T match the pattern
     /// Matches ripgrep's --invert-match flag
@@ -556,10 +522,6 @@ pub struct FsStartSearchArgs {
     #[serde(default)]
     pub only_matching: bool,
 
-    /// List all files without searching (like rg --files)
-    #[serde(default)]
-    pub list_files_only: bool,
-
     /// Sort results by specified criterion (None = no sorting, filesystem order)
     #[serde(default)]
     pub sort_by: Option<SortBy>,
@@ -588,8 +550,8 @@ fn default_length() -> usize {
 /// Arguments for `fs_get_search_results` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct FsGetMoreSearchResultsArgs {
-    /// Search session ID from `start_search`
-    pub session_id: String,
+    /// Search ID from `start_search`
+    pub search_id: String,
 
     /// Start result index (default: 0)
     /// Positive: Start from result N (0-based)
@@ -614,8 +576,8 @@ pub struct FsGetMoreSearchResultsPromptArgs {}
 /// Arguments for `fs_stop_search` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct FsStopSearchArgs {
-    /// Search session ID to stop
-    pub session_id: String,
+    /// Search ID to stop
+    pub search_id: String,
 }
 
 /// Prompt arguments for `fs_stop_search` tool
