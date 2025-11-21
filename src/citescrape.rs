@@ -29,6 +29,10 @@ fn default_crawl_rate() -> f64 {
     2.0
 }
 
+fn default_timeout() -> u64 {
+    600
+}
+
 /// Arguments for `scrape_url` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct ScrapeUrlArgs {
@@ -70,6 +74,10 @@ pub struct ScrapeUrlArgs {
     /// Content types to generate
     #[serde(default)]
     pub content_types: Option<Vec<String>>,
+
+    /// Maximum duration in seconds before returning partial results (default: 600)
+    #[serde(default = "default_timeout")]
+    pub timeout_seconds: u64,
 }
 
 /// Prompt arguments for `scrape_url` tool

@@ -20,7 +20,10 @@ pub const BROWSER_SCROLL: &str = "browser_scroll";
 // Advanced browser tools
 pub const BROWSER_AGENT: &str = "browser_agent";
 
-// Research session management
+// Research (long-running with progress streaming)
+pub const BROWSER_RESEARCH: &str = "browser_research";
+
+// Research session management (DEPRECATED - will be removed)
 pub const BROWSER_START_RESEARCH: &str = "browser_start_research";
 pub const BROWSER_GET_RESEARCH_STATUS: &str = "browser_get_research_status";
 pub const BROWSER_GET_RESEARCH_RESULT: &str = "browser_get_research_result";
@@ -104,7 +107,58 @@ pub struct BrowserScreenshotPromptArgs {}
 // ============================================================================
 
 // ============================================================================
-// ASYNC RESEARCH SESSION MANAGEMENT
+// BROWSER RESEARCH (Long-Running with Progress Streaming)
+// ============================================================================
+
+/// Arguments for `browser_research` tool (long-running with progress streaming)
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserResearchArgs {
+    /// Research query or topic to investigate
+    pub query: String,
+
+    /// Maximum number of pages to visit (default: 5)
+    #[serde(default = "default_max_pages")]
+    pub max_pages: usize,
+
+    /// Maximum link-following depth (default: 2)
+    #[serde(default = "default_max_depth")]
+    pub max_depth: usize,
+
+    /// Search engine to use: "google", "bing", "duckduckgo" (default: "google")
+    #[serde(default = "default_search_engine")]
+    pub search_engine: String,
+
+    /// Include hyperlinks in content extraction (default: true)
+    #[serde(default = "default_true")]
+    pub include_links: bool,
+
+    /// Extract and parse HTML tables (default: true)
+    #[serde(default = "default_true")]
+    pub extract_tables: bool,
+
+    /// Extract image URLs and alt text (default: false)
+    #[serde(default = "default_false")]
+    pub extract_images: bool,
+
+    /// Timeout per page navigation in seconds (default: 60)
+    #[serde(default = "default_timeout")]
+    pub timeout_seconds: u64,
+
+    /// LLM temperature for summarization (0.0=deterministic, 2.0=creative, default: 0.5)
+    #[serde(default = "default_temperature")]
+    pub temperature: f64,
+
+    /// Maximum tokens for LLM summary generation (default: 2048)
+    #[serde(default = "default_max_tokens")]
+    pub max_tokens: u64,
+}
+
+/// Prompt arguments for `browser_research` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserResearchPromptArgs {}
+
+// ============================================================================
+// ASYNC RESEARCH SESSION MANAGEMENT (DEPRECATED - kept for compatibility)
 // ============================================================================
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]

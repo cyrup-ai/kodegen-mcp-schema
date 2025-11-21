@@ -21,6 +21,7 @@ pub const FS_LIST_SEARCHES: &str = "fs_list_searches";
 pub const FS_MOVE_FILE: &str = "fs_move_file";
 pub const FS_READ_FILE: &str = "fs_read_file";
 pub const FS_READ_MULTIPLE_FILES: &str = "fs_read_multiple_files";
+pub const FS_SEARCH: &str = "fs_search";
 pub const FS_START_SEARCH: &str = "fs_start_search";
 pub const FS_STOP_SEARCH: &str = "fs_stop_search";
 pub const FS_WRITE_FILE: &str = "fs_write_file";
@@ -595,3 +596,148 @@ pub struct FsListSearchesArgs {}
 /// Prompt arguments for `fs_list_searches` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct FsListSearchesPromptArgs {}
+
+// ============================================================================
+// FS_SEARCH (BLOCKING)
+// ============================================================================
+
+/// Arguments for `fs_search` tool (blocking search that returns all results immediately)
+/// This is identical to FsStartSearchArgs but returns complete results instead of a session ID
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsSearchArgs {
+    /// Root directory to search
+    pub path: String,
+
+    /// Pattern to search for
+    pub pattern: String,
+
+    /// Where to search: "content" (inside files) or "filenames" (file paths)
+    /// Default: "content" (matches ripgrep default behavior)
+    #[serde(default)]
+    pub search_in: SearchIn,
+
+    /// What to return: "matches" (full details), "paths" (file paths only), or "counts" (match counts)
+    /// Default: "matches" (matches ripgrep default behavior)
+    #[serde(default)]
+    pub return_only: ReturnMode,
+
+    /// Glob pattern to filter files (e.g. "*.js", "*.{ts,tsx}") - maps to rg --glob
+    #[serde(default)]
+    pub file_pattern: Option<String>,
+
+    /// File types to include using ripgrep's built-in definitions (rg --type)
+    #[serde(default)]
+    pub r#type: Vec<String>,
+
+    /// File types to exclude using ripgrep's built-in definitions (rg --type-not)
+    #[serde(default)]
+    pub type_not: Vec<String>,
+
+    /// DEPRECATED: Use `case_mode` instead. Provided for backward compatibility.
+    #[serde(default)]
+    pub ignore_case: Option<bool>,
+
+    /// Case matching mode: "sensitive", "insensitive", or "smart" (default: "sensitive")
+    #[serde(default)]
+    pub case_mode: CaseMode,
+
+    /// Maximum number of results
+    #[serde(default)]
+    pub max_results: Option<u32>,
+
+    /// Include hidden files
+    #[serde(default)]
+    pub include_hidden: bool,
+
+    /// Disable all ignore files (.gitignore, .ignore, etc.)
+    #[serde(default)]
+    pub no_ignore: bool,
+
+    /// Number of context lines (rg -C / rg --context)
+    #[serde(default)]
+    pub context: u32,
+
+    /// Number of lines before each match (rg -B / rg --before-context)
+    #[serde(default)]
+    pub before_context: Option<u32>,
+
+    /// Number of lines after each match (rg -A / rg --after-context)
+    #[serde(default)]
+    pub after_context: Option<u32>,
+
+    /// Timeout in milliseconds
+    #[serde(default)]
+    pub timeout_ms: Option<u64>,
+
+    /// Stop early when exact filename match found (files only)
+    #[serde(default)]
+    pub early_termination: Option<bool>,
+
+    /// Force literal string matching instead of regex (default: false)
+    #[serde(default)]
+    pub literal_search: bool,
+
+    /// DEPRECATED: Use `boundary_mode="word"` instead. Provided for backward compatibility.
+    #[serde(default)]
+    pub word_boundary: Option<bool>,
+
+    /// Boundary mode for pattern matching: "word", "line", or null (default: null)
+    #[serde(default)]
+    pub boundary_mode: Option<String>,
+
+    /// Invert match - show lines/files that DON'T match the pattern
+    #[serde(default)]
+    pub invert_match: bool,
+
+    /// Regex engine choice: "auto", "rust", or "pcre2" (default: "auto")
+    #[serde(default)]
+    pub engine: EngineChoice,
+
+    /// Preprocessor command to run on files before searching
+    #[serde(default)]
+    pub preprocessor: Option<String>,
+
+    /// Glob patterns for files to run through preprocessor
+    #[serde(default)]
+    pub preprocessor_globs: Vec<String>,
+
+    /// Enable searching inside compressed files (.gz, .zip, .bz2, .xz)
+    #[serde(default)]
+    pub search_zip: bool,
+
+    /// Binary file handling mode (default: Auto)
+    #[serde(default)]
+    pub binary_mode: BinaryMode,
+
+    /// Enable multiline pattern matching (rg --multiline)
+    #[serde(default)]
+    pub multiline: bool,
+
+    /// Skip files larger than this size in bytes (None = unlimited)
+    #[serde(default)]
+    pub max_filesize: Option<u64>,
+
+    /// Maximum directory depth to traverse (None = unlimited)
+    #[serde(default)]
+    pub max_depth: Option<usize>,
+
+    /// Return only the matched portion of text, not the entire line
+    #[serde(default)]
+    pub only_matching: bool,
+
+    /// Sort results by specified criterion (None = no sorting, filesystem order)
+    #[serde(default)]
+    pub sort_by: Option<SortBy>,
+
+    /// Sort direction (default: Ascending if `sort_by` is specified)
+    #[serde(default)]
+    pub sort_direction: Option<SortDirection>,
+
+    /// Text encoding (None = auto-detect)
+    #[serde(default)]
+    pub encoding: Option<String>,
+}
+
+/// Prompt arguments for `fs_search` tool
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
+pub struct FsSearchPromptArgs {}

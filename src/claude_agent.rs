@@ -49,16 +49,19 @@ pub const MEMORY_RECALL: &str = "memory_recall";
 pub const MEMORY_LIST_LIBRARIES: &str = "memory_list_libraries";
 
 // Agent Management Tools
-/// Tool name constant for claude_spawn_agent
+/// Tool name constant for unified claude_agent tool
+pub const CLAUDE_AGENT: &str = "claude_agent";
+
+/// Tool name constant for claude_spawn_agent (DEPRECATED - use CLAUDE_AGENT)
 pub const CLAUDE_SPAWN_AGENT: &str = "claude_spawn_agent";
 
 /// Tool name constant for claude_read_agent_output
 pub const CLAUDE_READ_AGENT_OUTPUT: &str = "claude_read_agent_output";
 
-/// Tool name constant for claude_send_agent_prompt
+/// Tool name constant for claude_send_agent_prompt (DEPRECATED - use CLAUDE_AGENT)
 pub const CLAUDE_SEND_AGENT_PROMPT: &str = "claude_send_agent_prompt";
 
-/// Tool name constant for claude_terminate_agent_session
+/// Tool name constant for claude_terminate_agent_session (DEPRECATED - use CLAUDE_AGENT)
 pub const CLAUDE_TERMINATE_AGENT_SESSION: &str = "claude_terminate_agent_session";
 
 /// Tool name constant for claude_list_agents
@@ -205,6 +208,83 @@ pub struct TerminateClaudeAgentSessionArgs {
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct TerminateClaudeAgentSessionPromptArgs {}
+
+// ============================================================================
+// UNIFIED CLAUDE AGENT (New API)
+// ============================================================================
+
+/// Action enumeration for unified claude_agent tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum AgentAction {
+    /// Spawn new agent session
+    Spawn,
+    /// Send prompt to existing session
+    Send,
+    /// Terminate session
+    Terminate,
+}
+
+fn default_action() -> AgentAction {
+    AgentAction::Spawn
+}
+
+fn default_worker_count_usize() -> usize {
+    1
+}
+
+/// Arguments for unified claude_agent tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ClaudeAgentArgs {
+    /// Action to perform (default: spawn)
+    #[serde(default = "default_action")]
+    pub action: AgentAction,
+
+    /// Session ID (required for send/terminate, ignored for spawn)
+    #[serde(default)]
+    pub session_id: Option<String>,
+
+    /// Prompt to send (required for spawn/send)
+    #[serde(default)]
+    pub prompt: Option<PromptInput>,
+
+    /// Blocking mode: wait for agent to finish before returning (default: false)
+    #[serde(default)]
+    pub blocking: bool,
+
+    /// Number of parallel workers (spawn only, default: 1)
+    #[serde(default = "default_worker_count_usize")]
+    pub worker_count: usize,
+
+    // Spawn-only configuration
+    #[serde(default)]
+    pub system_prompt: Option<String>,
+
+    #[serde(default)]
+    pub allowed_tools: Option<Vec<String>>,
+
+    #[serde(default)]
+    pub disallowed_tools: Option<Vec<String>>,
+
+    #[serde(default)]
+    pub max_turns: Option<u32>,
+
+    #[serde(default)]
+    pub model: Option<String>,
+
+    #[serde(default)]
+    pub cwd: Option<String>,
+
+    #[serde(default)]
+    pub add_dirs: Option<Vec<String>>,
+
+    #[serde(default)]
+    pub label: Option<String>,
+}
+
+/// Prompt arguments for claude_agent tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ClaudeAgentPromptArgs {}
 
 // ============================================================================
 // MEMORY TOOLS (for candle-agent)

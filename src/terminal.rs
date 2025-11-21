@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 // ============================================================================
 
 /// Canonical tool names for all terminal tools
+pub const TERMINAL_RUN_COMMAND: &str = "terminal_run_command";
 pub const TERMINAL_START_COMMAND: &str = "terminal_start_command";
 pub const TERMINAL_READ_OUTPUT: &str = "terminal_read_output";
 pub const TERMINAL_SEND_INPUT: &str = "terminal_send_input";
@@ -122,3 +123,26 @@ pub struct ListTerminalCommandsArgs {}
 /// Prompt arguments for `list_terminal_commands` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct ListTerminalCommandsPromptArgs {}
+
+// ============================================================================
+// RUN TERMINAL COMMAND
+// ============================================================================
+
+/// Arguments for `terminal_run_command` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct TerminalRunCommandArgs {
+    /// The shell command to execute
+    pub command: String,
+
+    /// Shell to use (optional, defaults to system shell)
+    #[serde(default)]
+    pub shell: Option<String>,
+
+    /// Initial delay in milliseconds before returning first response (default: 100ms)
+    #[serde(default = "default_initial_delay")]
+    pub initial_delay_ms: u64,
+}
+
+/// Prompt arguments for `terminal_run_command` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct TerminalRunCommandPromptArgs {}
