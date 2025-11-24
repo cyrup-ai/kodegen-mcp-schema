@@ -81,7 +81,24 @@ pub struct ListSchemasArgs {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListSchemasPromptArgs {}
+pub struct ListSchemasPromptArgs {
+    /// Optional: Focus teaching examples on a specific database type
+    /// Helps agents learn patterns relevant to their actual database system
+    /// Examples: "postgresql", "mysql", "sqlite", "mariadb", "sql_server"
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub db_type: Option<String>,
+    
+    /// Optional: Include the full schema discovery workflow in teaching
+    /// When true: Shows list_schemas → list_tables → describe_table → query chain
+    /// When false: Focuses only on list_schemas capabilities and behavior
+    /// Default: true (shows full workflow for better context)
+    #[serde(default = "default_include_workflow")]
+    pub include_workflow: bool,
+}
+
+fn default_include_workflow() -> bool {
+    true
+}
 
 // ============================================================================
 // DB_LIST_TABLES
@@ -132,7 +149,17 @@ pub struct GetTableSchemaArgs {
 
 /// Prompt arguments for db_table_schema tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetTableSchemaPromptArgs {}
+pub struct GetTableSchemaPromptArgs {
+    /// Optional: database type to focus examples on (postgres, mysql, sqlite, sql_server)
+    /// Helpful for agents working with specific database systems to see relevant schema syntax
+    #[serde(default)]
+    pub database_type: Option<String>,
+
+    /// Optional: focus area for learning (constraints, indexes, data_types, defaults, nullability, workflow)
+    /// Customizes the teaching conversation to emphasize specific aspects of schema inspection
+    #[serde(default)]
+    pub focus_area: Option<String>,
+}
 
 // ============================================================================
 // DB_EXECUTE_SQL

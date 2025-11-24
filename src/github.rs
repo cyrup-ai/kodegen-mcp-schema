@@ -113,7 +113,17 @@ pub struct CreateIssueArgs {
 
 /// Prompt arguments for `create_issue` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct CreateIssuePromptArgs {}
+pub struct CreateIssuePromptArgs {
+    /// Focus area for teaching examples: "basic", "labels", "assignees", "authentication", "team-collaboration"
+    /// Use this to get examples tailored to specific aspects of the tool
+    #[serde(default)]
+    pub focus_area: Option<String>,
+
+    /// Repository context for examples: "personal", "team", "open-source"
+    /// Helps tailor examples to different collaboration scenarios
+    #[serde(default)]
+    pub use_case: Option<String>,
+}
 
 // ============================================================================
 // LIST_ISSUES
@@ -145,7 +155,12 @@ pub struct ListIssuesArgs {
 
 /// Prompt arguments for `list_issues` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListIssuesPromptArgs {}
+pub struct ListIssuesPromptArgs {
+    /// Focus area for teaching: "filtering" (state/labels/assignee), "pagination" (page/per_page), 
+    /// "advanced" (combined filters), or "all" (comprehensive examples)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub focus_area: Option<String>,
+}
 
 // ============================================================================
 // LIST_PULL_REQUESTS
@@ -174,7 +189,11 @@ pub struct ListPullRequestsArgs {
 
 /// Prompt arguments for `list_pull_requests` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListPullRequestsPromptArgs {}
+pub struct ListPullRequestsPromptArgs {
+    /// Focus area for teaching: "overview", "filtering", "pagination", "advanced"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub focus_area: Option<String>,
+}
 
 // ============================================================================
 // GET_ISSUE
@@ -193,7 +212,11 @@ pub struct GetIssueArgs {
 
 /// Prompt arguments for `get_issue` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetIssuePromptArgs {}
+pub struct GetIssuePromptArgs {
+    /// What aspect to focus teaching on: "basic" (minimal usage), "advanced" (complex patterns), "pr" (pull request specific)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub detail_focus: Option<String>,
+}
 
 // ============================================================================
 // UPDATE_ISSUE
@@ -227,7 +250,23 @@ pub struct UpdateIssueArgs {
 
 /// Prompt arguments for `update_issue` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct UpdateIssuePromptArgs {}
+pub struct UpdateIssuePromptArgs {
+    /// Optional scope: focus on specific update types
+    /// Examples: "state" (open/closed), "labels", "assignees", "title_body", or "all" (default)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope: Option<String>,
+
+    /// Optional detail level: "basic" for simple examples, "advanced" for edge cases
+    /// "basic" (default): Single example per update type
+    /// "advanced": Multiple scenarios including partial updates and edge cases
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub detail_level: Option<String>,
+
+    /// Optional include_warnings: whether to include important notes about field behavior
+    /// Default is true. Emphasizes that labels/assignees are replacement operations
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub include_warnings: Option<bool>,
+}
 
 // ============================================================================
 // ADD_ISSUE_COMMENT
@@ -248,7 +287,17 @@ pub struct AddIssueCommentArgs {
 
 /// Prompt arguments for `add_issue_comment` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct AddIssueCommentPromptArgs {}
+pub struct AddIssueCommentPromptArgs {
+    /// Optional comment style/type to focus examples on
+    /// Examples: "acknowledgment", "suggestion", "summary", "feedback", "question"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub comment_style: Option<String>,
+
+    /// Optional features to emphasize in examples
+    /// Examples: "markdown", "mentions", "references", "reactions", "all"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub focus_features: Option<String>,
+}
 
 // ============================================================================
 // GET_ISSUE_COMMENTS
@@ -294,7 +343,17 @@ pub struct CreatePullRequestReviewArgs {
 
 /// Prompt arguments for `create_pull_request_review` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct CreatePullRequestReviewPromptArgs {}
+pub struct CreatePullRequestReviewPromptArgs {
+    /// Focus area for teaching: "approve", "request_changes", "comment", or "general"
+    /// Tailor examples and explanations to specific review workflow
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub focus_area: Option<String>,
+
+    /// Skill level for explanations: "beginner", "intermediate", or "advanced"
+    /// Adjusts depth of explanation and complexity of examples
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub skill_level: Option<String>,
+}
 
 // ============================================================================
 // ADD_PULL_REQUEST_REVIEW_COMMENT
@@ -358,7 +417,14 @@ pub struct GetPullRequestReviewsArgs {
 
 /// Prompt arguments for `get_pull_request_reviews` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetPullRequestReviewsPromptArgs {}
+pub struct GetPullRequestReviewsPromptArgs {
+    /// Optional: specific focus area for teaching prompt
+    #[serde(default)]
+    pub focus_area: Option<String>,
+    /// Optional: use case context for examples
+    #[serde(default)]
+    pub use_case: Option<String>,
+}
 
 // ============================================================================
 // GET_PULL_REQUEST_STATUS
@@ -447,6 +513,20 @@ pub struct UpdatePullRequestArgs {
     pub maintainer_can_modify: Option<bool>,
 }
 
+/// Prompt arguments for `update_pull_request` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct UpdatePullRequestPromptArgs {
+    /// Type of example to focus on: "title", "body", "state", "base", "maintainer", or "combined"
+    /// Use this to get examples tailored to specific update types
+    #[serde(default)]
+    pub example_type: Option<String>,
+
+    /// Whether to include common gotchas and error cases in the prompt
+    /// Set to true for deeper learning about edge cases and warnings
+    #[serde(default)]
+    pub show_gotchas: Option<bool>,
+}
+
 // ============================================================================
 // CREATE_REPOSITORY
 // ============================================================================
@@ -523,6 +603,30 @@ pub struct ForkRepositoryArgs {
     pub organization: Option<String>,
 }
 
+/// Prompt arguments for customizing fork_repository teaching examples
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubForkRepositoryPromptArgs {
+    /// Forking scenario to focus on: "personal-account", "organization", or "all" (optional, default: "all")
+    /// - "personal-account": Focus on forking to your personal GitHub account
+    /// - "organization": Focus on forking to an organization you belong to
+    /// - "all": Include both scenarios with comprehensive examples
+    #[serde(default)]
+    pub scenario: Option<String>,
+
+    /// Learning depth level: "basic", "detailed", or "advanced" (optional, default: "detailed")
+    /// - "basic": Simplified explanation suitable for new GitHub users
+    /// - "detailed": Comprehensive explanation with workflows and best practices (default)
+    /// - "advanced": Deep dive including advanced fork management, syncing strategies, and edge cases
+    #[serde(default)]
+    pub depth: Option<String>,
+
+    /// Include troubleshooting and common pitfalls section (optional, default: true)
+    /// - When true: Adds comprehensive troubleshooting for common forking issues
+    /// - When false: Focuses on happy path and best practices only
+    #[serde(default)]
+    pub include_troubleshooting: Option<bool>,
+}
+
 // ============================================================================
 // CREATE_BRANCH
 // ============================================================================
@@ -540,6 +644,15 @@ pub struct CreateBranchArgs {
     pub sha: String,
 }
 
+/// Prompt arguments for `create_branch` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct CreateBranchPromptArgs {
+    /// Customize teaching examples based on use case
+    /// Options: "basic" (simple feature branch), "advanced" (git workflows), "troubleshooting" (common errors)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub focus: Option<String>,
+}
+
 // ============================================================================
 // DELETE_BRANCH
 // ============================================================================
@@ -553,6 +666,22 @@ pub struct DeleteBranchArgs {
     pub repo: String,
     /// Branch name to delete
     pub branch_name: String,
+}
+
+/// Prompt arguments for customizing delete_branch teaching examples
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct DeleteBranchPromptArgs {
+    /// Scenario to focus on
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scenario: Option<String>,
+
+    /// Include permissions section
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub include_permissions: Option<bool>,
+
+    /// Include recovery section
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub include_recovery: Option<bool>,
 }
 
 // ============================================================================
@@ -593,6 +722,26 @@ pub struct GetCommitArgs {
     /// Results per page (optional, max 100)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub per_page: Option<u8>,
+}
+
+/// Prompt arguments for `get_commit` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GetCommitPromptArgs {
+    /// Focus on response structure and data fields (true/false)
+    #[serde(default)]
+    pub explain_response: Option<bool>,
+
+    /// Focus on handling large commits with many file changes (true/false)
+    #[serde(default)]
+    pub explain_pagination: Option<bool>,
+
+    /// Focus on understanding diff format and patch content (true/false)
+    #[serde(default)]
+    pub explain_diffs: Option<bool>,
+
+    /// Focus on common use cases and workflow patterns (true/false)
+    #[serde(default)]
+    pub explain_use_cases: Option<bool>,
 }
 
 // ============================================================================
@@ -693,7 +842,14 @@ pub struct PushFilesArgs {
 
 /// Prompt arguments for push_files tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct PushFilesPromptArgs {}
+pub struct PushFilesPromptArgs {
+    /// Optional use case to focus examples on (e.g., 'bulk_setup', 'binary_files', 'encoding')
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub use_case: Option<String>,
+    /// Optional feature to focus on (e.g., 'atomicity', 'base64', 'permissions')
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub focus: Option<String>,
+}
 
 // ============================================================================
 // SEARCH_CODE
@@ -746,7 +902,14 @@ pub struct SearchIssuesArgs {
 
 /// Prompt arguments for `search_issues` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SearchIssuesPromptArgs {}
+pub struct SearchIssuesPromptArgs {
+    /// Focus area for teaching: "basic", "filters", "advanced", "pagination", "all"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub focus_area: Option<String>,
+    /// Include comprehensive examples or concise explanations
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub include_examples: Option<bool>,
+}
 
 // ============================================================================
 // SEARCH_REPOSITORIES
@@ -769,6 +932,22 @@ pub struct SearchRepositoriesArgs {
     /// Results per page (optional, max 100)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub per_page: Option<u8>,
+}
+
+/// Prompt arguments for `search_repositories` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct SearchRepositoriesPromptArgs {
+    /// Optional: specific programming language to focus examples on (e.g., "rust", "python", "javascript")
+    #[serde(default)]
+    pub language: Option<String>,
+    
+    /// Optional: use case to tailor examples to (e.g., "discovery", "research", "trending", "contribution", "evaluation")
+    #[serde(default)]
+    pub use_case: Option<String>,
+    
+    /// Optional: level of detail for examples (e.g., "brief", "detailed")
+    #[serde(default)]
+    pub depth: Option<String>,
 }
 
 // ============================================================================
@@ -811,7 +990,15 @@ pub struct RequestCopilotReviewArgs {
 
 /// Prompt arguments for `request_copilot_review` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct RequestCopilotReviewPromptArgs {}
+pub struct RequestCopilotReviewPromptArgs {
+    /// Focus area for the review (e.g., "security", "performance", "style") - optional
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub focus_area: Option<String>,
+    
+    /// Depth of explanation (e.g., "basic", "detailed") - optional
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub depth: Option<String>,
+}
 
 // ============================================================================
 // CODE_SCANNING_ALERTS
@@ -866,7 +1053,11 @@ pub struct SecretScanningAlertsArgs {
 
 /// Prompt arguments for secret_scanning_alerts tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SecretScanningAlertsPromptArgs {}
+pub struct SecretScanningAlertsPromptArgs {
+    /// Optional use case context for customizing teaching focus
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub use_case: Option<String>,
+}
 
 // ============================================================================
 // GET_ME

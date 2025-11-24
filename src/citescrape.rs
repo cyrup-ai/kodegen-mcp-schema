@@ -176,4 +176,16 @@ pub struct WebSearchArgs {
 
 /// Prompt arguments for `web_search` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct WebSearchPromptArgs {}
+pub struct WebSearchPromptArgs {
+    /// Type of search queries to focus examples on (e.g., 'technical', 'documentation', 'code')
+    #[serde(default)]
+    pub query_type: Option<String>,
+
+    /// Domain or technology focus area (e.g., 'Rust', 'Python', 'security', 'web development')
+    #[serde(default)]
+    pub focus_area: Option<String>,
+
+    /// Complexity level (e.g., 'basic', 'intermediate', 'advanced')
+    #[serde(default)]
+    pub depth: Option<String>,
+}

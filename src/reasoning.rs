@@ -62,7 +62,15 @@ pub struct SequentialThinkingArgs {
 
 /// Prompt arguments for sequential thinking tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SequentialThinkingPromptArgs {}
+pub struct SequentialThinkingPromptArgs {
+    /// Optional domain for customized examples (e.g., "software engineering", "mathematics", "creative writing", "data analysis")
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub example_domain: Option<String>,
+
+    /// Optional feature to focus teaching on (e.g., "branching", "revision", "basic", "advanced", "all")
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub focus_feature: Option<String>,
+}
 
 // ============================================================================
 // REASONER
@@ -106,4 +114,12 @@ pub struct ReasonerArgs {
 
 /// Prompt arguments for reasoner tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ReasonerPromptArgs {}
+pub struct ReasonerPromptArgs {
+    /// Optional strategy to focus teaching on: "beam_search", "mcts", "mcts_002_alpha", "mcts_002alt_alpha", or "all" (default)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub strategy_focus: Option<String>,
+
+    /// Optional explanation depth: "basic" (quick overview), "advanced" (detailed mechanics), or "all" (comprehensive, default)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub explanation_depth: Option<String>,
+}

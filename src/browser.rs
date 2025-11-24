@@ -155,7 +155,15 @@ pub struct BrowserResearchArgs {
 
 /// Prompt arguments for `browser_research` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct BrowserResearchPromptArgs {}
+pub struct BrowserResearchPromptArgs {
+    /// Optional: Research depth preference (shallow/moderate/deep)
+    #[serde(default)]
+    pub research_depth: Option<String>,
+    
+    /// Optional: Use case context (technical/news/documentation/general)
+    #[serde(default)]
+    pub use_case: Option<String>,
+}
 
 // ============================================================================
 // ASYNC RESEARCH SESSION MANAGEMENT (DEPRECATED - kept for compatibility)
@@ -310,7 +318,21 @@ pub struct BrowserNavigateArgs {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct BrowserNavigatePromptArgs {}
+pub struct BrowserNavigatePromptArgs {
+    /// Optional: Level of detail in examples ("basic" or "advanced")
+    /// - "basic": URL validation, timeout essentials, simple examples
+    /// - "advanced": Edge cases, selector nuances, troubleshooting, integration patterns
+    #[serde(default)]
+    pub complexity_level: Option<String>,
+
+    /// Optional: Topic focus for examples ("general", "selectors", "timeouts", or "redirects")
+    /// - "general": Balanced coverage of all features
+    /// - "selectors": Focus on wait_for_selector CSS selector patterns and timing
+    /// - "timeouts": Focus on timeout configuration and timeout-related errors
+    /// - "redirects": Focus on redirect handling and URL change detection
+    #[serde(default)]
+    pub example_focus: Option<String>,
+}
 
 // ============================================================================
 // CLICK

@@ -284,7 +284,23 @@ pub struct ClaudeAgentArgs {
 
 /// Prompt arguments for claude_agent tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ClaudeAgentPromptArgs {}
+pub struct ClaudeAgentPromptArgs {
+    /// Which action(s) to focus on: "spawn", "send", "terminate", or "all" (default: "all")
+    #[serde(default = "default_focus_area")]
+    pub focus_area: String,
+
+    /// Detail level: "basic" for core usage, "advanced" for edge cases and best practices (default: "basic")
+    #[serde(default = "default_detail_level")]
+    pub detail_level: String,
+}
+
+fn default_focus_area() -> String {
+    "all".to_string()
+}
+
+fn default_detail_level() -> String {
+    "basic".to_string()
+}
 
 // ============================================================================
 // MEMORY TOOLS (for candle-agent)

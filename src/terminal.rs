@@ -7,142 +7,48 @@ use serde::{Deserialize, Serialize};
 // CANONICAL TOOL NAME CONSTANTS
 // ============================================================================
 
-/// Canonical tool names for all terminal tools
-pub const TERMINAL_RUN_COMMAND: &str = "terminal_run_command";
-pub const TERMINAL_START_COMMAND: &str = "terminal_start_command";
-pub const TERMINAL_READ_OUTPUT: &str = "terminal_read_output";
-pub const TERMINAL_SEND_INPUT: &str = "terminal_send_input";
-pub const TERMINAL_STOP_COMMAND: &str = "terminal_stop_command";
-pub const TERMINAL_LIST_COMMANDS: &str = "terminal_list_commands";
+/// Canonical tool name for unified terminal tool
+pub const TERMINAL: &str = "terminal";
 
 // ============================================================================
-// START TERMINAL COMMAND
+// UNIFIED TERMINAL TOOL
 // ============================================================================
 
-fn default_initial_delay() -> u64 {
-    100
+const fn one() -> u32 {
+    1
 }
 
-/// Arguments for `start_terminal_command` tool
+/// Arguments for unified `terminal` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct StartTerminalCommandArgs {
-    /// The shell command to execute
+pub struct TerminalInput {
+    /// Command to execute
     pub command: String,
 
-    /// Initial delay in milliseconds before returning first response (default: 100ms)
-    /// Allows quick commands (pwd, echo) to complete before returning
-    #[serde(default = "default_initial_delay")]
-    pub initial_delay_ms: u64,
-
-    /// Shell to use (optional, defaults to system shell)
-    #[serde(default)]
-    pub shell: Option<String>,
+    /// Terminal number (1, 2, 3...) - defaults to 1
+    /// Terminals are reusable and stateful - use different numbers for parallel work
+    #[serde(default = "one")]
+    pub terminal: u32,
 }
 
-/// Prompt arguments for `start_terminal_command` tool
+/// Response from unified `terminal` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct StartTerminalCommandPromptArgs {}
+pub struct TerminalOutput {
+    /// Terminal number
+    pub terminal: u32,
 
-// ============================================================================
-// READ TERMINAL OUTPUT
-// ============================================================================
+    /// Command output (stdout + stderr interleaved)
+    pub output: String,
 
-fn default_length() -> usize {
-    100
+    /// Exit code (0 = success, non-zero = error)
+    pub exit_code: i32,
+
+    /// Current working directory after command completes
+    pub cwd: String,
+
+    /// Execution duration in milliseconds
+    pub duration_ms: u64,
 }
 
-/// Arguments for `read_terminal_output` tool
+/// Prompt arguments for unified `terminal` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ReadTerminalOutputArgs {
-    /// Process ID to read output from
-    pub pid: u32,
-
-    /// Offset for pagination (0 = start, negative = tail from end)
-    #[serde(default)]
-    pub offset: i64,
-
-    /// Maximum lines to return (default: 100)
-    #[serde(default = "default_length")]
-    pub length: usize,
-}
-
-/// Prompt arguments for `read_terminal_output` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ReadTerminalOutputPromptArgs {}
-
-// ============================================================================
-// SEND TERMINAL INPUT
-// ============================================================================
-
-fn default_append_newline() -> bool {
-    true
-}
-
-/// Arguments for `send_terminal_input` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SendTerminalInputArgs {
-    /// Process ID to send input to
-    pub pid: u32,
-
-    /// Input text to send
-    pub input: String,
-
-    /// Append newline to execute command (default: true)
-    /// Set to false for raw input like Ctrl+C or partial commands
-    #[serde(default = "default_append_newline")]
-    pub append_newline: bool,
-}
-
-/// Prompt arguments for `send_terminal_input` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SendTerminalInputPromptArgs {}
-
-// ============================================================================
-// STOP TERMINAL COMMAND
-// ============================================================================
-
-/// Arguments for `stop_terminal_command` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct StopTerminalCommandArgs {
-    /// Process ID to terminate
-    pub pid: u32,
-}
-
-/// Prompt arguments for `stop_terminal_command` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct StopTerminalCommandPromptArgs {}
-
-// ============================================================================
-// LIST TERMINAL COMMANDS
-// ============================================================================
-
-/// Arguments for `list_terminal_commands` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListTerminalCommandsArgs {}
-
-/// Prompt arguments for `list_terminal_commands` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListTerminalCommandsPromptArgs {}
-
-// ============================================================================
-// RUN TERMINAL COMMAND
-// ============================================================================
-
-/// Arguments for `terminal_run_command` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct TerminalRunCommandArgs {
-    /// The shell command to execute
-    pub command: String,
-
-    /// Shell to use (optional, defaults to system shell)
-    #[serde(default)]
-    pub shell: Option<String>,
-
-    /// Initial delay in milliseconds before returning first response (default: 100ms)
-    #[serde(default = "default_initial_delay")]
-    pub initial_delay_ms: u64,
-}
-
-/// Prompt arguments for `terminal_run_command` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct TerminalRunCommandPromptArgs {}
+pub struct TerminalPromptArgs {}

@@ -46,4 +46,12 @@ pub struct ProcessKillArgs {
 
 /// Prompt arguments for `process_kill` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ProcessKillPromptArgs {}
+pub struct ProcessKillPromptArgs {
+    /// Optional scenario to focus teaching on (e.g., 'hung_process', 'daemon', 'cleanup', 'error_handling')
+    #[serde(default)]
+    pub scenario: Option<String>,
+    
+    /// Whether to include extensive safety warnings and gotchas
+    #[serde(default)]
+    pub show_safety_warnings: Option<bool>,
+}

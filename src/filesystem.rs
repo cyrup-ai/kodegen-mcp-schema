@@ -84,7 +84,12 @@ pub struct FsReadMultipleFilesArgs {
 
 /// Prompt arguments for `fs_read_multiple_files` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct FsReadMultipleFilesPromptArgs {}
+pub struct FsReadMultipleFilesPromptArgs {
+    /// Optional: focus examples on specific file type (e.g., 'json', 'log', 'rust')
+    /// Helps tailor examples to agent's domain context
+    #[serde(default)]
+    pub file_type: Option<String>,
+}
 
 // ============================================================================
 // WRITE FILE
@@ -131,7 +136,12 @@ pub struct FsMoveFileArgs {
 
 /// Prompt arguments for `fs_move_file` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct FsMoveFilePromptArgs {}
+pub struct FsMoveFilePromptArgs {
+    /// Optional focus area for the teaching prompt
+    /// Valid values: "rename", "move_directory", "atomic_behavior", "edge_cases", "best_practices"
+    #[serde(default)]
+    pub operation_focus: Option<String>,
+}
 
 // ============================================================================
 // DELETE FILE
@@ -202,7 +212,17 @@ pub struct FsCreateDirectoryArgs {
 
 /// Prompt arguments for `fs_create_directory` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct FsCreateDirectoryPromptArgs {}
+pub struct FsCreateDirectoryPromptArgs {
+    /// Optional: Use case for customized examples
+    /// - "basic": Single directory creation
+    /// - "nested": Creating deep directory hierarchies
+    /// - "idempotence": Safe repeated calls with same path
+    /// - "validation": Path normalization and security behavior
+    ///
+    /// Default if omitted: comprehensive overview covering all aspects
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scenario: Option<String>,
+}
 
 // ============================================================================
 // GET FILE INFO
@@ -217,7 +237,11 @@ pub struct FsGetFileInfoArgs {
 
 /// Prompt arguments for `fs_get_file_info` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct FsGetFileInfoPromptArgs {}
+pub struct FsGetFileInfoPromptArgs {
+    /// Focus area for examples: 'permissions', 'timestamps', 'sizes', 'line_counts', 'platform_differences', or 'all'
+    #[serde(default)]
+    pub focus_area: Option<String>,
+}
 
 // ============================================================================
 // EDIT BLOCK
@@ -246,7 +270,22 @@ fn default_expected_replacements() -> usize {
 
 /// Prompt arguments for `fs_edit_block` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct FsEditBlockPromptArgs {}
+pub struct FsEditBlockPromptArgs {
+    /// Optional: aspect to focus teaching on
+    /// - "fuzzy-search": emphasis on fuzzy matching and similarity threshold
+    /// - "expected-replacements": emphasis on count verification and error detection
+    /// - "line-endings": emphasis on line ending normalization
+    /// - "edge-cases": emphasis on gotchas and error conditions
+    ///
+    /// Default if omitted: comprehensive coverage of all aspects
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub example_focus: Option<String>,
+    
+    /// Optional: include advanced topics (fuzzy matching internals, config)
+    /// Default: false (focus on common usage patterns)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub show_advanced: Option<bool>,
+}
 
 // ============================================================================
 // SEARCH TYPES AND ENUMS

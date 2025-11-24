@@ -78,7 +78,15 @@ pub struct AddPromptArgs {
 
 /// Prompt arguments for `add_prompt` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct AddPromptPromptArgs {}
+pub struct AddPromptPromptArgs {
+    /// Type of template to focus examples on
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub template_scope: Option<String>,
+    
+    /// How detailed the teaching should be
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub detail_level: Option<String>,
+}
 
 // ============================================================================
 // EDIT PROMPT
