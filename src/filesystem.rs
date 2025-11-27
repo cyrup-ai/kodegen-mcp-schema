@@ -15,15 +15,11 @@ pub const FS_DELETE_DIRECTORY: &str = "fs_delete_directory";
 pub const FS_DELETE_FILE: &str = "fs_delete_file";
 pub const FS_EDIT_BLOCK: &str = "fs_edit_block";
 pub const FS_GET_FILE_INFO: &str = "fs_get_file_info";
-pub const FS_GET_SEARCH_RESULTS: &str = "fs_get_search_results";
 pub const FS_LIST_DIRECTORY: &str = "fs_list_directory";
-pub const FS_LIST_SEARCHES: &str = "fs_list_searches";
 pub const FS_MOVE_FILE: &str = "fs_move_file";
 pub const FS_READ_FILE: &str = "fs_read_file";
 pub const FS_READ_MULTIPLE_FILES: &str = "fs_read_multiple_files";
 pub const FS_SEARCH: &str = "fs_search";
-pub const FS_START_SEARCH: &str = "fs_start_search";
-pub const FS_STOP_SEARCH: &str = "fs_stop_search";
 pub const FS_WRITE_FILE: &str = "fs_write_file";
 
 // ============================================================================
@@ -251,7 +247,7 @@ pub struct FsGetFileInfoPromptArgs {
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct FsEditBlockArgs {
     /// Path to the file to edit
-    pub file_path: String,
+    pub path: String,
 
     /// The exact string to search for and replace
     pub old_string: String,
@@ -394,254 +390,10 @@ pub enum ReturnMode {
 }
 
 // ============================================================================
-// START SEARCH
-// ============================================================================
-
-/// Arguments for `fs_start_search` tool
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct FsStartSearchArgs {
-    /// Root directory to search
-    pub path: String,
-
-    /// Pattern to search for
-    pub pattern: String,
-
-    /// Where to search: "content" (inside files) or "filenames" (file paths)
-    /// Default: "content" (matches ripgrep default behavior)
-    #[serde(default)]
-    pub search_in: SearchIn,
-
-    /// File pattern filter (e.g., "*.rs", "*.{ts,js}")
-    #[serde(default)]
-    pub file_pattern: Option<String>,
-
-    /// File types to include using ripgrep's built-in definitions (rg --type)
-    /// Examples: ["rust", "python", "javascript", "markdown"]
-    /// Combines with `file_pattern` if both specified
-    /// Can be specified multiple times: ["rust", "python"]
-    #[serde(default, rename = "type")]
-    pub r#type: Vec<String>,
-
-    /// File types to exclude using ripgrep's built-in definitions (rg --type-not)
-    /// Examples: ["test", "json", "minified"]
-    /// Can be specified multiple times: ["test", "minified"]
-    #[serde(default)]
-    pub type_not: Vec<String>,
-
-    /// Case matching mode: "sensitive", "insensitive", or "smart" (default: "sensitive")
-    /// Smart case: case-insensitive if pattern is all lowercase, sensitive otherwise
-    #[serde(default)]
-    pub case_mode: CaseMode,
-
-    /// DEPRECATED: Use `case_mode` instead. Provided for backward compatibility.
-    /// If set, overrides `case_mode`: true → Insensitive, false → Sensitive
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub ignore_case: Option<bool>,
-
-    /// Maximum number of results
-    #[serde(default)]
-    pub max_results: Option<u32>,
-
-    /// Include hidden files
-    #[serde(default)]
-    pub include_hidden: bool,
-
-    /// Disable all ignore files (.gitignore, .ignore, etc.)
-    /// Matches ripgrep's --no-ignore flag
-    #[serde(default)]
-    pub no_ignore: bool,
-
-    /// Number of context lines (rg -C / rg --context)
-    /// Sets both before and after context to same value
-    /// If `before_context` or `after_context` specified, they override this
-    #[serde(default)]
-    pub context: u32,
-
-    /// Number of lines before each match (rg -B / rg --before-context)
-    /// Overrides context if specified
-    #[serde(default)]
-    pub before_context: Option<u32>,
-
-    /// Number of lines after each match (rg -A / rg --after-context)
-    /// Overrides context if specified
-    #[serde(default)]
-    pub after_context: Option<u32>,
-
-    /// Timeout in milliseconds
-    #[serde(default)]
-    pub timeout_ms: Option<u64>,
-
-    /// Stop early when exact filename match found (files only)
-    #[serde(default)]
-    pub early_termination: Option<bool>,
-
-    /// Force literal string matching instead of regex (default: false)
-    #[serde(default)]
-    pub literal_search: bool,
-
-    /// Boundary mode for pattern matching: "word", "line", or null (default: null)
-    /// - null/omitted: Match pattern anywhere (substring matching)
-    /// - "word": Match whole words only - uses \b anchors
-    ///   * Content search: "test" matches "`test()`" but not "testing"
-    ///   * File search: "lib" matches "lib.rs" but not "libtest.rs"
-    /// - "line": Match complete lines only - uses ^ and $ anchors
-    ///   * Content search: "error" matches "error" (alone) but not "this error happened"
-    ///   * File search: Less useful, but supported for API completeness
-    ///
-    /// Replaces the deprecated `word_boundary` boolean parameter
-    #[serde(default)]
-    pub boundary_mode: Option<String>,
-
-    /// DEPRECATED: Use `boundary_mode="word`" instead. Provided for backward compatibility.
-    /// If set to true, overrides `boundary_mode` to "word"
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub word_boundary: Option<bool>,
-
-    /// What to return: "matches" (full details), "paths" (file paths only), or "counts" (match counts)
-    /// Default: "matches" (matches ripgrep default behavior)
-    ///
-    /// This is INDEPENDENT of search_in:
-    /// - search_in controls WHERE you search (content vs filenames)
-    /// - return_only controls WHAT you get back (matches vs paths vs counts)
-    ///
-    /// Examples:
-    /// - search_in="content", return_only="matches" → matching lines with context
-    /// - search_in="content", return_only="paths" → files containing matches
-    /// - search_in="content", return_only="counts" → match counts per file
-    /// - search_in="filenames", return_only="matches" → matching files with metadata
-    #[serde(default)]
-    pub return_only: ReturnMode,
-
-    /// Invert match - show lines/files that DON'T match the pattern
-    /// Matches ripgrep's --invert-match flag
-    /// Essential for negative searches and gap analysis
-    #[serde(default)]
-    pub invert_match: bool,
-
-    /// Regex engine choice: "auto", "rust", or "pcre2" (default: "auto")
-    /// Auto tries Rust first, falls back to PCRE2 on syntax errors
-    /// PCRE2 supports backreferences and look-around assertions
-    #[serde(default)]
-    pub engine: EngineChoice,
-
-    /// Preprocessor command to run on files before searching
-    /// The command receives the file path as first argument
-    /// Example: "pandoc" to search Markdown as plain text
-    #[serde(default)]
-    pub preprocessor: Option<String>,
-
-    /// Glob patterns for files to run through preprocessor
-    #[serde(default)]
-    pub preprocessor_globs: Vec<String>,
-
-    /// Enable searching inside compressed files (.gz, .zip, .bz2, .xz)
-    #[serde(default)]
-    pub search_zip: bool,
-
-    /// Binary file handling mode (default: Auto)
-    /// Matches ripgrep's --binary and -a/--text flags
-    #[serde(default)]
-    pub binary_mode: BinaryMode,
-
-    /// Enable multiline pattern matching (rg --multiline)
-    #[serde(default)]
-    pub multiline: bool,
-
-    /// Skip files larger than this size in bytes (None = unlimited)
-    #[serde(default)]
-    pub max_filesize: Option<u64>,
-
-    /// Maximum directory depth to traverse (None = unlimited)
-    /// Matches ripgrep's --max-depth flag
-    /// 0 = root only, 1 = root + immediate children, etc.
-    /// Essential for performance in monorepos with deep dependency trees
-    #[serde(default)]
-    pub max_depth: Option<usize>,
-
-    /// Return only the matched portion of text, not the entire line
-    #[serde(default)]
-    pub only_matching: bool,
-
-    /// Sort results by specified criterion (None = no sorting, filesystem order)
-    #[serde(default)]
-    pub sort_by: Option<SortBy>,
-
-    /// Sort direction (default: Ascending if `sort_by` is specified)
-    #[serde(default)]
-    pub sort_direction: Option<SortDirection>,
-
-    /// Text encoding (None = auto-detect)
-    #[serde(default)]
-    pub encoding: Option<String>,
-}
-
-/// Prompt arguments for `fs_start_search` tool
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct FsStartSearchPromptArgs {}
-
-// ============================================================================
-// GET MORE SEARCH RESULTS
-// ============================================================================
-
-fn default_length() -> usize {
-    100
-}
-
-/// Arguments for `fs_get_search_results` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct FsGetMoreSearchResultsArgs {
-    /// Search ID from `start_search`
-    pub search_id: String,
-
-    /// Start result index (default: 0)
-    /// Positive: Start from result N (0-based)
-    /// Negative: Read last N results (tail behavior)
-    #[serde(default)]
-    pub offset: i64,
-
-    /// Max results to read (default: 100)
-    /// Ignored when offset is negative
-    #[serde(default = "default_length")]
-    pub length: usize,
-}
-
-/// Prompt arguments for `fs_get_search_results` tool
-#[derive(Debug, Clone, Deserialize, JsonSchema)]
-pub struct FsGetMoreSearchResultsPromptArgs {}
-
-// ============================================================================
-// STOP SEARCH
-// ============================================================================
-
-/// Arguments for `fs_stop_search` tool
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct FsStopSearchArgs {
-    /// Search ID to stop
-    pub search_id: String,
-}
-
-/// Prompt arguments for `fs_stop_search` tool
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct FsStopSearchPromptArgs {}
-
-// ============================================================================
-// LIST SEARCHES
-// ============================================================================
-
-/// Arguments for `fs_list_searches` tool
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct FsListSearchesArgs {}
-
-/// Prompt arguments for `fs_list_searches` tool
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub struct FsListSearchesPromptArgs {}
-
-// ============================================================================
 // FS_SEARCH (BLOCKING)
 // ============================================================================
 
 /// Arguments for `fs_search` tool (blocking search that returns all results immediately)
-/// This is identical to FsStartSearchArgs but returns complete results instead of a session ID
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct FsSearchArgs {
     /// Root directory to search
