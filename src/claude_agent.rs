@@ -52,234 +52,92 @@ pub const MEMORY_LIST_LIBRARIES: &str = "memory_list_libraries";
 /// Tool name constant for unified claude_agent tool
 pub const CLAUDE_AGENT: &str = "claude_agent";
 
-/// Tool name constant for claude_spawn_agent (DEPRECATED - use CLAUDE_AGENT)
-pub const CLAUDE_SPAWN_AGENT: &str = "claude_spawn_agent";
 
-/// Tool name constant for claude_read_agent_output
-pub const CLAUDE_READ_AGENT_OUTPUT: &str = "claude_read_agent_output";
-
-/// Tool name constant for claude_send_agent_prompt (DEPRECATED - use CLAUDE_AGENT)
-pub const CLAUDE_SEND_AGENT_PROMPT: &str = "claude_send_agent_prompt";
-
-/// Tool name constant for claude_terminate_agent_session (DEPRECATED - use CLAUDE_AGENT)
-pub const CLAUDE_TERMINATE_AGENT_SESSION: &str = "claude_terminate_agent_session";
-
-/// Tool name constant for claude_list_agents
-pub const CLAUDE_LIST_AGENTS: &str = "claude_list_agents";
 
 // ============================================================================
-// SPAWN CLAUDE AGENT
-// ============================================================================
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SpawnClaudeAgentArgs {
-    /// Instructions and context for the spawned Claude agent. Describes the task to be performed autonomously. Can be a plain string or template with parameters.
-    pub prompt: PromptInput,
-
-    /// Number of identical agents to spawn (default: 1)
-    #[serde(default = "default_worker_count")]
-    pub worker_count: u32,
-
-    /// System prompt to define agent behavior
-    #[serde(default)]
-    pub system_prompt: Option<String>,
-
-    /// Tools the agent CAN use (allowlist)
-    #[serde(default)]
-    pub allowed_tools: Vec<String>,
-
-    /// Tools the agent CANNOT use (blocklist)
-    #[serde(default)]
-    pub disallowed_tools: Vec<String>,
-
-    /// Max conversation turns (default: 10)
-    #[serde(default = "default_max_turns")]
-    pub max_turns: u32,
-
-    /// AI model to use
-    #[serde(default)]
-    pub model: Option<String>,
-
-    /// Working directory for agent operations
-    #[serde(default)]
-    pub cwd: Option<String>,
-
-    /// Additional context directories
-    #[serde(default)]
-    pub add_dirs: Vec<String>,
-
-    /// Initial delay before returning (ms, default: 500)
-    #[serde(default = "default_initial_delay")]
-    pub initial_delay_ms: u64,
-
-    /// Session label prefix (appends -1, -2, etc.)
-    #[serde(default)]
-    pub label: Option<String>,
-}
-
-fn default_worker_count() -> u32 {
-    1
-}
-fn default_max_turns() -> u32 {
-    10
-}
-fn default_initial_delay() -> u64 {
-    500
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SpawnClaudeAgentPromptArgs {}
-
-// ============================================================================
-// SEND CLAUDE AGENT PROMPT
-// ============================================================================
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SendClaudeAgentPromptArgs {
-    /// Session ID to send prompt to
-    pub session_id: String,
-
-    /// Prompt to send (continues conversation) - can be plain string or template
-    pub prompt: PromptInput,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct SendClaudeAgentPromptPromptArgs {}
-
-// ============================================================================
-// READ CLAUDE AGENT OUTPUT
-// ============================================================================
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ReadClaudeAgentOutputArgs {
-    /// Session ID to read from
-    pub session_id: String,
-
-    /// Offset for pagination (0=start, negative=tail from end)
-    #[serde(default)]
-    pub offset: i64,
-
-    /// Max messages to return (default: 50)
-    #[serde(default = "default_length")]
-    pub length: usize,
-}
-
-fn default_length() -> usize {
-    50
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ReadClaudeAgentOutputPromptArgs {}
-
-// ============================================================================
-// LIST CLAUDE AGENTS
-// ============================================================================
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListClaudeAgentsArgs {
-    /// Include completed sessions (default: true)
-    #[serde(default = "default_true")]
-    pub include_completed: bool,
-
-    /// Lines of last output per agent (default: 3)
-    #[serde(default = "default_last_output_lines")]
-    pub last_output_lines: usize,
-}
-
-fn default_true() -> bool {
-    true
-}
-fn default_last_output_lines() -> usize {
-    3
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListClaudeAgentsPromptArgs {}
-
-// ============================================================================
-// TERMINATE CLAUDE AGENT SESSION
-// ============================================================================
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct TerminateClaudeAgentSessionArgs {
-    /// Session ID to terminate
-    pub session_id: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct TerminateClaudeAgentSessionPromptArgs {}
-
-// ============================================================================
-// UNIFIED CLAUDE AGENT (New API)
+// UNIFIED CLAUDE AGENT (Elite Registry Pattern)
 // ============================================================================
 
 /// Action enumeration for unified claude_agent tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-#[serde(rename_all = "snake_case")]
-pub enum AgentAction {
-    /// Spawn new agent session
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, Default)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum ClaudeAgentAction {
+    /// Spawn new agent session with initial prompt
+    #[default]
     Spawn,
-    /// Send prompt to existing session
+    /// Send additional prompt to existing agent session
     Send,
-    /// Terminate session
-    Terminate,
+    /// Read current agent output
+    Read,
+    /// List all agent sessions for this connection
+    List,
+    /// Terminate agent session and cleanup
+    Kill,
 }
 
-fn default_action() -> AgentAction {
-    AgentAction::Spawn
+fn zero() -> u32 {
+    0
 }
 
-fn default_worker_count_usize() -> usize {
-    1
+fn default_timeout_ms() -> u64 {
+    300_000
 }
 
 /// Arguments for unified claude_agent tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct ClaudeAgentArgs {
-    /// Action to perform (default: spawn)
-    #[serde(default = "default_action")]
-    pub action: AgentAction,
-
-    /// Session ID (required for send/terminate, ignored for spawn)
+    /// Action to perform
     #[serde(default)]
-    pub session_id: Option<String>,
+    pub action: ClaudeAgentAction,
 
-    /// Prompt to send (required for spawn/send)
-    #[serde(default)]
-    pub prompt: Option<PromptInput>,
+    /// Agent instance number (0, 1, 2...)
+    #[serde(default = "zero")]
+    pub agent: u32,
 
-    /// Blocking mode: wait for agent to finish before returning (default: false)
-    #[serde(default)]
-    pub blocking: bool,
+    /// Maximum time to wait for completion (ms)
+    /// - On timeout: returns current output, agent continues in background
+    /// - Special value 0: fire-and-forget background agent
+    #[serde(default = "default_timeout_ms")]
+    pub await_completion_ms: u64,
 
-    /// Number of parallel workers (spawn only, default: 1)
-    #[serde(default = "default_worker_count_usize")]
-    pub worker_count: usize,
+    // SPAWN/SEND-specific fields
+    /// Prompt for agent (required for SPAWN/SEND)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub prompt: Option<String>,
 
-    // Spawn-only configuration
-    #[serde(default)]
+    /// System prompt to define agent behavior (SPAWN only)
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub system_prompt: Option<String>,
 
-    #[serde(default)]
-    pub allowed_tools: Option<Vec<String>>,
-
-    #[serde(default)]
-    pub disallowed_tools: Option<Vec<String>>,
-
+    /// Maximum conversation turns (SPAWN only, default: 10)
     #[serde(default)]
     pub max_turns: Option<u32>,
 
-    #[serde(default)]
+    /// AI model to use (SPAWN only)
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub model: Option<String>,
 
-    #[serde(default)]
+    /// Working directory for agent operations (SPAWN only)
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cwd: Option<String>,
 
-    #[serde(default)]
-    pub add_dirs: Option<Vec<String>>,
+    /// Tools the agent CAN use (allowlist, SPAWN only)
+    /// 
+    /// Accepts both single string and array: `allowed_tools: "fs_search"` or `allowed_tools: ["fs_search", "fs_read"]`
+    #[serde(default, deserialize_with = "crate::serde_helpers::string_or_vec")]
+    pub allowed_tools: Vec<String>,
 
-    #[serde(default)]
-    pub label: Option<String>,
+    /// Tools the agent CANNOT use (blocklist, SPAWN only)
+    /// 
+    /// Accepts both single string and array: `disallowed_tools: "terminal"` or `disallowed_tools: ["terminal", "bash"]`
+    #[serde(default, deserialize_with = "crate::serde_helpers::string_or_vec")]
+    pub disallowed_tools: Vec<String>,
+
+    /// Additional context directories (SPAWN only)
+    /// 
+    /// Accepts both single string and array: `add_dirs: "./src"` or `add_dirs: ["./src", "./tests"]`
+    #[serde(default, deserialize_with = "crate::serde_helpers::string_or_vec")]
+    pub add_dirs: Vec<String>,
 }
 
 /// Prompt arguments for claude_agent tool

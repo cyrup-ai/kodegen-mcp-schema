@@ -187,7 +187,9 @@ pub struct GitAddArgs {
     pub path: String,
 
     /// Specific file paths to stage
-    #[serde(default)]
+    /// 
+    /// Accepts both single string and array: `paths: "file.rs"` or `paths: ["file1.rs", "file2.rs"]`
+    #[serde(default, deserialize_with = "crate::serde_helpers::string_or_vec")]
     pub paths: Vec<String>,
 
     /// Stage all modified files
@@ -424,7 +426,9 @@ pub struct GitFetchArgs {
 
     /// Refspecs to fetch (e.g., ["refs/heads/main:refs/remotes/origin/main"]).
     /// If empty, uses repository's configured refspecs for the remote.
-    #[serde(default)]
+    /// 
+    /// Accepts both single string and array: `refspecs: "main"` or `refspecs: ["main", "develop"]`
+    #[serde(default, deserialize_with = "crate::serde_helpers::string_or_vec")]
     pub refspecs: Vec<String>,
 
     /// Prune remote-tracking branches that no longer exist on remote (default: false)
@@ -631,7 +635,9 @@ pub struct GitPushArgs {
 
     /// Refspecs to push (e.g., ["refs/heads/main", "refs/tags/v1.0"]).
     /// Empty list pushes the current branch to the remote.
-    #[serde(default)]
+    /// 
+    /// Accepts both single string and array: `refspecs: "main"` or `refspecs: ["main", "develop"]`
+    #[serde(default, deserialize_with = "crate::serde_helpers::string_or_vec")]
     pub refspecs: Vec<String>,
 
     /// Force push (use with caution in shared repositories)

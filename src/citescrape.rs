@@ -9,9 +9,44 @@ use serde::{Deserialize, Serialize};
 
 /// Canonical tool names for citescrape tools
 pub const SCRAPE_URL: &str = "scrape_url";
-pub const SCRAPE_CHECK_RESULTS: &str = "scrape_check_results";
-pub const SCRAPE_SEARCH_RESULTS: &str = "scrape_search_results";
 pub const WEB_SEARCH: &str = "web_search";
+
+// ============================================================================
+// ACTION ENUM
+// ============================================================================
+
+/// Scrape action types - Elite Terminal Pattern
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, Default)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum ScrapeAction {
+    /// Start new web crawl (default action)
+    #[default]
+    Crawl,
+    /// Read current progress without blocking
+    Read,
+    /// List all crawls for connection
+    List,
+    /// Cancel crawl and cleanup resources
+    Kill,
+    /// Search indexed content (replaces scrape_search_results tool)
+    Search,
+}
+
+// ============================================================================
+// DEFAULT HELPERS
+// ============================================================================
+
+const fn zero() -> u32 { 
+    0 
+}
+
+const fn default_await_completion_ms() -> u64 { 
+    600_000  // 10 minutes
+}
+
+// Note: Field is `crawl_id` not `crawl` to avoid verb/noun ambiguity
+// Unlike terminal where "terminal:0" is clearly a noun, "crawl:0" could be 
+// misread as a command. "crawl_id:0" is unambiguous.
 
 // ============================================================================
 // SCRAPE URL
@@ -29,15 +64,40 @@ fn default_crawl_rate() -> f64 {
     2.0
 }
 
-fn default_timeout() -> u64 {
-    600
+fn default_search_limit() -> usize {
+    10
 }
 
-/// Arguments for `scrape_url` tool
+fn default_true_search() -> bool {
+    true
+}
+
+/// Arguments for unified `scrape_url` tool - Elite Terminal Pattern
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct ScrapeUrlArgs {
-    /// Target URL to crawl (required)
-    pub url: String,
+    // ===== ACTION CONTROL =====
+    
+    /// Action to perform (CRAWL/READ/LIST/KILL/SEARCH)
+    #[serde(default)]
+    pub action: ScrapeAction,
+
+    /// Crawl instance ID (0, 1, 2...) for connection isolation
+    /// Named `crawl_id` (not `crawl`) to avoid verb/noun ambiguity
+    #[serde(default = "zero")]
+    pub crawl_id: u32,
+
+    /// Maximum time to wait for completion (ms)
+    /// - On timeout: returns current progress, crawl continues in background
+    /// - Special value 0: fire-and-forget background crawl
+    /// - Use action=READ to check progress after timeout
+    #[serde(default = "default_await_completion_ms")]
+    pub await_completion_ms: u64,
+
+    // ===== CRAWL-SPECIFIC FIELDS =====
+    
+    /// Target URL (required for CRAWL action)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
 
     /// Output directory for crawled content
     #[serde(default)]
@@ -75,93 +135,28 @@ pub struct ScrapeUrlArgs {
     #[serde(default)]
     pub content_types: Option<Vec<String>>,
 
-    /// Maximum duration in seconds before returning partial results (default: 600)
-    #[serde(default = "default_timeout")]
-    pub timeout_seconds: u64,
+    // ===== SEARCH-SPECIFIC FIELDS (replaces scrape_search_results) =====
+    
+    /// Search query (required for SEARCH action)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub query: Option<String>,
+
+    /// Maximum search results (default: 10)
+    #[serde(default = "default_search_limit")]
+    pub search_limit: usize,
+
+    /// Search result offset for pagination (default: 0)
+    #[serde(default)]
+    pub search_offset: usize,
+
+    /// Enable search result highlighting (default: true)
+    #[serde(default = "default_true_search")]
+    pub search_highlight: bool,
 }
 
 /// Prompt arguments for `scrape_url` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct ScrapeUrlPromptArgs {}
-
-// ============================================================================
-// SCRAPE CHECK RESULTS
-// ============================================================================
-
-fn default_true_get() -> bool {
-    true
-}
-
-/// Arguments for `scrape_check_results` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ScrapeCheckResultsArgs {
-    /// Crawl ID from `scrape_url` (for active crawls)
-    #[serde(default)]
-    pub crawl_id: Option<String>,
-
-    /// Output directory (alternative to `crawl_id` for completed crawls)
-    #[serde(default)]
-    pub output_dir: Option<String>,
-
-    /// Include progress details (default: true)
-    #[serde(default = "default_true_get")]
-    pub include_progress: bool,
-
-    /// List all crawled files (default: true)
-    #[serde(default = "default_true_get")]
-    pub list_files: bool,
-
-    /// Filter file listing by type
-    #[serde(default)]
-    pub file_types: Option<Vec<String>>,
-}
-
-/// Prompt arguments for `scrape_check_results` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ScrapeCheckResultsPromptArgs {}
-
-// ============================================================================
-// SCRAPE SEARCH RESULTS
-// ============================================================================
-
-fn default_search_limit() -> usize {
-    10
-}
-
-fn default_true_search() -> bool {
-    true
-}
-
-/// Arguments for `scrape_search_results` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ScrapeSearchResultsArgs {
-    /// Search query string
-    pub query: String,
-
-    /// Crawl ID (optional, alternative to `output_dir`)
-    #[serde(default)]
-    pub crawl_id: Option<String>,
-
-    /// Output directory to search in (optional)
-    #[serde(default)]
-    pub output_dir: Option<String>,
-
-    /// Maximum results to return (default: 10)
-    #[serde(default = "default_search_limit")]
-    pub limit: usize,
-
-    /// Offset for pagination (default: 0)
-    #[serde(default)]
-    pub offset: usize,
-
-    /// Enable result highlighting (default: true)
-    #[serde(default = "default_true_search")]
-    pub highlight: bool,
-}
-
-/// Prompt arguments for `scrape_search_results` tool
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ScrapeSearchResultsPromptArgs {}
 
 // ============================================================================
 // WEB SEARCH

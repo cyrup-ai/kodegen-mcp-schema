@@ -64,6 +64,9 @@ pub struct FsReadFilePromptArgs {
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct FsReadMultipleFilesArgs {
     /// List of file paths to read
+    /// 
+    /// Accepts both single string and array: `paths: "file.txt"` or `paths: ["file1.txt", "file2.txt"]`
+    #[serde(deserialize_with = "crate::serde_helpers::string_or_vec")]
     pub paths: Vec<String>,
 
     /// Line offset for all files (optional)
@@ -390,17 +393,63 @@ pub enum ReturnMode {
 }
 
 // ============================================================================
-// FS_SEARCH (BLOCKING)
+// FS_SEARCH - Elite Terminal Pattern
 // ============================================================================
 
-/// Arguments for `fs_search` tool (blocking search that returns all results immediately)
+const fn zero() -> u32 {
+    0
+}
+
+const fn default_search_timeout_ms() -> u64 {
+    60_000 // 1 minute default (terminal uses 5 minutes)
+}
+
+/// Search action types
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, Default)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum FsSearchAction {
+    /// Execute a search (default) - requires `path` and `pattern` fields
+    #[default]
+    Search,
+    /// Read current search state without re-executing
+    Read,
+    /// List all active searches with their current states
+    List,
+    /// Gracefully cancel search and cleanup all resources
+    Kill,
+}
+
+/// Arguments for `fs_search` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct FsSearchArgs {
-    /// Root directory to search
-    pub path: String,
+    /// Action to perform - defaults to SEARCH for backward compatibility
+    #[serde(default)]
+    pub action: FsSearchAction,
 
-    /// Pattern to search for
-    pub pattern: String,
+    /// Search instance number (0, 1, 2...) - defaults to 0
+    /// Searches are reusable and stateful - use different numbers for parallel work
+    #[serde(default = "zero")]
+    pub search: u32,
+
+    /// Maximum time in milliseconds to wait for search completion (default 60000ms = 1 minute)
+    ///
+    /// - On timeout: returns current results snapshot, search continues in background
+    /// - Special value 0: fire-and-forget background task (returns immediately)
+    /// - Search continues running after timeout - use action=READ to check progress
+    #[serde(default = "default_search_timeout_ms")]
+    pub await_completion_ms: u64,
+
+    // ========================================================================
+    // SEARCH-SPECIFIC FIELDS
+    // ========================================================================
+    
+    /// Root directory to search (required for SEARCH, ignored for READ/LIST/KILL)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
+
+    /// Pattern to search for (required for SEARCH, ignored for READ/LIST/KILL)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pattern: Option<String>,
 
     /// Where to search: "content" (inside files) or "filenames" (file paths)
     /// Default: "content" (matches ripgrep default behavior)
@@ -417,11 +466,15 @@ pub struct FsSearchArgs {
     pub file_pattern: Option<String>,
 
     /// File types to include using ripgrep's built-in definitions (rg --type)
-    #[serde(default)]
+    /// 
+    /// Accepts both single string and array: `type: "rust"` or `type: ["rust", "python"]`
+    #[serde(default, deserialize_with = "crate::serde_helpers::string_or_vec")]
     pub r#type: Vec<String>,
 
     /// File types to exclude using ripgrep's built-in definitions (rg --type-not)
-    #[serde(default)]
+    /// 
+    /// Accepts both single string and array: `type_not: "test"` or `type_not: ["test", "json"]`
+    #[serde(default, deserialize_with = "crate::serde_helpers::string_or_vec")]
     pub type_not: Vec<String>,
 
     /// DEPRECATED: Use `case_mode` instead. Provided for backward compatibility.
@@ -489,7 +542,9 @@ pub struct FsSearchArgs {
     pub preprocessor: Option<String>,
 
     /// Glob patterns for files to run through preprocessor
-    #[serde(default)]
+    /// 
+    /// Accepts both single string and array: `preprocessor_globs: "*.txt"` or `preprocessor_globs: ["*.txt", "*.md"]`
+    #[serde(default, deserialize_with = "crate::serde_helpers::string_or_vec")]
     pub preprocessor_globs: Vec<String>,
 
     /// Enable searching inside compressed files (.gz, .zip, .bz2, .xz)

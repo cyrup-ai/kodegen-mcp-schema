@@ -6,6 +6,7 @@
 
 pub mod filesystem;
 pub mod terminal;
+pub mod serde_helpers;
 pub mod git;
 pub mod github;
 pub mod browser;

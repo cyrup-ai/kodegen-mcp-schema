@@ -34,6 +34,36 @@ pub const BROWSER_LIST_RESEARCH_SESSIONS: &str = "browser_list_research_sessions
 pub const BROWSER_WEB_SEARCH: &str = "browser_web_search";
 
 // ============================================================================
+// ACTION ENUMS
+// ============================================================================
+
+/// Actions for browser_research tool
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum BrowserResearchAction {
+    /// Start a new research query (spawn background work)
+    Research,
+    /// Read current progress from an active research session
+    Read,
+    /// List all active research sessions
+    List,
+    /// Kill a running research session (destroys slot permanently)
+    Kill,
+}
+
+/// Actions for browser_agent tool
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum BrowserAgentAction {
+    /// Prompt the agent with a new task (spawn background work)
+    Prompt,
+    /// Read current progress from an active agent
+    Read,
+    /// Kill a running agent (destroys slot permanently)
+    Kill,
+}
+
+// ============================================================================
 // WAIT FOR
 // ============================================================================
 
@@ -113,8 +143,22 @@ pub struct BrowserScreenshotPromptArgs {}
 /// Arguments for `browser_research` tool (long-running with progress streaming)
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct BrowserResearchArgs {
-    /// Research query or topic to investigate
-    pub query: String,
+    /// Action to perform on the research session
+    pub action: BrowserResearchAction,
+
+    /// Session number (0-based, default: 0) - unique per connection_id
+    #[serde(default = "zero")]
+    pub session: u32,
+
+    /// Maximum time in milliseconds to wait for completion (default: 300000ms = 5 minutes)
+    /// - On timeout: returns current progress, research continues in background
+    /// - Special value 0: fire-and-forget (returns immediately)
+    #[serde(default = "default_research_timeout_ms")]
+    pub await_completion_ms: u64,
+
+    /// Research query or topic to investigate (required for EXEC, ignored for READ/LIST/KILL)
+    #[serde(default)]
+    pub query: Option<String>,
 
     /// Maximum number of pages to visit (default: 5)
     #[serde(default = "default_max_pages")]
@@ -234,6 +278,22 @@ fn default_temperature() -> f64 {
 }
 fn default_max_tokens() -> u64 {
     2048
+}
+
+// ============================================================================
+// ACTION-BASED HELPERS
+// ============================================================================
+
+fn zero() -> u32 {
+    0
+}
+
+fn default_research_timeout_ms() -> u64 {
+    300000 // 5 minutes
+}
+
+fn default_agent_timeout_ms() -> u64 {
+    600000 // 10 minutes
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
@@ -412,8 +472,22 @@ pub struct BrowserTypeTextPromptArgs {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct BrowserAgentArgs {
-    /// Task description for the agent to accomplish
-    pub task: String,
+    /// Action to perform on the agent session
+    pub action: BrowserAgentAction,
+
+    /// Agent number (0-based, default: 0) - unique per connection_id
+    #[serde(default = "zero")]
+    pub agent: u32,
+
+    /// Maximum time in milliseconds to wait for completion (default: 600000ms = 10 minutes)
+    /// - On timeout: returns current progress, agent continues in background
+    /// - Special value 0: fire-and-forget (returns immediately)
+    #[serde(default = "default_agent_timeout_ms")]
+    pub await_completion_ms: u64,
+
+    /// Task description for the agent to accomplish (required for EXEC, ignored for READ/KILL)
+    #[serde(default)]
+    pub task: Option<String>,
 
     /// Optional additional context or hints
     #[serde(default)]
