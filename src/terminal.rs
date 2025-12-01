@@ -22,6 +22,14 @@ const fn default_await_completion_ms() -> u64 {
     300_000 // 5 minutes
 }
 
+const fn default_clear() -> bool {
+    true
+}
+
+const fn default_tail() -> u32 {
+    2000
+}
+
 /// Terminal action types
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, Default)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -60,6 +68,18 @@ pub struct TerminalInput {
     /// - Command continues running after timeout - use action=READ to check progress
     #[serde(default = "default_await_completion_ms")]
     pub await_completion_ms: u64,
+
+    /// Run `clear` command before executing (EXEC only)
+    /// Clears VTE buffer so output contains only new command's output
+    /// Default: true
+    #[serde(default = "default_clear")]
+    pub clear: bool,
+
+    /// Limit lines returned from buffer
+    /// Default: 2000 (scrollback buffer size)
+    /// Max: 2000
+    #[serde(default = "default_tail")]
+    pub tail: u32,
 }
 
 /// Response from unified `terminal` tool
