@@ -43,6 +43,8 @@ pub enum TerminalAction {
     List,
     /// Gracefully shutdown terminal and cleanup all resources
     Kill,
+    /// Send Ctrl+C to interrupt any running command
+    Interrupt,
 }
 
 /// Arguments for unified `terminal` tool
