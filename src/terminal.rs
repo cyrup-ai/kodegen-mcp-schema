@@ -31,6 +31,15 @@ const fn default_tail() -> u32 {
 }
 
 /// Terminal action types
+///
+/// Public API has exactly 4 actions:
+/// - EXEC: Execute command (default)
+/// - READ: Get current buffer snapshot
+/// - LIST: Show all active terminals
+/// - KILL: Gracefully shutdown terminal
+///
+/// Note: Cancellation of running commands is handled internally via
+/// CancellationToken - not exposed as a public action.
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, Default)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TerminalAction {
@@ -43,8 +52,6 @@ pub enum TerminalAction {
     List,
     /// Gracefully shutdown terminal and cleanup all resources
     Kill,
-    /// Send Ctrl+C to interrupt any running command
-    Interrupt,
 }
 
 /// Arguments for unified `terminal` tool
