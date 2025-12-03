@@ -93,6 +93,20 @@ pub struct TerminalInput {
     pub tail: u32,
 }
 
+/// Snapshot of a terminal instance (for LIST action)
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct TerminalSnapshot {
+    /// Terminal number
+    pub terminal: u32,
+    /// Current working directory
+    pub cwd: String,
+    /// Exit code of last command (None if still running)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub exit_code: Option<i32>,
+    /// Whether last command completed
+    pub completed: bool,
+}
+
 /// Response from unified `terminal` tool
 ///
 /// Note: Terminal output is returned in the display field (Vec[Content]0) only.
@@ -115,6 +129,10 @@ pub struct TerminalOutput {
 
     /// Whether command completed (true) or is still running/timed out (false)
     pub completed: bool,
+
+    /// List of all terminal snapshots (present for LIST action)
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub terminals: Vec<TerminalSnapshot>,
 }
 
 /// Prompt arguments for unified `terminal` tool

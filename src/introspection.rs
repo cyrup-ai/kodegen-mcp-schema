@@ -104,10 +104,10 @@ pub struct ToolCallRecord {
     /// Duration in milliseconds (if available)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub duration_ms: Option<u64>,
-    /// Arguments passed to the tool
-    pub args: serde_json::Value,
-    /// Output from the tool
-    pub output: serde_json::Value,
+    /// JSON string of the arguments (serialized from original typed args)
+    pub args_json: String,
+    /// JSON string of the output (serialized from original typed output)
+    pub output_json: String,
 }
 
 /// Output from `inspect_usage_stats` tool

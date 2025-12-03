@@ -726,26 +726,108 @@ pub struct FsGetFileInfoOutput {
     pub line_count: Option<u64>,
 }
 
-/// Output from `fs_search` tool
+/// Result type for search operations
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "lowercase")]
+pub enum FsSearchResultType {
+    /// File path match (filename search)
+    File,
+    /// Content match within a file
+    Content,
+    /// File list entry (paths-only mode)
+    FileList,
+}
+
+/// Single search result from fs_search
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsSearchResult {
+    /// File path where match was found
+    pub file: String,
+    /// Line number (content search only)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub line: Option<u32>,
+    /// Matching line content (content search only)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub r#match: Option<String>,
+    /// Result type
+    pub r#type: FsSearchResultType,
+    /// True if this is a context line, false if actual match
+    #[serde(default)]
+    pub is_context: bool,
+    /// Whether this result came from a binary file
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_binary: Option<bool>,
+    /// Whether binary content was suppressed in this result
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub binary_suppressed: Option<bool>,
+}
+
+/// Snapshot of a single search instance (for LIST action)
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsSearchSnapshot {
+    /// Search instance ID
+    pub search: u32,
+    /// Search pattern (if search was started)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pattern: Option<String>,
+    /// Root path being searched
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
+    /// Number of matches found so far
+    pub match_count: usize,
+    /// Number of files searched so far
+    pub files_searched: usize,
+    /// Whether the search has completed
+    pub completed: bool,
+    /// Time elapsed in milliseconds
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub duration_ms: Option<u64>,
+}
+
+/// Unified output from `fs_search` tool (all actions: SEARCH, READ, LIST, KILL)
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct FsSearchOutput {
-    pub success: bool,
-    pub search: u32,
+    /// Search instance ID (None for LIST action which returns multiple)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub search: Option<u32>,
+    /// Human-readable status message
+    pub output: String,
+    /// Search pattern used (present for SEARCH/READ actions)
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub pattern: String,
+    /// Root path searched (present for SEARCH/READ actions)
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub path: String,
-    pub completed: bool,
+    /// Search results (present for SEARCH/READ actions)
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub results: Vec<FsSearchResult>,
+    /// List of all active search snapshots (present for LIST action)
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub searches: Vec<FsSearchSnapshot>,
+    /// Total number of matches found
+    #[serde(default)]
+    pub match_count: usize,
+    /// Number of files that were searched
+    #[serde(default)]
+    pub files_searched: usize,
+    /// Number of errors encountered during search
+    #[serde(default)]
+    pub error_count: usize,
+    /// Error messages from search operation
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub errors: Vec<String>,
+    /// Time elapsed in milliseconds
     pub duration_ms: u64,
-    /// For return_only: "matches"
+    /// Whether the operation has completed
+    pub completed: bool,
+    /// Whether the operation was successful
+    pub success: bool,
+    /// Exit code (0 = success, 1 = error, 130 = cancelled/killed)
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub matches: Option<Vec<SearchMatch>>,
-    /// For return_only: "paths"
+    pub exit_code: Option<i32>,
+    /// Error message if operation failed
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub paths: Option<Vec<String>>,
-    /// For return_only: "counts"
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub counts: Option<Vec<FileMatchCount>>,
-    pub total_matches: u32,
-    pub files_searched: u32,
+    pub error: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
