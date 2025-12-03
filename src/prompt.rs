@@ -124,3 +124,83 @@ pub struct DeletePromptArgs {
 /// Prompt arguments for `delete_prompt` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct DeletePromptPromptArgs {}
+
+// ============================================================================
+// OUTPUT TYPES
+// ============================================================================
+
+/// Output from `prompt_add` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct PromptAddOutput {
+    /// Whether the operation succeeded
+    pub success: bool,
+    /// Name of the prompt created
+    pub name: String,
+    /// Human-readable message
+    pub message: String,
+    /// Path to the created file
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
+    /// Template content length in characters
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub template_length: Option<usize>,
+    /// Number of parameters defined
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub parameter_count: Option<usize>,
+}
+
+/// Output from `prompt_get` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct PromptGetOutput {
+    /// Whether the operation succeeded
+    pub success: bool,
+    /// Action that was performed
+    pub action: String,
+    /// Data returned (varies by action)
+    pub data: serde_json::Value,
+}
+
+/// Output from `prompt_delete` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct PromptDeleteOutput {
+    /// Whether the operation succeeded
+    pub success: bool,
+    /// Name of the prompt deleted
+    pub name: String,
+    /// Human-readable message
+    pub message: String,
+}
+
+/// Output from `prompt_edit` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct PromptEditOutput {
+    /// Whether the operation succeeded
+    pub success: bool,
+    /// Name of the prompt edited
+    pub name: String,
+    /// Human-readable message
+    pub message: String,
+    /// Path to the edited file
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
+}
+
+// ============================================================================
+// TOOL ARGS TRAIT IMPLEMENTATIONS
+// ============================================================================
+
+impl crate::ToolArgs for AddPromptArgs {
+    type Output = PromptAddOutput;
+}
+
+impl crate::ToolArgs for GetPromptArgs {
+    type Output = PromptGetOutput;
+}
+
+impl crate::ToolArgs for DeletePromptArgs {
+    type Output = PromptDeleteOutput;
+}
+
+impl crate::ToolArgs for EditPromptArgs {
+    type Output = PromptEditOutput;
+}

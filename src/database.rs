@@ -3,6 +3,8 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+use crate::ToolArgs;
+
 // ============================================================================
 // CANONICAL TOOL NAME CONSTANTS
 // ============================================================================
@@ -177,4 +179,190 @@ pub struct ExecuteSQLPromptArgs {
     /// Optional: database type to focus examples on (postgres, mysql, sqlite, etc.)
     #[serde(default)]
     pub database_type: Option<String>,
+}
+
+// ============================================================================
+// SUPPORTING TYPES
+// ============================================================================
+
+/// Column information for table schema
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ColumnInfo {
+    pub name: String,
+    pub data_type: String,
+    pub nullable: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub default_value: Option<String>,
+    pub is_primary_key: bool,
+}
+
+/// Foreign key constraint information
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ForeignKeyInfo {
+    pub column: String,
+    pub references_table: String,
+    pub references_column: String,
+}
+
+/// Index information
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct IndexInfo {
+    pub name: String,
+    pub columns: Vec<String>,
+    pub unique: bool,
+    pub is_primary: bool,
+}
+
+/// Table summary information
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct TableInfo {
+    pub name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub table_type: Option<String>,
+}
+
+/// Stored procedure information
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ProcedureInfo {
+    pub name: String,
+    pub procedure_type: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub language: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub parameters: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub return_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub definition: Option<String>,
+}
+
+/// Connection pool statistics
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ConnectionStats {
+    pub total: u32,
+    pub active: u32,
+    pub idle: usize,
+}
+
+/// Pool configuration details
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct PoolConfiguration {
+    pub max_connections: u32,
+    pub min_connections: u32,
+    pub acquire_timeout_secs: u64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub idle_timeout_secs: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub max_lifetime_secs: Option<u64>,
+    pub test_before_acquire: bool,
+}
+
+/// Pool health status
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct PoolHealth {
+    pub status: String,
+    pub utilization_pct: u32,
+}
+
+// ============================================================================
+// OUTPUT TYPES
+// ============================================================================
+
+/// Output from `db_list_schemas` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ListSchemasOutput {
+    pub schemas: Vec<String>,
+    pub count: usize,
+}
+
+/// Output from `db_list_tables` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ListTablesOutput {
+    pub schema: String,
+    pub tables: Vec<TableInfo>,
+    pub count: usize,
+}
+
+/// Output from `db_execute_sql` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ExecuteSQLOutput {
+    pub columns: Vec<String>,
+    pub rows: Vec<serde_json::Value>,
+    pub row_count: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub affected_rows: Option<u64>,
+    pub execution_time_ms: u64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub executed_statements: Option<usize>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub total_statements: Option<usize>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub errors: Option<Vec<serde_json::Value>>,
+}
+
+/// Output from `db_table_schema` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GetTableSchemaOutput {
+    pub schema: String,
+    pub table: String,
+    pub columns: Vec<ColumnInfo>,
+    pub column_count: usize,
+}
+
+/// Output from `db_table_indexes` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GetTableIndexesOutput {
+    pub schema: String,
+    pub table: String,
+    pub indexes: Vec<IndexInfo>,
+    pub count: usize,
+}
+
+/// Output from `db_stored_procedures` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GetStoredProceduresOutput {
+    pub schema: String,
+    pub procedures: Vec<ProcedureInfo>,
+    pub count: usize,
+}
+
+/// Output from `db_pool_stats` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GetPoolStatsOutput {
+    pub database_type: String,
+    pub connections: ConnectionStats,
+    pub configuration: PoolConfiguration,
+    pub health: PoolHealth,
+}
+
+// ============================================================================
+// TOOL ARGS IMPLEMENTATIONS (Args→Output Binding)
+// ============================================================================
+
+impl ToolArgs for ListSchemasArgs {
+    type Output = ListSchemasOutput;
+}
+
+impl ToolArgs for ListTablesArgs {
+    type Output = ListTablesOutput;
+}
+
+impl ToolArgs for ExecuteSQLArgs {
+    type Output = ExecuteSQLOutput;
+}
+
+impl ToolArgs for GetTableSchemaArgs {
+    type Output = GetTableSchemaOutput;
+}
+
+impl ToolArgs for GetTableIndexesArgs {
+    type Output = GetTableIndexesOutput;
+}
+
+impl ToolArgs for GetStoredProceduresArgs {
+    type Output = GetStoredProceduresOutput;
+}
+
+impl ToolArgs for GetPoolStatsArgs {
+    type Output = GetPoolStatsOutput;
 }

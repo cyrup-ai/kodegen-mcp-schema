@@ -3,6 +3,8 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+use crate::ToolArgs;
+
 // ============================================================================
 // CANONICAL TOOL NAMES
 // ============================================================================
@@ -93,3 +95,39 @@ pub struct SetConfigValueArgs {
 /// Prompt arguments for `set_config_value` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct SetConfigValuePromptArgs {}
+
+// ============================================================================
+// OUTPUT TYPES
+// ============================================================================
+
+/// Output from `config_get` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ConfigGetOutput {
+    /// Whether the operation succeeded
+    pub success: bool,
+    /// The configuration as JSON value
+    pub config: serde_json::Value,
+}
+
+/// Output from `config_set` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ConfigSetOutput {
+    /// Whether the operation succeeded
+    pub success: bool,
+    /// The key that was set
+    pub key: String,
+    /// Human-readable result message
+    pub message: String,
+}
+
+// ============================================================================
+// TOOL ARGS IMPLEMENTATION (Args→Output Binding)
+// ============================================================================
+
+impl ToolArgs for GetConfigArgs {
+    type Output = ConfigGetOutput;
+}
+
+impl ToolArgs for SetConfigValueArgs {
+    type Output = ConfigSetOutput;
+}

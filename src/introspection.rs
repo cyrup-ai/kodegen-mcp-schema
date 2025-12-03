@@ -66,3 +66,92 @@ pub struct InspectToolCallsArgs {
 pub struct InspectToolCallsPromptArgs {
     // No arguments needed
 }
+
+// ============================================================================
+// OUTPUT TYPES
+// ============================================================================
+
+/// Output from `inspect_tool_calls` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct InspectToolCallsOutput {
+    /// Whether the operation succeeded
+    pub success: bool,
+    /// Number of calls returned
+    pub count: usize,
+    /// Total entries in memory
+    pub total_entries_in_memory: usize,
+    /// Tool call records
+    pub calls: Vec<ToolCallRecord>,
+    /// Filter applied (tool name)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub filter_tool_name: Option<String>,
+    /// Filter applied (since timestamp)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub filter_since: Option<String>,
+    /// Offset used for pagination
+    pub offset: i64,
+    /// Max results requested
+    pub max_results: usize,
+}
+
+/// A single tool call record
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ToolCallRecord {
+    /// Tool name that was called
+    pub tool_name: String,
+    /// Timestamp of the call (ISO 8601)
+    pub timestamp: String,
+    /// Duration in milliseconds (if available)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub duration_ms: Option<u64>,
+    /// Arguments passed to the tool
+    pub args: serde_json::Value,
+    /// Output from the tool
+    pub output: serde_json::Value,
+}
+
+/// Output from `inspect_usage_stats` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct InspectUsageOutput {
+    /// Whether the operation succeeded
+    pub success: bool,
+    /// Total number of tool calls
+    pub total_calls: usize,
+    /// Number of unique tools used
+    pub tools_used: usize,
+    /// Per-tool usage statistics
+    pub tool_usage: Vec<ToolUsageStats>,
+    /// Session duration in milliseconds
+    pub session_duration_ms: u64,
+    /// Success rate percentage
+    pub success_rate: f64,
+    /// Number of successful calls
+    pub successful_calls: usize,
+    /// Number of failed calls
+    pub failed_calls: usize,
+}
+
+/// Usage statistics for a single tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ToolUsageStats {
+    /// Tool name
+    pub tool_name: String,
+    /// Number of times called
+    pub call_count: usize,
+    /// Total duration in milliseconds
+    pub total_duration_ms: u64,
+    /// Average duration in milliseconds
+    pub avg_duration_ms: u64,
+}
+
+// ============================================================================
+// TOOL ARGS TRAIT IMPLEMENTATIONS
+// ============================================================================
+
+impl crate::ToolArgs for InspectToolCallsArgs {
+    type Output = InspectToolCallsOutput;
+}
+
+impl crate::ToolArgs for InspectUsageStatsArgs {
+    type Output = InspectUsageOutput;
+}

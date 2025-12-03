@@ -587,3 +587,229 @@ pub struct FsSearchArgs {
 /// Prompt arguments for `fs_search` tool
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct FsSearchPromptArgs {}
+
+// ============================================================================
+// OUTPUT TYPES
+// ============================================================================
+
+use crate::ToolArgs;
+
+/// Output from `fs_read_file` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsReadFileOutput {
+    pub success: bool,
+    pub path: String,
+    pub mime_type: String,
+    pub is_image: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub size_bytes: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub total_lines: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub lines_read: Option<u64>,
+    pub is_partial: bool,
+    pub content: String,
+}
+
+/// Output from `fs_read_multiple_files` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsReadMultipleFilesOutput {
+    pub success: bool,
+    pub files_requested: usize,
+    pub files_read: usize,
+    pub files_failed: usize,
+    pub results: Vec<FileReadResult>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FileReadResult {
+    pub path: String,
+    pub success: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub content: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub error: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mime_type: Option<String>,
+}
+
+/// Output from `fs_write_file` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsWriteFileOutput {
+    pub success: bool,
+    pub path: String,
+    pub bytes_written: u64,
+    pub lines_written: u64,
+    pub mode: String,
+}
+
+/// Output from `fs_edit_block` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsEditBlockOutput {
+    pub success: bool,
+    pub path: String,
+    pub replacements_made: u32,
+    pub message: String,
+}
+
+/// Output from `fs_create_directory` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsCreateDirectoryOutput {
+    pub success: bool,
+    pub path: String,
+    pub created: bool,
+    pub message: String,
+}
+
+/// Output from `fs_delete_directory` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsDeleteDirectoryOutput {
+    pub success: bool,
+    pub path: String,
+    pub message: String,
+}
+
+/// Output from `fs_delete_file` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsDeleteFileOutput {
+    pub success: bool,
+    pub path: String,
+    pub message: String,
+}
+
+/// Output from `fs_move_file` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsMoveFileOutput {
+    pub success: bool,
+    pub source: String,
+    pub destination: String,
+    pub message: String,
+}
+
+/// Output from `fs_list_directory` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsListDirectoryOutput {
+    pub success: bool,
+    pub path: String,
+    pub total_entries: usize,
+    pub directories: usize,
+    pub files: usize,
+    pub entries: Vec<DirectoryEntry>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct DirectoryEntry {
+    pub name: String,
+    pub is_directory: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub size_bytes: Option<u64>,
+}
+
+/// Output from `fs_get_file_info` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsGetFileInfoOutput {
+    pub success: bool,
+    pub path: String,
+    pub exists: bool,
+    pub is_file: bool,
+    pub is_directory: bool,
+    pub is_symlink: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub size_bytes: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub created: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub modified: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub accessed: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub line_count: Option<u64>,
+}
+
+/// Output from `fs_search` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FsSearchOutput {
+    pub success: bool,
+    pub search: u32,
+    pub pattern: String,
+    pub path: String,
+    pub completed: bool,
+    pub duration_ms: u64,
+    /// For return_only: "matches"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub matches: Option<Vec<SearchMatch>>,
+    /// For return_only: "paths"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub paths: Option<Vec<String>>,
+    /// For return_only: "counts"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub counts: Option<Vec<FileMatchCount>>,
+    pub total_matches: u32,
+    pub files_searched: u32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct SearchMatch {
+    pub file: String,
+    pub line: u32,
+    #[serde(rename = "match")]
+    pub match_text: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub before_context: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub after_context: Option<Vec<String>>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct FileMatchCount {
+    pub file: String,
+    pub count: u32,
+}
+
+// ============================================================================
+// TOOL ARGS IMPLEMENTATION (Args→Output Binding)
+// ============================================================================
+
+impl ToolArgs for FsReadFileArgs {
+    type Output = FsReadFileOutput;
+}
+
+impl ToolArgs for FsReadMultipleFilesArgs {
+    type Output = FsReadMultipleFilesOutput;
+}
+
+impl ToolArgs for FsWriteFileArgs {
+    type Output = FsWriteFileOutput;
+}
+
+impl ToolArgs for FsEditBlockArgs {
+    type Output = FsEditBlockOutput;
+}
+
+impl ToolArgs for FsCreateDirectoryArgs {
+    type Output = FsCreateDirectoryOutput;
+}
+
+impl ToolArgs for FsDeleteDirectoryArgs {
+    type Output = FsDeleteDirectoryOutput;
+}
+
+impl ToolArgs for FsDeleteFileArgs {
+    type Output = FsDeleteFileOutput;
+}
+
+impl ToolArgs for FsMoveFileArgs {
+    type Output = FsMoveFileOutput;
+}
+
+impl ToolArgs for FsListDirectoryArgs {
+    type Output = FsListDirectoryOutput;
+}
+
+impl ToolArgs for FsGetFileInfoArgs {
+    type Output = FsGetFileInfoOutput;
+}
+
+impl ToolArgs for FsSearchArgs {
+    type Output = FsSearchOutput;
+}

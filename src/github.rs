@@ -1072,3 +1072,827 @@ pub struct GetMeArgs {
 /// Prompt arguments for get_me tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct GetMePromptArgs {}
+
+
+// ============================================================================
+// ISSUE OUTPUT TYPES
+// ============================================================================
+
+/// Output from `github_get_issue` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubGetIssueOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub issue: GitHubIssue,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubIssue {
+    pub number: u64,
+    pub title: String,
+    pub body: Option<String>,
+    pub state: String,
+    pub author: String,
+    pub created_at: String,
+    pub updated_at: String,
+    pub labels: Vec<String>,
+    pub assignees: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub closed_at: Option<String>,
+    pub comments_count: u32,
+    pub html_url: String,
+}
+
+/// Output from `github_create_issue` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCreateIssueOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub issue_number: u64,
+    pub html_url: String,
+    pub message: String,
+}
+
+/// Output from `github_list_issues` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubListIssuesOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub count: usize,
+    pub issues: Vec<GitHubIssueSummary>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubIssueSummary {
+    pub number: u64,
+    pub title: String,
+    pub state: String,
+    pub author: String,
+    pub created_at: String,
+    pub labels: Vec<String>,
+}
+
+/// Output from `github_search_issues` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubSearchIssuesOutput {
+    pub success: bool,
+    pub query: String,
+    pub total_count: u32,
+    pub items: Vec<GitHubIssueSummary>,
+}
+
+/// Output from `github_update_issue` / `github_close_issue` tools
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubUpdateIssueOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub issue_number: u64,
+    pub message: String,
+}
+
+// ============================================================================
+// PULL REQUEST OUTPUT TYPES
+// ============================================================================
+
+/// Output from `github_get_pull_request` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubGetPrOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr: GitHubPullRequest,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubPullRequest {
+    pub number: u64,
+    pub title: String,
+    pub body: Option<String>,
+    pub state: String,
+    pub author: String,
+    pub head_ref: String,
+    pub base_ref: String,
+    pub created_at: String,
+    pub updated_at: String,
+    pub merged: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub merged_at: Option<String>,
+    pub mergeable: Option<bool>,
+    pub draft: bool,
+    pub labels: Vec<String>,
+    pub reviewers: Vec<String>,
+    pub html_url: String,
+    pub additions: u32,
+    pub deletions: u32,
+    pub changed_files: u32,
+}
+
+/// Output from `github_create_pull_request` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCreatePrOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub html_url: String,
+    pub message: String,
+}
+
+/// Output from `github_list_pull_requests` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubListPrsOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub count: usize,
+    pub pull_requests: Vec<GitHubPrSummary>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubPrSummary {
+    pub number: u64,
+    pub title: String,
+    pub state: String,
+    pub author: String,
+    pub head_ref: String,
+    pub base_ref: String,
+    pub created_at: String,
+    pub draft: bool,
+}
+
+/// Output from `github_merge_pull_request` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubMergePrOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub merged: bool,
+    pub sha: Option<String>,
+    pub message: String,
+}
+
+/// Output from `github_update_pull_request` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubUpdatePrOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub message: String,
+}
+
+/// Output from PR comment tools
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubPrCommentsOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub count: usize,
+    pub comments: Vec<GitHubComment>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubComment {
+    pub id: u64,
+    pub author: String,
+    pub body: String,
+    pub created_at: String,
+    pub updated_at: String,
+}
+
+/// Output from `github_add_pr_comment` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubAddCommentOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub comment_id: u64,
+    pub message: String,
+}
+
+/// Output from `github_get_pr_reviews` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubPrReviewsOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub reviews: Vec<GitHubReview>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubReview {
+    pub id: u64,
+    pub author: String,
+    pub state: String,
+    pub body: Option<String>,
+    pub submitted_at: String,
+}
+
+/// Output from `github_request_reviewers` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubRequestReviewersOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub requested_reviewers: Vec<String>,
+    pub message: String,
+}
+
+// ============================================================================
+// ISSUE COMMENTS OUTPUT TYPES (also used for PR comments via GitHub API)
+// ============================================================================
+
+/// Output from `github_get_issue_comments` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubGetIssueCommentsOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub issue_number: u64,
+    pub count: usize,
+    pub comments: Vec<GitHubComment>,
+}
+
+/// Output from `github_add_issue_comment` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubAddIssueCommentOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub issue_number: u64,
+    pub comment_id: u64,
+    pub message: String,
+}
+
+
+// ============================================================================
+// REPOSITORY OUTPUT TYPES
+// ============================================================================
+
+/// Output from `github_create_repository` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCreateRepoOutput {
+    pub success: bool,
+    pub owner: String,
+    pub name: String,
+    pub full_name: String,
+    pub html_url: String,
+    pub clone_url: String,
+    pub message: String,
+}
+
+/// Output from `github_fork_repository` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubForkRepoOutput {
+    pub success: bool,
+    pub source_owner: String,
+    pub source_repo: String,
+    pub forked_owner: String,
+    pub forked_name: String,
+    pub forked_full_name: String,
+    pub html_url: String,
+    pub message: String,
+}
+
+/// Output from `github_search_repositories` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubSearchReposOutput {
+    pub success: bool,
+    pub query: String,
+    pub total_count: u32,
+    pub items: Vec<GitHubRepoSearchResult>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubRepoSearchResult {
+    pub full_name: String,
+    pub name: String,
+    pub owner: String,
+    pub description: Option<String>,
+    pub html_url: String,
+    pub language: Option<String>,
+    pub stars: u32,
+    pub forks: u32,
+    pub watchers: u32,
+    pub open_issues: u32,
+    pub created_at: String,
+    pub updated_at: String,
+    pub pushed_at: Option<String>,
+    pub topics: Vec<String>,
+    pub archived: bool,
+    pub fork: bool,
+}
+
+// ============================================================================
+// CODE SEARCH & FILE OUTPUT TYPES
+// ============================================================================
+
+/// Output from `github_search_code` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubSearchCodeOutput {
+    pub success: bool,
+    pub query: String,
+    pub total_count: u32,
+    pub items: Vec<GitHubCodeSearchResult>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCodeSearchResult {
+    pub name: String,
+    pub path: String,
+    pub sha: String,
+    pub repository_full_name: String,
+    pub repository_owner: String,
+    pub repository_name: String,
+    pub html_url: String,
+    pub git_url: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub star_count: Option<u32>,
+}
+
+/// Output from `github_get_file_contents` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubGetFileContentsOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub path: String,
+    pub ref_name: Option<String>,
+    pub content_type: String, // "file" or "directory"
+    pub file_content: Option<GitHubFileContent>,
+    pub directory_contents: Option<Vec<GitHubDirectoryEntry>>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubFileContent {
+    pub name: String,
+    pub path: String,
+    pub sha: String,
+    pub size: u64,
+    pub content: String, // decoded base64 content
+    pub encoding: String,
+    pub html_url: String,
+    pub git_url: String,
+    pub download_url: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubDirectoryEntry {
+    pub name: String,
+    pub path: String,
+    pub sha: String,
+    pub size: u64,
+    pub entry_type: String, // "file", "dir", "symlink"
+    pub html_url: String,
+}
+
+/// Output from `github_create_or_update_file` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCreateOrUpdateFileOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub path: String,
+    pub sha: String,
+    pub commit_sha: String,
+    pub commit_message: String,
+    pub html_url: String,
+    pub operation: String, // "created" or "updated"
+}
+
+/// Output from `github_push_files` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubPushFilesOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub branch: String,
+    pub files_pushed: u32,
+    pub commit_sha: String,
+    pub commit_message: String,
+    pub html_url: String,
+}
+
+// ============================================================================
+// COMMIT & BRANCH OUTPUT TYPES
+// ============================================================================
+
+/// Output from `github_list_commits` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubListCommitsOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub count: usize,
+    pub commits: Vec<GitHubCommitSummary>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCommitSummary {
+    pub sha: String,
+    pub message: String,
+    pub author_name: String,
+    pub author_email: String,
+    pub date: String,
+    pub html_url: String,
+}
+
+/// Output from `github_get_commit` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubGetCommitOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub commit: GitHubCommitDetail,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCommitDetail {
+    pub sha: String,
+    pub message: String,
+    pub author_name: String,
+    pub author_email: String,
+    pub committer_name: String,
+    pub committer_email: String,
+    pub author_date: String,
+    pub commit_date: String,
+    pub parents: Vec<String>,
+    pub html_url: String,
+    pub stats: Option<GitHubCommitStats>,
+    pub files: Vec<GitHubCommitFile>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCommitStats {
+    pub additions: u32,
+    pub deletions: u32,
+    pub total: u32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCommitFile {
+    pub filename: String,
+    pub status: String, // "added", "removed", "modified", "renamed"
+    pub additions: u32,
+    pub deletions: u32,
+    pub changes: u32,
+    pub patch: Option<String>,
+}
+
+/// Output from `github_list_branches` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubListBranchesOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub count: usize,
+    pub branches: Vec<GitHubBranch>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubBranch {
+    pub name: String,
+    pub sha: String,
+    pub protected: bool,
+}
+
+/// Output from `github_create_branch` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCreateBranchOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub branch_name: String,
+    pub sha: String,
+    pub message: String,
+}
+
+/// Output from `github_delete_branch` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubDeleteBranchOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub branch_name: String,
+    pub message: String,
+}
+
+// ============================================================================
+// USER & SECURITY OUTPUT TYPES
+// ============================================================================
+
+/// Output from `github_search_users` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubSearchUsersOutput {
+    pub success: bool,
+    pub query: String,
+    pub total_count: u32,
+    pub items: Vec<GitHubUserSearchResult>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubUserSearchResult {
+    pub login: String,
+    pub id: u64,
+    pub avatar_url: String,
+    pub html_url: String,
+    pub user_type: String, // "User" or "Organization"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub bio: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub location: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub followers: Option<u32>,
+}
+
+/// Output from `github_get_me` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubGetMeOutput {
+    pub success: bool,
+    pub login: String,
+    pub id: u64,
+    pub name: Option<String>,
+    pub email: Option<String>,
+    pub avatar_url: String,
+    pub html_url: String,
+    pub bio: Option<String>,
+    pub location: Option<String>,
+    pub company: Option<String>,
+    pub followers: u32,
+    pub following: u32,
+    pub public_repos: u32,
+    pub created_at: String,
+}
+
+/// Output from `github_code_scanning_alerts` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCodeScanningAlertsOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub count: usize,
+    pub alerts: Vec<GitHubCodeScanningAlert>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCodeScanningAlert {
+    pub number: u64,
+    pub state: String,
+    pub severity: String,
+    pub rule_id: String,
+    pub rule_description: String,
+    pub tool_name: String,
+    pub created_at: String,
+    pub html_url: String,
+}
+
+/// Output from `github_secret_scanning_alerts` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubSecretScanningAlertsOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub count: usize,
+    pub alerts: Vec<GitHubSecretScanningAlert>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubSecretScanningAlert {
+    pub number: u64,
+    pub state: String,
+    pub secret_type: String,
+    pub resolution: Option<String>,
+    pub created_at: String,
+    pub html_url: String,
+}
+
+/// Output from `github_get_pull_request_files` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubGetPrFilesOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub count: usize,
+    pub files: Vec<GitHubPrFile>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubPrFile {
+    pub filename: String,
+    pub status: String,
+    pub additions: u32,
+    pub deletions: u32,
+    pub changes: u32,
+    pub patch: Option<String>,
+}
+
+/// Output from `github_get_pull_request_status` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubGetPrStatusOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub state: String,
+    pub mergeable: Option<bool>,
+    pub checks_status: String,
+    pub checks_count: u32,
+    pub checks_passed: u32,
+    pub checks_failed: u32,
+}
+
+/// Output from `github_create_pull_request_review` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubCreatePrReviewOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub review_id: u64,
+    pub event: String,
+    pub message: String,
+}
+
+/// Output from `github_add_pull_request_review_comment` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubAddPrReviewCommentOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub comment_id: u64,
+    pub message: String,
+}
+
+/// Output from `github_request_copilot_review` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubRequestCopilotReviewOutput {
+    pub success: bool,
+    pub owner: String,
+    pub repo: String,
+    pub pr_number: u64,
+    pub message: String,
+}
+
+// ============================================================================
+// TOOLARGS IMPLEMENTATIONS
+// ============================================================================
+// Maps each Args type to its corresponding Output type for compile-time enforcement
+
+use crate::ToolArgs;
+
+/// Generic output for GitHub tools not yet migrated to typed outputs
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct GitHubGenericOutput {
+    pub success: bool,
+    pub message: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<serde_json::Value>,
+}
+
+// Issue Tools
+impl ToolArgs for GetIssueArgs {
+    type Output = GitHubGetIssueOutput;
+}
+
+impl ToolArgs for CreateIssueArgs {
+    type Output = GitHubCreateIssueOutput;
+}
+
+impl ToolArgs for UpdateIssueArgs {
+    type Output = GitHubUpdateIssueOutput;
+}
+
+impl ToolArgs for ListIssuesArgs {
+    type Output = GitHubListIssuesOutput;
+}
+
+impl ToolArgs for SearchIssuesArgs {
+    type Output = GitHubSearchIssuesOutput;
+}
+
+impl ToolArgs for GetIssueCommentsArgs {
+    type Output = GitHubGetIssueCommentsOutput;
+}
+
+impl ToolArgs for AddIssueCommentArgs {
+    type Output = GitHubAddIssueCommentOutput;
+}
+
+// Pull Request Tools
+impl ToolArgs for CreatePullRequestArgs {
+    type Output = GitHubCreatePrOutput;
+}
+
+impl ToolArgs for UpdatePullRequestArgs {
+    type Output = GitHubUpdatePrOutput;
+}
+
+impl ToolArgs for MergePullRequestArgs {
+    type Output = GitHubMergePrOutput;
+}
+
+impl ToolArgs for ListPullRequestsArgs {
+    type Output = GitHubListPrsOutput;
+}
+
+impl ToolArgs for GetPullRequestReviewsArgs {
+    type Output = GitHubPrReviewsOutput;
+}
+
+// Other GitHub tools - using generic output until migrated
+impl ToolArgs for CreatePullRequestReviewArgs {
+    type Output = GitHubCreatePrReviewOutput;
+}
+
+impl ToolArgs for AddPullRequestReviewCommentArgs {
+    type Output = GitHubAddPrReviewCommentOutput;
+}
+
+impl ToolArgs for GetPullRequestStatusArgs {
+    type Output = GitHubGetPrStatusOutput;
+}
+
+impl ToolArgs for GetPullRequestFilesArgs {
+    type Output = GitHubGetPrFilesOutput;
+}
+
+impl ToolArgs for CreateRepositoryArgs {
+    type Output = GitHubCreateRepoOutput;
+}
+
+impl ToolArgs for ForkRepositoryArgs {
+    type Output = GitHubForkRepoOutput;
+}
+
+impl ToolArgs for CreateBranchArgs {
+    type Output = GitHubCreateBranchOutput;
+}
+
+impl ToolArgs for DeleteBranchArgs {
+    type Output = GitHubDeleteBranchOutput;
+}
+
+impl ToolArgs for ListBranchesArgs {
+    type Output = GitHubListBranchesOutput;
+}
+
+impl ToolArgs for GetCommitArgs {
+    type Output = GitHubGetCommitOutput;
+}
+
+impl ToolArgs for ListCommitsArgs {
+    type Output = GitHubListCommitsOutput;
+}
+
+impl ToolArgs for GetFileContentsArgs {
+    type Output = GitHubGetFileContentsOutput;
+}
+
+impl ToolArgs for CreateOrUpdateFileArgs {
+    type Output = GitHubCreateOrUpdateFileOutput;
+}
+
+impl ToolArgs for PushFilesArgs {
+    type Output = GitHubPushFilesOutput;
+}
+
+impl ToolArgs for SearchCodeArgs {
+    type Output = GitHubSearchCodeOutput;
+}
+
+impl ToolArgs for SearchRepositoriesArgs {
+    type Output = GitHubSearchReposOutput;
+}
+
+impl ToolArgs for SearchUsersArgs {
+    type Output = GitHubSearchUsersOutput;
+}
+
+impl ToolArgs for RequestCopilotReviewArgs {
+    type Output = GitHubRequestCopilotReviewOutput;
+}
+
+impl ToolArgs for CodeScanningAlertsArgs {
+    type Output = GitHubCodeScanningAlertsOutput;
+}
+
+impl ToolArgs for SecretScanningAlertsArgs {
+    type Output = GitHubSecretScanningAlertsOutput;
+}
+
+impl ToolArgs for GetMeArgs {
+    type Output = GitHubGetMeOutput;
+}

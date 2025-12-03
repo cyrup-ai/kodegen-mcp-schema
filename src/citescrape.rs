@@ -184,3 +184,78 @@ pub struct WebSearchPromptArgs {
     #[serde(default)]
     pub depth: Option<String>,
 }
+
+// ============================================================================
+// OUTPUT TYPES
+// ============================================================================
+
+/// Output from `scrape_url` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ScrapeUrlOutput {
+    pub crawl_id: u32,
+    pub status: String,
+    pub url: Option<String>,
+    pub pages_crawled: usize,
+    pub pages_queued: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub output_dir: Option<String>,
+    pub elapsed_ms: u64,
+    pub completed: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub error: Option<String>,
+    /// For LIST action
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub crawls: Option<Vec<CrawlSnapshot>>,
+    /// For SEARCH action
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub search_results: Option<Vec<ScrapeSearchResult>>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct CrawlSnapshot {
+    pub crawl_id: u32,
+    pub status: String,
+    pub url: Option<String>,
+    pub pages_crawled: usize,
+    pub elapsed_ms: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ScrapeSearchResult {
+    pub url: String,
+    pub title: Option<String>,
+    pub snippet: String,
+    pub score: f32,
+    pub path: Option<String>,
+}
+
+/// Output from `web_search` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct WebSearchOutput {
+    pub success: bool,
+    pub query: String,
+    pub results_count: usize,
+    pub results: Vec<WebSearchResultItem>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct WebSearchResultItem {
+    pub rank: u32,
+    pub title: String,
+    pub url: String,
+    pub snippet: Option<String>,
+}
+
+// ============================================================================
+// TOOL ARGS TRAIT IMPLEMENTATIONS
+// ============================================================================
+
+use crate::ToolArgs;
+
+impl ToolArgs for ScrapeUrlArgs {
+    type Output = ScrapeUrlOutput;
+}
+
+impl ToolArgs for WebSearchArgs {
+    type Output = WebSearchOutput;
+}

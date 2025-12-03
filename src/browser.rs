@@ -545,3 +545,189 @@ fn default_llm_timeout_secs() -> u64 {
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct BrowserAgentPromptArgs {}
+
+// ============================================================================
+// OUTPUT TYPES
+// ============================================================================
+
+/// Output from `browser_agent` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserAgentOutput {
+    /// Agent number
+    pub agent: u32,
+    /// Task being executed
+    pub task: String,
+    /// Current step count
+    pub steps_taken: usize,
+    /// Whether agent is complete
+    pub completed: bool,
+    /// Error message if any
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub error: Option<String>,
+    /// Progress summary
+    pub summary: String,
+    /// Detailed history
+    pub history: Vec<BrowserAgentStepInfo>,
+}
+
+/// Step information from browser agent execution
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserAgentStepInfo {
+    pub step: usize,
+    pub timestamp: String,
+    pub actions: Vec<String>,
+    pub summary: String,
+    pub complete: bool,
+}
+
+/// Output from agent kill action
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserAgentKillOutput {
+    /// Agent number that was killed
+    pub agent: u32,
+    /// Success message
+    pub message: String,
+}
+
+/// Output from `browser_research` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserResearchOutput {
+    pub session: u32,
+    pub status: String,
+    pub query: String,
+    pub pages_analyzed: usize,
+    pub max_pages: usize,
+    pub completed: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub summary: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub key_findings: Option<Vec<String>>,
+    pub sources: Vec<ResearchSource>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub error: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ResearchSource {
+    pub url: String,
+    pub title: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub summary: Option<String>,
+}
+
+/// Output from `browser_web_search` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserWebSearchOutput {
+    pub success: bool,
+    pub query: String,
+    pub results_count: usize,
+    pub results: Vec<WebSearchResult>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct WebSearchResult {
+    pub rank: u32,
+    pub title: String,
+    pub url: String,
+    pub snippet: Option<String>,
+}
+
+/// Output from `browser_navigate` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserNavigateOutput {
+    pub success: bool,
+    pub url: String,
+    pub title: Option<String>,
+    pub status_code: Option<u16>,
+}
+
+/// Output from `browser_screenshot` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserScreenshotOutput {
+    pub success: bool,
+    pub path: Option<String>,
+    pub width: u32,
+    pub height: u32,
+    pub format: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub base64: Option<String>,
+}
+
+/// Output from `browser_click` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserClickOutput {
+    pub success: bool,
+    pub selector: String,
+    pub message: String,
+}
+
+/// Output from `browser_type` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserTypeOutput {
+    pub success: bool,
+    pub selector: String,
+    pub text_length: usize,
+    pub message: String,
+}
+
+/// Output from `browser_scroll` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserScrollOutput {
+    pub success: bool,
+    pub direction: String,
+    pub amount: i32,
+    pub message: String,
+}
+
+/// Output from `browser_eval` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserEvalOutput {
+    pub success: bool,
+    pub result: serde_json::Value,
+}
+
+/// Output from `browser_extract_text` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct BrowserExtractTextOutput {
+    pub success: bool,
+    pub text: String,
+    pub length: usize,
+}
+
+// ============================================================================
+// TOOL ARGS TRAIT IMPLEMENTATIONS
+// ============================================================================
+
+use crate::ToolArgs;
+
+impl ToolArgs for BrowserAgentArgs {
+    type Output = BrowserAgentOutput;
+}
+
+impl ToolArgs for BrowserResearchArgs {
+    type Output = BrowserResearchOutput;
+}
+
+impl ToolArgs for BrowserNavigateArgs {
+    type Output = BrowserNavigateOutput;
+}
+
+impl ToolArgs for BrowserScreenshotArgs {
+    type Output = BrowserScreenshotOutput;
+}
+
+impl ToolArgs for BrowserClickArgs {
+    type Output = BrowserClickOutput;
+}
+
+impl ToolArgs for BrowserTypeTextArgs {
+    type Output = BrowserTypeOutput;
+}
+
+impl ToolArgs for BrowserScrollArgs {
+    type Output = BrowserScrollOutput;
+}
+
+impl ToolArgs for BrowserExtractTextArgs {
+    type Output = BrowserExtractTextOutput;
+}

@@ -215,3 +215,168 @@ pub struct CheckMemorizeStatusArgs {
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct CheckMemorizeStatusPromptArgs {}
+
+// ============================================================================
+// OUTPUT TYPES
+// ============================================================================
+
+/// Output from `claude_agent` tool
+/// Covers all actions: SPAWN, SEND, READ, LIST, KILL
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ClaudeAgentOutput {
+    /// Agent instance number
+    pub agent: u32,
+
+    /// Action that was performed
+    pub action: String,
+
+    /// Session ID (present for SPAWN, READ, SEND)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub session_id: Option<String>,
+
+    /// Output text from agent
+    pub output: String,
+
+    /// Number of messages in conversation (READ)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub message_count: Option<usize>,
+
+    /// Whether agent is actively working (READ)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub working: Option<bool>,
+
+    /// Whether the operation/agent completed
+    pub completed: bool,
+
+    /// Exit code (Some for completed, None for still running)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub exit_code: Option<i32>,
+
+    /// For LIST action - all agents
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub agents: Option<Vec<ClaudeAgentSummary>>,
+}
+
+/// Summary of a single agent for LIST action
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ClaudeAgentSummary {
+    /// Agent instance number
+    pub agent: u32,
+    /// Session ID
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub session_id: Option<String>,
+    /// Whether agent is actively working
+    pub working: bool,
+    /// Whether agent has completed
+    pub completed: bool,
+}
+
+/// Output from `memory_memorize` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct MemorizeOutput {
+    /// Session ID for tracking async progress
+    pub session_id: String,
+    /// Current status: IN_PROGRESS, COMPLETED, FAILED
+    pub status: String,
+    /// Library name
+    pub library: String,
+    /// Human-readable message
+    pub message: String,
+}
+
+/// Output from `memory_recall` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct RecallOutput {
+    /// Retrieved memories
+    pub memories: Vec<RecalledMemory>,
+    /// Library that was searched
+    pub library: String,
+    /// Number of results
+    pub count: usize,
+    /// Search time in milliseconds
+    pub elapsed_ms: f64,
+}
+
+/// A single recalled memory
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct RecalledMemory {
+    /// Memory ID
+    pub id: String,
+    /// Memory content
+    pub content: String,
+    /// Creation timestamp
+    pub created_at: String,
+    /// Cosine similarity score (0-1)
+    pub similarity: f32,
+    /// Importance score
+    pub importance: f32,
+    /// Combined score (similarity × importance)
+    pub score: f32,
+    /// Rank in results (1-indexed)
+    pub rank: usize,
+}
+
+/// Output from `memory_list_libraries` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ListMemoryLibrariesOutput {
+    /// List of library names
+    pub libraries: Vec<String>,
+    /// Number of libraries
+    pub count: usize,
+}
+
+/// Output from `memory_check_memorize_status` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct CheckMemorizeStatusOutput {
+    /// Session ID
+    pub session_id: String,
+    /// Current status: IN_PROGRESS, COMPLETED, FAILED
+    pub status: String,
+    /// Memory ID (present when completed)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub memory_id: Option<String>,
+    /// Library name
+    pub library: String,
+    /// Progress information
+    pub progress: MemorizeProgress,
+    /// Runtime in milliseconds
+    pub runtime_ms: u64,
+    /// Error message (present when failed)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub error: Option<String>,
+}
+
+/// Progress information for memorize operation
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct MemorizeProgress {
+    /// Current stage
+    pub stage: String,
+    /// Number of files loaded
+    pub files_loaded: usize,
+    /// Total bytes processed
+    pub total_size_bytes: usize,
+}
+
+// ============================================================================
+// TOOL ARGS TRAIT IMPLEMENTATIONS
+// ============================================================================
+
+impl crate::ToolArgs for ClaudeAgentArgs {
+    type Output = ClaudeAgentOutput;
+}
+
+impl crate::ToolArgs for MemorizeArgs {
+    type Output = MemorizeOutput;
+}
+
+impl crate::ToolArgs for RecallArgs {
+    type Output = RecallOutput;
+}
+
+impl crate::ToolArgs for ListMemoryLibrariesArgs {
+    type Output = ListMemoryLibrariesOutput;
+}
+
+impl crate::ToolArgs for CheckMemorizeStatusArgs {
+    type Output = CheckMemorizeStatusOutput;
+}

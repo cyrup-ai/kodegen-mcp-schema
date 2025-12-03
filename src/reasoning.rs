@@ -123,3 +123,81 @@ pub struct ReasonerPromptArgs {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub explanation_depth: Option<String>,
 }
+
+// ============================================================================
+// OUTPUT TYPES
+// ============================================================================
+
+/// Output from `reasoner` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ReasonerOutput {
+    /// Session/node identifier for this reasoning step
+    pub session_id: String,
+    /// Current thought number (echoed from input)
+    pub thought_number: usize,
+    /// Total thoughts expected (echoed from input)
+    pub total_thoughts: usize,
+    /// The thought content processed
+    pub thought: String,
+    /// Strategy used for this reasoning step
+    pub strategy: String,
+    /// Whether another thought step is needed
+    pub next_thought_needed: bool,
+    /// Best path score (if available)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub best_path_score: Option<f64>,
+    /// Number of possible paths/branches from this node
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub branches: Option<usize>,
+    /// Number of nodes in reasoning history
+    pub history_length: usize,
+    /// Quality score for this node (0.0-1.0)
+    pub score: f64,
+    /// Depth in reasoning tree
+    pub depth: usize,
+    /// Whether this thought completes a reasoning path
+    pub is_complete: bool,
+}
+
+/// Output from `sequential_thinking` tool
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct SequentialThinkingOutput {
+    /// Session identifier for maintaining state
+    pub session_id: String,
+    /// Current thought number
+    pub thought_number: u32,
+    /// Total thoughts expected
+    pub total_thoughts: u32,
+    /// The thought content
+    pub thought: String,
+    /// Whether another thought step is needed
+    pub next_thought_needed: bool,
+    /// Whether this was a revision of a previous thought
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_revision: Option<bool>,
+    /// Which thought was revised (if is_revision is true)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub revises_thought: Option<u32>,
+    /// Branch identifier (if branching)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub branch_id: Option<String>,
+    /// Which thought this branches from
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub branch_from_thought: Option<u32>,
+    /// List of active branches
+    pub branches: Vec<String>,
+    /// Total thoughts recorded in session history
+    pub thought_history_length: usize,
+}
+
+// ============================================================================
+// TOOL ARGS TRAIT IMPLEMENTATIONS
+// ============================================================================
+
+impl crate::ToolArgs for ReasonerArgs {
+    type Output = ReasonerOutput;
+}
+
+impl crate::ToolArgs for SequentialThinkingArgs {
+    type Output = SequentialThinkingOutput;
+}

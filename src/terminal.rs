@@ -3,6 +3,8 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+use crate::ToolArgs;
+
 // ============================================================================
 // CANONICAL TOOL NAME CONSTANTS
 // ============================================================================
@@ -92,15 +94,14 @@ pub struct TerminalInput {
 }
 
 /// Response from unified `terminal` tool
+///
+/// Note: Terminal output is returned in the display field (Vec[Content]0) only.
+/// This struct contains only metadata about the command execution.
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct TerminalOutput {
     /// Terminal number (None for LIST action which returns multiple terminals)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub terminal: Option<u32>,
-
-    /// Command output (80x24 VTE buffer - rendered terminal output, not raw bytes)
-    /// For LIST: JSON array of terminal snapshots
-    pub output: String,
 
     /// Exit code (Some(0) = success, Some(non-zero) = error, None = still running)
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -119,3 +120,11 @@ pub struct TerminalOutput {
 /// Prompt arguments for unified `terminal` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct TerminalPromptArgs {}
+
+// ============================================================================
+// TOOL ARGS IMPLEMENTATION (Args→Output Binding)
+// ============================================================================
+
+impl ToolArgs for TerminalInput {
+    type Output = TerminalOutput;
+}
