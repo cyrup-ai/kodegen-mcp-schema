@@ -1,6 +1,6 @@
 [package]
 name = "kodegen_mcp_schema"
-version = "0.5.4"
+version = "0.6.0"
 edition = "2024"
 description = "KODEGEN.ᴀɪ: Memory-efficient, Blazing-Fast, MCP tools for code generation agents."
 license = "Apache-2.0 OR MIT"
@@ -21,3 +21,5 @@ keywords = [
 serde = { version = "1", features = ["derive"] }
 schemars = "1"
 serde_json = "1"
+thiserror = "2"
+rmcp = "0.10"

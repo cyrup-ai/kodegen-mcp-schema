@@ -19,16 +19,11 @@ pub const BROWSER_SCROLL: &str = "browser_scroll";
 
 // Advanced browser tools
 pub const BROWSER_AGENT: &str = "browser_agent";
+pub const BROWSER_AGENT_KILL: &str = "browser_agent_kill";
+pub const BROWSER_EVAL: &str = "browser_eval";
 
-// Research (long-running with progress streaming)
+// Research (unified tool with action-based dispatch: RESEARCH/READ/LIST/KILL)
 pub const BROWSER_RESEARCH: &str = "browser_research";
-
-// Research session management (DEPRECATED - will be removed)
-pub const BROWSER_START_RESEARCH: &str = "browser_start_research";
-pub const BROWSER_GET_RESEARCH_STATUS: &str = "browser_get_research_status";
-pub const BROWSER_GET_RESEARCH_RESULT: &str = "browser_get_research_result";
-pub const BROWSER_STOP_RESEARCH: &str = "browser_stop_research";
-pub const BROWSER_LIST_RESEARCH_SESSIONS: &str = "browser_list_research_sessions";
 
 // Web search
 pub const BROWSER_WEB_SEARCH: &str = "browser_web_search";
@@ -210,50 +205,8 @@ pub struct BrowserResearchPromptArgs {
 }
 
 // ============================================================================
-// ASYNC RESEARCH SESSION MANAGEMENT (DEPRECATED - kept for compatibility)
+// ACTION-BASED HELPERS
 // ============================================================================
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct StartBrowserResearchArgs {
-    /// Research query or topic to investigate
-    pub query: String,
-
-    /// Maximum number of pages to visit (default: 5)
-    #[serde(default = "default_max_pages")]
-    pub max_pages: usize,
-
-    /// Maximum link-following depth (default: 2)
-    #[serde(default = "default_max_depth")]
-    pub max_depth: usize,
-
-    /// Search engine to use: "google", "bing", "duckduckgo" (default: "google")
-    #[serde(default = "default_search_engine")]
-    pub search_engine: String,
-
-    /// Include hyperlinks in content extraction (default: true)
-    #[serde(default = "default_true")]
-    pub include_links: bool,
-
-    /// Extract and parse HTML tables (default: true)
-    #[serde(default = "default_true")]
-    pub extract_tables: bool,
-
-    /// Extract image URLs and alt text (default: false)
-    #[serde(default = "default_false")]
-    pub extract_images: bool,
-
-    /// Timeout per page navigation in seconds (default: 60)
-    #[serde(default = "default_timeout")]
-    pub timeout_seconds: u64,
-
-    /// LLM temperature for summarization (0.0=deterministic, 2.0=creative, default: 0.5)
-    #[serde(default = "default_temperature")]
-    pub temperature: f64,
-
-    /// Maximum tokens for LLM summary generation (default: 2048)
-    #[serde(default = "default_max_tokens")]
-    pub max_tokens: u64,
-}
 
 fn default_max_pages() -> usize {
     5
@@ -280,10 +233,6 @@ fn default_max_tokens() -> u64 {
     2048
 }
 
-// ============================================================================
-// ACTION-BASED HELPERS
-// ============================================================================
-
 fn zero() -> u32 {
     0
 }
@@ -295,42 +244,6 @@ fn default_research_timeout_ms() -> u64 {
 fn default_agent_timeout_ms() -> u64 {
     600000 // 10 minutes
 }
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct StartBrowserResearchPromptArgs {}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetResearchStatusArgs {
-    /// Unique session identifier returned from start_browser_research
-    pub session_id: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetResearchStatusPromptArgs {}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetResearchResultArgs {
-    /// Unique session identifier returned from start_browser_research
-    pub session_id: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetResearchResultPromptArgs {}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct StopBrowserResearchArgs {
-    /// Unique session identifier returned from start_browser_research
-    pub session_id: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct StopBrowserResearchPromptArgs {}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListResearchSessionsArgs {}
-
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct ListResearchSessionsPromptArgs {}
 
 // ============================================================================
 // EXTRACT TEXT

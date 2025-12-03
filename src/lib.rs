@@ -58,6 +58,7 @@ pub mod prompt;
 pub mod introspection;
 pub mod process;
 pub mod config;
+pub mod deserialize;
 
 // Re-export all types at crate root for convenience
 // Note: ToolArgs trait is already defined in this file, no need to re-export
@@ -74,3 +75,12 @@ pub use prompt::*;
 pub use introspection::*;
 pub use process::*;
 pub use config::*;
+
+// Re-export deserialize utilities
+pub use deserialize::{
+    DeserializeError,
+    AnyToolOutput,
+    ToolOutputResult,
+    deserialize_tool_output,
+    deserialize_typed_only,
+};

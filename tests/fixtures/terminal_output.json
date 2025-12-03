@@ -1,0 +1,10 @@
+[
+    {
+        "type": "text",
+        "text": "📟 Terminal 0: Command completed successfully\n⏱️  Duration: 1523ms\n📁 Working directory: /home/user/project\n✅ Exit code: 0"
+    },
+    {
+        "type": "text",
+        "text": "{\"terminal\":0,\"exit_code\":0,\"cwd\":\"/home/user/project\",\"duration_ms\":1523,\"completed\":true}"
+    }
+]

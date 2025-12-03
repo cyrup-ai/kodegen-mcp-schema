@@ -105,7 +105,7 @@ pub const GIT_TAG: &str = "git_tag";
 // ============================================================================
 
 /// Arguments for `git_init` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitInitArgs {
     /// Path where to initialize the repository
     pub path: String,
@@ -128,7 +128,7 @@ pub struct GitInitPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_open` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitOpenArgs {
     /// Path to the existing repository
     pub path: String,
@@ -143,7 +143,7 @@ pub struct GitOpenPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_clone` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitCloneArgs {
     /// Git URL to clone from (https:// or git://)
     pub url: String,
@@ -169,7 +169,7 @@ pub struct GitClonePromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_discover` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitDiscoverArgs {
     /// Path to search from (can be subdirectory within a repo)
     pub path: String,
@@ -184,7 +184,7 @@ pub struct GitDiscoverPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_add` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitAddArgs {
     /// Path to repository
     pub path: String,
@@ -213,7 +213,7 @@ pub struct GitAddPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_commit` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitCommitArgs {
     /// Path to repository
     pub path: String,
@@ -243,7 +243,7 @@ pub struct GitCommitPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_log` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitLogArgs {
     /// Path to repository
     pub path: String,
@@ -270,7 +270,7 @@ pub struct GitLogPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_history` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitHistoryArgs {
     /// Path to repository
     pub path: String,
@@ -308,7 +308,7 @@ pub struct GitHistoryPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_diff` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitDiffArgs {
     /// Path to repository
     pub path: String,
@@ -330,7 +330,7 @@ pub struct GitDiffPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_branch_create` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitBranchCreateArgs {
     /// Path to repository
     pub path: String,
@@ -360,7 +360,7 @@ pub struct GitBranchCreatePromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_branch_delete` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitBranchDeleteArgs {
     /// Path to repository
     pub path: String,
@@ -382,7 +382,7 @@ pub struct GitBranchDeletePromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_branch_list` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitBranchListArgs {
     /// Path to repository
     pub path: String,
@@ -397,7 +397,7 @@ pub struct GitBranchListPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_branch_rename` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitBranchRenameArgs {
     /// Path to repository
     pub path: String,
@@ -422,7 +422,7 @@ pub struct GitBranchRenamePromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_checkout` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitCheckoutArgs {
     /// Path to repository
     pub path: String,
@@ -456,7 +456,7 @@ fn default_remote() -> String {
 }
 
 /// Arguments for `git_fetch` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitFetchArgs {
     /// Path to repository
     pub path: String,
@@ -490,7 +490,7 @@ fn default_true() -> bool {
 }
 
 /// Arguments for `git_merge` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitMergeArgs {
     /// Path to repository
     pub path: String,
@@ -518,7 +518,7 @@ pub struct GitMergePromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_worktree_add` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitWorktreeAddArgs {
     /// Path to repository
     pub path: String,
@@ -545,7 +545,7 @@ pub struct GitWorktreeAddPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_worktree_list` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitWorktreeListArgs {
     /// Path to repository
     pub path: String,
@@ -560,7 +560,7 @@ pub struct GitWorktreeListPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_worktree_lock` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitWorktreeLockArgs {
     /// Path to repository
     pub path: String,
@@ -583,7 +583,7 @@ pub struct GitWorktreeLockPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_worktree_unlock` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitWorktreeUnlockArgs {
     /// Path to repository
     pub path: String,
@@ -601,7 +601,7 @@ pub struct GitWorktreeUnlockPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_worktree_prune` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitWorktreePruneArgs {
     /// Path to repository
     pub path: String,
@@ -616,7 +616,7 @@ pub struct GitWorktreePrunePromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_worktree_remove` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitWorktreeRemoveArgs {
     /// Path to repository
     pub path: String,
@@ -638,7 +638,7 @@ pub struct GitWorktreeRemovePromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_pull` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitPullArgs {
     /// Path to repository
     pub path: String,
@@ -665,7 +665,7 @@ pub struct GitPullPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_push` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitPushArgs {
     /// Path to repository
     pub path: String,
@@ -703,7 +703,7 @@ pub struct GitPushPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_remote_add` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitRemoteAddArgs {
     /// Path to repository
     pub path: String,
@@ -728,7 +728,7 @@ pub struct GitRemoteAddPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_remote_list` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitRemoteListArgs {
     /// Path to repository
     pub path: String,
@@ -743,7 +743,7 @@ pub struct GitRemoteListPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_remote_remove` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitRemoteRemoveArgs {
     /// Path to repository
     pub path: String,
@@ -777,7 +777,7 @@ fn default_reset_mode() -> ResetMode {
 }
 
 /// Arguments for `git_reset` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitResetArgs {
     /// Path to repository
     pub path: String,
@@ -799,7 +799,7 @@ pub struct GitResetPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_status` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitStatusArgs {
     /// Path to repository
     pub path: String,
@@ -814,7 +814,7 @@ pub struct GitStatusPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_tag` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitTagArgs {
     /// Path to repository
     pub path: String,
@@ -853,7 +853,7 @@ pub struct GitTagPromptArgs {}
 // ============================================================================
 
 /// Arguments for `git_stash` tool
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 pub struct GitStashArgs {
     /// Path to repository
     pub path: String,
