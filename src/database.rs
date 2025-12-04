@@ -283,11 +283,49 @@ pub struct ListTablesOutput {
     pub count: usize,
 }
 
+// ============================================================================
+// TYPED SQL RESULT STRUCTURES (ZERO TOLERANCE COMPLIANCE)
+// ============================================================================
+
+/// Typed SQL value - covers all SQL types without serde_json::Value
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+#[serde(tag = "type", content = "value")]
+pub enum SqlValue {
+    Null,
+    Bool(bool),
+    Int(i64),
+    Float(f64),
+    Text(String),
+    Blob(Vec<u8>),  // base64 encoded in JSON serialization
+}
+
+/// A typed column value with name and typed value
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct SqlColumnValue {
+    pub name: String,
+    pub value: SqlValue,
+}
+
+/// A single SQL row with typed column access
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct SqlRow {
+    /// Column values with names and typed values
+    pub columns: Vec<SqlColumnValue>,
+}
+
+/// Error information for a failed SQL statement
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct SqlStatementError {
+    pub statement_index: usize,
+    pub statement: String,
+    pub error: String,
+}
+
 /// Output from `db_execute_sql` tool
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct ExecuteSQLOutput {
     pub columns: Vec<String>,
-    pub rows: Vec<serde_json::Value>,
+    pub rows: Vec<SqlRow>,  // ✅ TYPED - was Vec<serde_json::Value>
     pub row_count: usize,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub affected_rows: Option<u64>,
@@ -297,7 +335,7 @@ pub struct ExecuteSQLOutput {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub total_statements: Option<usize>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub errors: Option<Vec<serde_json::Value>>,
+    pub errors: Option<Vec<SqlStatementError>>,  // ✅ TYPED - was Vec<serde_json::Value>
 }
 
 /// Output from `db_table_schema` tool

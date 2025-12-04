@@ -1753,15 +1753,6 @@ pub struct GitHubRequestCopilotReviewOutput {
 
 use crate::ToolArgs;
 
-/// Generic output for GitHub tools not yet migrated to typed outputs
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GitHubGenericOutput {
-    pub success: bool,
-    pub message: String,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub data: Option<serde_json::Value>,
-}
-
 // Issue Tools
 impl ToolArgs for GetIssueArgs {
     type Output = GitHubGetIssueOutput;

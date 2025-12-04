@@ -4,6 +4,8 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+use crate::prompt::TemplateParamValue;
+
 // ============================================================================
 // PROMPT INPUT TYPES (shared across tools)
 // ============================================================================
@@ -29,7 +31,7 @@ pub struct PromptTemplateInput {
 
     /// Parameters to pass to template rendering
     #[serde(default)]
-    pub parameters: HashMap<String, serde_json::Value>,
+    pub parameters: HashMap<String, TemplateParamValue>,
 }
 
 // ============================================================================
@@ -262,11 +264,17 @@ pub struct ClaudeAgentOutput {
 pub struct ClaudeAgentSummary {
     /// Agent instance number
     pub agent: u32,
-    /// Session ID
+    
+    /// Session UUID
     #[serde(skip_serializing_if = "Option::is_none")]
     pub session_id: Option<String>,
+    
+    /// Total messages in conversation
+    pub message_count: usize,
+    
     /// Whether agent is actively working
     pub working: bool,
+    
     /// Whether agent has completed
     pub completed: bool,
 }
