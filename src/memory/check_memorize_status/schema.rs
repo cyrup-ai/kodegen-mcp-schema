@@ -61,9 +61,14 @@ pub struct MemorizeProgress {
 // TOOL ARGS TRAIT IMPLEMENTATION
 // ============================================================================
 
-use crate::ToolArgs;
+use crate::{ToolArgs, tool_metadata};
 use super::prompts::CheckMemorizeStatusPrompts;
 
+#[tool_metadata(
+    name = "memory_check_memorize_status",
+    category = "memory",
+    description = "Check the status of a memorize operation. Use this to verify if an asynchronous memorization has completed, is still in progress, or has failed."
+)]
 impl ToolArgs for CheckMemorizeStatusArgs {
     type Output = CheckMemorizeStatusOutput;
     type Prompts = CheckMemorizeStatusPrompts;

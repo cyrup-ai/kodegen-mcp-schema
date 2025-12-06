@@ -44,9 +44,14 @@ pub struct MemorizeOutput {
 // TOOL ARGS TRAIT IMPLEMENTATION
 // ============================================================================
 
-use crate::ToolArgs;
+use crate::{ToolArgs, tool_metadata};
 use super::prompts::MemorizePrompts;
 
+#[tool_metadata(
+    name = "memory_memorize",
+    category = "memory",
+    description = "Store content in a named memory library with automatic embedding generation. The memory will be tagged with the library name and can be retrieved later using recall(). Each library is a separate namespace for organizing memories."
+)]
 impl ToolArgs for MemorizeArgs {
     type Output = MemorizeOutput;
     type Prompts = MemorizePrompts;

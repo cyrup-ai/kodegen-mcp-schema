@@ -35,9 +35,14 @@ pub struct ListMemoryLibrariesOutput {
 // TOOL ARGS TRAIT IMPLEMENTATION
 // ============================================================================
 
-use crate::ToolArgs;
+use crate::{ToolArgs, tool_metadata};
 use super::prompts::MemoryListLibrariesPrompts;
 
+#[tool_metadata(
+    name = "memory_list_libraries",
+    category = "memory",
+    description = "List all unique memory library names that have been created. Returns a list of all libraries that contain at least one memory. Use this to discover what libraries are available for recall."
+)]
 impl ToolArgs for ListMemoryLibrariesArgs {
     type Output = ListMemoryLibrariesOutput;
     type Prompts = MemoryListLibrariesPrompts;

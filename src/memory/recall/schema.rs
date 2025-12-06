@@ -74,9 +74,14 @@ pub struct RecalledMemory {
 // TOOL ARGS TRAIT IMPLEMENTATION
 // ============================================================================
 
-use crate::ToolArgs;
+use crate::{ToolArgs, tool_metadata};
 use super::prompts::MemoryRecallPrompts;
 
+#[tool_metadata(
+    name = "memory_recall",
+    category = "memory",
+    description = "Retrieve relevant memories from a library using semantic search. Searches for content similar to the provided context and returns the most relevant results. Uses vector similarity (cosine) to find semantically related memories."
+)]
 impl ToolArgs for RecallArgs {
     type Output = RecallOutput;
     type Prompts = MemoryRecallPrompts;
