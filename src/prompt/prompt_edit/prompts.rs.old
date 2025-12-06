@@ -1,0 +1,496 @@
+//! Prompt messages for edit_prompt tool
+
+use crate::tool::PromptProvider;
+use rmcp::model::{PromptMessage, PromptMessageRole, PromptMessageContent, PromptArgument};
+use super::prompt_args::EditPromptPromptArgs;
+
+/// Prompt provider for edit_prompt tool
+///
+/// This is the ONLY way to provide prompts for edit_prompt - tools cannot implement inline.
+/// The PromptProvider trait is sealed and can only be implemented in kodegen-mcp-schema.
+pub struct PromptEditPrompts;
+
+impl PromptProvider for PromptEditPrompts {
+    type PromptArgs = EditPromptPromptArgs;
+
+    fn generate_prompts(args: &Self::PromptArgs) -> Vec<PromptMessage> {
+        match args.scenario.as_deref() {
+            Some("basic") => prompt_basic(),
+            Some("refinement") => prompt_refinement(),
+            Some("versioning") => prompt_versioning(),
+            Some("workflows") => prompt_workflows(),
+            _ => prompt_comprehensive(),
+        }
+    }
+
+    fn prompt_arguments() -> Vec<PromptArgument> {
+        vec![
+            PromptArgument {
+                name: "scenario".to_string(),
+                title: None,
+                description: Some("Scenario to show (basic, refinement, versioning, workflows, comprehensive)".to_string()),
+                required: Some(false),
+            }
+        ]
+    }
+}
+
+// ============================================================================
+// HELPER FUNCTIONS - TEACH AI AGENTS HOW TO EDIT PROMPTS
+// ============================================================================
+
+/// Basic prompt editing operations
+fn prompt_basic() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I edit existing prompt templates?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "EDITING PROMPTS:\n\n\
+                 1. Update content:\n\
+                    edit_prompt({\n\
+                        \"name\": \"code-review\",\n\
+                        \"content\": \"Improved review prompt:\\n\\n{{ code }}\\n\\nFocus on: {{ focus | default('general quality') }}\"\n\
+                    })\n\n\
+                 RESPONSE:\n\
+                 {\n\
+                   \"name\": \"code-review\",\n\
+                   \"updated\": true,\n\
+                   \"previous_content\": \"Old template...\"\n\
+                 }\n\n\
+                 2. Update description:\n\
+                    edit_prompt({\n\
+                        \"name\": \"code-review\",\n\
+                        \"description\": \"Enhanced code review with focus areas\"\n\
+                    })\n\n\
+                 3. Update both:\n\
+                    edit_prompt({\n\
+                        \"name\": \"code-review\",\n\
+                        \"content\": \"New template...\",\n\
+                        \"description\": \"Updated description\"\n\
+                    })\n\n\
+                 EDIT BEHAVIOR:\n\
+                 - Only specified fields updated\n\
+                 - Unspecified fields preserved\n\
+                 - Returns previous content for reference",
+            ),
+        },
+    ]
+}
+
+/// Iterative refinement patterns
+fn prompt_refinement() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I iteratively refine a prompt template?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "ITERATIVE REFINEMENT:\n\n\
+                 1. Create initial prompt:\n\
+                    add_prompt({\n\
+                        \"name\": \"bug-analysis\",\n\
+                        \"content\": \"Analyze bug:\\n{{ error }}\"\n\
+                    })\n\n\
+                 2. Test and identify issues:\n\
+                    get_prompt({\n\
+                        \"name\": \"bug-analysis\",\n\
+                        \"variables\": { \"error\": \"null pointer\" }\n\
+                    })\n\
+                    // Realizes prompt needs more context\n\n\
+                 3. Refine:\n\
+                    edit_prompt({\n\
+                        \"name\": \"bug-analysis\",\n\
+                        \"content\": \"Analyze bug:\\n\\nError: {{ error }}\\n\\nContext: {{ context | default('none') }}\\n\\nProvide:\\n1. Root cause\\n2. Fix suggestion\"\n\
+                    })\n\n\
+                 4. Test again:\n\
+                    get_prompt({\n\
+                        \"name\": \"bug-analysis\",\n\
+                        \"variables\": {\n\
+                            \"error\": \"null pointer\",\n\
+                            \"context\": \"line 45 in main.rs\"\n\
+                        }\n\
+                    })\n\n\
+                 5. Further refine if needed:\n\
+                    edit_prompt({\n\
+                        \"name\": \"bug-analysis\",\n\
+                        \"content\": \"...\"\n\
+                    })\n\n\
+                 REFINEMENT CYCLE:\n\
+                 - Create → Test → Refine → Repeat\n\
+                 - Keep improving until satisfied\n\
+                 - Use get_prompt to validate changes",
+            ),
+        },
+    ]
+}
+
+/// Version management strategies
+fn prompt_versioning() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I manage different versions of prompt templates?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "VERSION MANAGEMENT:\n\n\
+                 1. Version via naming:\n\
+                    // Original\n\
+                    add_prompt({\n\
+                        \"name\": \"review-v1\",\n\
+                        \"content\": \"Basic review...\"\n\
+                    })\n\n\
+                    // After improvements\n\
+                    add_prompt({\n\
+                        \"name\": \"review-v2\",\n\
+                        \"content\": \"Improved review...\"\n\
+                    })\n\n\
+                 2. Track changes in description:\n\
+                    edit_prompt({\n\
+                        \"name\": \"code-review\",\n\
+                        \"content\": \"New improved template...\",\n\
+                        \"description\": \"v2: Added focus areas and security checks\"\n\
+                    })\n\n\
+                 3. Maintain backward compatibility:\n\
+                    // Keep old name working\n\
+                    edit_prompt({\n\
+                        \"name\": \"legacy-review\",\n\
+                        \"content\": \"{{ code }}\"  // Simple for old integrations\n\
+                    })\n\n\
+                    // New version with features\n\
+                    add_prompt({\n\
+                        \"name\": \"review-enhanced\",\n\
+                        \"content\": \"{{ code }}\\n{% if security %}Security focus{% endif %}\"\n\
+                    })\n\n\
+                 VERSIONING STRATEGIES:\n\
+                 - Suffix: prompt-v1, prompt-v2\n\
+                 - Dated: prompt-2024-01\n\
+                 - Feature: prompt-basic, prompt-enhanced",
+            ),
+        },
+    ]
+}
+
+/// Edit workflows and patterns
+fn prompt_workflows() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "What are common workflows for editing prompt templates?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "EDIT WORKFLOWS:\n\n\
+                 1. Fix template bug:\n\
+                    // Discover issue\n\
+                    get_prompt({\n\
+                        \"name\": \"broken-prompt\",\n\
+                        \"variables\": { \"x\": \"test\" }\n\
+                    })\n\
+                    // Error: undefined variable 'y'\n\n\
+                    // Fix the template\n\
+                    edit_prompt({\n\
+                        \"name\": \"broken-prompt\",\n\
+                        \"content\": \"Fixed: {{ x | default('') }}\"\n\
+                    })\n\n\
+                 2. Add new feature:\n\
+                    // Get current\n\
+                    get_prompt({ \"name\": \"review\" })\n\
+                    // See: \"Review {{ code }}\"\n\n\
+                    // Add feature\n\
+                    edit_prompt({\n\
+                        \"name\": \"review\",\n\
+                        \"content\": \"Review {{ code }}\\n\\n{% if checklist %}Checklist:\\n{% for item in checklist %}- {{ item }}\\n{% endfor %}{% endif %}\"\n\
+                    })\n\n\
+                 3. Simplify complex prompt:\n\
+                    edit_prompt({\n\
+                        \"name\": \"over-engineered\",\n\
+                        \"content\": \"Simplified: {{ main_input }}\"\n\
+                    })\n\n\
+                 4. Update for new requirements:\n\
+                    edit_prompt({\n\
+                        \"name\": \"code-review\",\n\
+                        \"content\": \"Review with NEW framework guidelines:\\n\\n{{ code }}\",\n\
+                        \"description\": \"Updated for 2024 guidelines\"\n\
+                    })\n\n\
+                 WORKFLOW PATTERNS:\n\
+                 - Bug fix: Identify → Edit → Verify\n\
+                 - Enhancement: Plan → Edit → Test\n\
+                 - Simplification: Review → Edit → Confirm",
+            ),
+        },
+    ]
+}
+
+/// Comprehensive guide covering all aspects
+fn prompt_comprehensive() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "Give me a complete guide to editing prompt templates.",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "COMPLETE EDIT_PROMPT GUIDE:\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 OVERVIEW\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 edit_prompt modifies existing prompts:\n\
+                 - Update template content\n\
+                 - Update description\n\
+                 - Partial updates (only what you specify)\n\
+                 - Returns previous content\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 BASIC USAGE\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Update content:\n\
+                 edit_prompt({\n\
+                     \"name\": \"prompt-name\",\n\
+                     \"content\": \"new template content\"\n\
+                 })\n\n\
+                 Update description:\n\
+                 edit_prompt({\n\
+                     \"name\": \"prompt-name\",\n\
+                     \"description\": \"new description\"\n\
+                 })\n\n\
+                 Update both:\n\
+                 edit_prompt({\n\
+                     \"name\": \"prompt-name\",\n\
+                     \"content\": \"...\",\n\
+                     \"description\": \"...\"\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 RESPONSE FORMAT\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 {\n\
+                   \"name\": \"prompt-name\",\n\
+                   \"updated\": true,\n\
+                   \"previous_content\": \"old template\",\n\
+                   \"previous_description\": \"old description\"\n\
+                 }\n\n\
+                 Use previous_* for rollback if needed.\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 EDIT SCENARIOS\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Fix syntax error:\n\
+                 edit_prompt({\n\
+                     \"name\": \"broken\",\n\
+                     \"content\": \"{% if x %}{{ x }}{% endif %}\"  // Fixed unclosed tag\n\
+                 })\n\n\
+                 Add variable:\n\
+                 edit_prompt({\n\
+                     \"name\": \"simple\",\n\
+                     \"content\": \"Old: {{ a }}\\nNew: {{ a }} and {{ b }}\"\n\
+                 })\n\n\
+                 Add conditional:\n\
+                 edit_prompt({\n\
+                     \"name\": \"basic\",\n\
+                     \"content\": \"{{ main }}{% if extra %}\\nExtra: {{ extra }}{% endif %}\"\n\
+                 })\n\n\
+                 Change structure:\n\
+                 edit_prompt({\n\
+                     \"name\": \"flat\",\n\
+                     \"content\": \"# {{ title }}\\n\\n{{ body }}\\n\\n## Notes\\n{{ notes }}\"\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 REFINEMENT WORKFLOW\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Step 1 - Inspect current:\n\
+                 get_prompt({ \"name\": \"my-prompt\" })\n\n\
+                 Step 2 - Identify improvement:\n\
+                 // Note what's missing or wrong\n\n\
+                 Step 3 - Edit:\n\
+                 edit_prompt({\n\
+                     \"name\": \"my-prompt\",\n\
+                     \"content\": \"improved version...\"\n\
+                 })\n\n\
+                 Step 4 - Test:\n\
+                 get_prompt({\n\
+                     \"name\": \"my-prompt\",\n\
+                     \"variables\": { ... }\n\
+                 })\n\n\
+                 Step 5 - Iterate if needed:\n\
+                 edit_prompt({ ... })  // Further refinement\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 ERROR HANDLING\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Prompt not found:\n\
+                 { \"error\": \"prompt 'name' not found\" }\n\
+                 → Use add_prompt instead\n\n\
+                 Invalid template:\n\
+                 { \"error\": \"template syntax error\" }\n\
+                 → Fix Jinja2 syntax before saving\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 INTEGRATION WITH OTHER TOOLS\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Edit after testing:\n\
+                 result = get_prompt({ \"name\": \"x\", \"variables\": {...} })\n\
+                 // Analyze result\n\
+                 edit_prompt({ \"name\": \"x\", \"content\": \"improved...\" })\n\n\
+                 Edit based on usage:\n\
+                 // After using prompt in workflow\n\
+                 edit_prompt({\n\
+                     \"name\": \"review\",\n\
+                     \"description\": \"Works well for Rust, needs adjustment for Python\"\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 BEST PRACTICES\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 1. Always get_prompt first to see current state\n\
+                 2. Save previous content from response for rollback\n\
+                 3. Test with get_prompt after editing\n\
+                 4. Update description when changing behavior\n\
+                 5. Use versioned names for major changes\n\
+                 6. Document changes in description\n\
+                 7. Validate template syntax before saving\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 COMMON EDIT PATTERNS\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 PATTERN 1: Bug Fix Workflow\n\
+                 1. Discover issue through testing\n\
+                 2. Identify root cause in template\n\
+                 3. Edit to fix\n\
+                 4. Verify with test cases\n\n\
+                 PATTERN 2: Feature Addition\n\
+                 1. Review current template\n\
+                 2. Plan new feature integration\n\
+                 3. Edit to add feature\n\
+                 4. Test with and without feature\n\n\
+                 PATTERN 3: Incremental Refinement\n\
+                 1. Use prompt and gather feedback\n\
+                 2. Identify improvement areas\n\
+                 3. Make small targeted edits\n\
+                 4. Test each change\n\
+                 5. Repeat until optimal\n\n\
+                 PATTERN 4: Version Migration\n\
+                 1. Create new version with suffix\n\
+                 2. Test new version thoroughly\n\
+                 3. Edit old version to reference new\n\
+                 4. Eventually deprecate old version\n\n\
+                 PATTERN 5: Simplification\n\
+                 1. Identify unnecessary complexity\n\
+                 2. Edit to simplify\n\
+                 3. Verify functionality preserved\n\
+                 4. Update description to reflect changes\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 ADVANCED TECHNIQUES\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Conditional Content:\n\
+                 edit_prompt({\n\
+                     \"name\": \"flexible\",\n\
+                     \"content\": \"{{ base }}{% if advanced %}\\n\\nAdvanced: {{ advanced_content }}{% endif %}\"\n\
+                 })\n\n\
+                 Loops for Lists:\n\
+                 edit_prompt({\n\
+                     \"name\": \"list-processor\",\n\
+                     \"content\": \"Items:\\n{% for item in items %}- {{ item }}\\n{% endfor %}\"\n\
+                 })\n\n\
+                 Default Values:\n\
+                 edit_prompt({\n\
+                     \"name\": \"with-defaults\",\n\
+                     \"content\": \"Name: {{ name | default('Unknown') }}\\nAge: {{ age | default(0) }}\"\n\
+                 })\n\n\
+                 Filters and Transformations:\n\
+                 edit_prompt({\n\
+                     \"name\": \"formatted\",\n\
+                     \"content\": \"{{ text | upper }}\\n{{ name | capitalize }}\\n{{ count | string }}\"\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 TESTING AFTER EDITS\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Test with minimal variables:\n\
+                 get_prompt({\n\
+                     \"name\": \"edited-prompt\",\n\
+                     \"variables\": { \"required_var\": \"value\" }\n\
+                 })\n\n\
+                 Test with all variables:\n\
+                 get_prompt({\n\
+                     \"name\": \"edited-prompt\",\n\
+                     \"variables\": {\n\
+                         \"required_var\": \"value\",\n\
+                         \"optional_var\": \"value2\",\n\
+                         \"list_var\": [\"a\", \"b\", \"c\"]\n\
+                     }\n\
+                 })\n\n\
+                 Test edge cases:\n\
+                 get_prompt({\n\
+                     \"name\": \"edited-prompt\",\n\
+                     \"variables\": {\n\
+                         \"required_var\": \"\",  // Empty string\n\
+                         \"list_var\": []  // Empty list\n\
+                     }\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 ROLLBACK AND RECOVERY\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Save response for rollback:\n\
+                 response = edit_prompt({ \"name\": \"x\", \"content\": \"new\" })\n\
+                 // If new version has issues:\n\
+                 edit_prompt({\n\
+                     \"name\": \"x\",\n\
+                     \"content\": response.previous_content\n\
+                 })\n\n\
+                 Create backup before major edits:\n\
+                 // Get current version\n\
+                 current = get_prompt({ \"name\": \"important\" })\n\
+                 // Create backup\n\
+                 add_prompt({\n\
+                     \"name\": \"important-backup\",\n\
+                     \"content\": current.content\n\
+                 })\n\
+                 // Now safe to edit\n\
+                 edit_prompt({ \"name\": \"important\", \"content\": \"new\" })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 COMMON MISTAKES TO AVOID\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 1. Editing without testing first\n\
+                    → Always test current version before editing\n\n\
+                 2. Not saving previous content\n\
+                    → Response includes previous_content for rollback\n\n\
+                 3. Breaking existing variables\n\
+                    → Ensure all referenced variables still work\n\n\
+                 4. Forgetting to update description\n\
+                    → Description should reflect current functionality\n\n\
+                 5. Making too many changes at once\n\
+                    → Edit incrementally and test each change\n\n\
+                 6. Not testing edge cases\n\
+                    → Test with empty strings, missing optionals, etc.\n\n\
+                 7. Ignoring syntax errors\n\
+                    → Validate Jinja2 syntax before saving\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 QUICK REFERENCE\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Edit content only:\n\
+                 edit_prompt({ \"name\": \"x\", \"content\": \"new\" })\n\n\
+                 Edit description only:\n\
+                 edit_prompt({ \"name\": \"x\", \"description\": \"new desc\" })\n\n\
+                 Edit both:\n\
+                 edit_prompt({ \"name\": \"x\", \"content\": \"new\", \"description\": \"new desc\" })\n\n\
+                 Test after edit:\n\
+                 get_prompt({ \"name\": \"x\", \"variables\": {...} })\n\n\
+                 Rollback:\n\
+                 edit_prompt({ \"name\": \"x\", \"content\": response.previous_content })\n\n\
+                 Remember: Edit incrementally, test thoroughly, and always have a rollback plan!",
+            ),
+        },
+    ]
+}

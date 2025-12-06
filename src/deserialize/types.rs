@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 use schemars::JsonSchema;
-use crate::{browser, citescrape, claude_agent, config, database, filesystem, git, github, introspection, process, prompt, reasoning, terminal};
+use crate::{browser, citescrape, claude_agent, config, database, filesystem, git, github, introspection, memory, process, prompt, reasoning, terminal};
 
 /// Combined result containing both display text and typed output.
 ///
@@ -153,13 +153,17 @@ pub enum AnyToolOutput {
     Terminal(terminal::TerminalOutput),
 
     // ========================================================================
-    // CLAUDE AGENT TOOLS (5 tools)
+    // CLAUDE AGENT TOOLS (1 tool)
     // ========================================================================
     ClaudeAgent(claude_agent::ClaudeAgentOutput),
-    MemoryMemorize(claude_agent::MemorizeOutput),
-    MemoryRecall(claude_agent::RecallOutput),
-    MemoryListLibraries(claude_agent::ListMemoryLibrariesOutput),
-    MemoryCheckMemorizeStatus(claude_agent::CheckMemorizeStatusOutput),
+
+    // ========================================================================
+    // MEMORY TOOLS (4 tools)
+    // ========================================================================
+    MemoryMemorize(memory::MemorizeOutput),
+    MemoryRecall(memory::RecallOutput),
+    MemoryListLibraries(memory::ListMemoryLibrariesOutput),
+    MemoryCheckMemorizeStatus(memory::CheckMemorizeStatusOutput),
 
     // ========================================================================
     // CONFIG TOOLS (2 tools)

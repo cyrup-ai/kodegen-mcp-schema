@@ -1,0 +1,627 @@
+//! Prompt messages for scrape_url tool
+
+use crate::tool::PromptProvider;
+use rmcp::model::{PromptMessage, PromptMessageRole, PromptMessageContent, PromptArgument};
+use super::prompt_args::ScrapeUrlPromptArgs;
+
+/// Prompt provider for scrape_url tool
+///
+/// This is the ONLY way to provide prompts for scrape_url - tools cannot implement inline.
+/// The PromptProvider trait is sealed and can only be implemented in kodegen-mcp-schema.
+pub struct ScrapeUrlPrompts;
+
+impl PromptProvider for ScrapeUrlPrompts {
+    type PromptArgs = ScrapeUrlPromptArgs;
+
+    fn generate_prompts(args: &Self::PromptArgs) -> Vec<PromptMessage> {
+        match args.scenario.as_deref() {
+            Some("basic") => prompt_basic(),
+            Some("crawling") => prompt_crawling(),
+            Some("search") => prompt_search(),
+            Some("background") => prompt_background(),
+            Some("extraction") => prompt_extraction(),
+            _ => prompt_comprehensive(),
+        }
+    }
+
+    fn prompt_arguments() -> Vec<PromptArgument> {
+        vec![
+            PromptArgument {
+                name: "scenario".to_string(),
+                title: None,
+                description: Some("Scenario to show (basic, crawling, search, background, extraction)".to_string()),
+                required: Some(false),
+            }
+        ]
+    }
+}
+
+// ============================================================================
+// HELPER FUNCTIONS - TEACH AI AGENTS HOW TO USE SCRAPE_URL
+// ============================================================================
+
+/// Basic URL scraping
+fn prompt_basic() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I scrape a single web page using the scrape_url tool?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "The scrape_url tool provides web crawling with content extraction, markdown conversion, and full-text search indexing. Here's how to scrape a single page:\n\n\
+                 SCRAPING URLS:\n\n\
+                 1. Scrape single page:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://docs.rs/tokio/latest/tokio/\"\n\
+                    })\n\n\
+                 RESPONSE:\n\
+                 {\n\
+                   \"crawl_id\": 0,\n\
+                   \"status\": \"completed\",\n\
+                   \"pages_crawled\": 1,\n\
+                   \"content\": \"# Tokio\\n\\nA runtime for async Rust...\"\n\
+                 }\n\n\
+                 ACTIONS:\n\
+                 - CRAWL: Start new crawl\n\
+                 - READ: Check progress\n\
+                 - LIST: List active crawls\n\
+                 - KILL: Stop crawl\n\
+                 - SEARCH: Search indexed content\n\n\
+                 KEY FEATURES:\n\
+                 - Extracts text content from web pages\n\
+                 - Converts HTML to markdown format\n\
+                 - Indexes content for full-text search (Tantivy)\n\
+                 - Supports background crawling\n\
+                 - Configurable extraction options\n\n\
+                 BASIC PARAMETERS:\n\
+                 - action: Action to perform (CRAWL, READ, LIST, KILL, SEARCH)\n\
+                 - url: Target URL to scrape (required for CRAWL)\n\
+                 - crawl_id: Crawl instance number (default: 0)\n\
+                 - await_completion_ms: Wait time in milliseconds (default: 600000)\n\n\
+                 WHEN TO USE:\n\
+                 - Extract documentation from websites\n\
+                 - Download content for offline reference\n\
+                 - Build searchable knowledge bases\n\
+                 - Gather information from multiple pages",
+            ),
+        },
+    ]
+}
+
+/// Multi-page crawling
+fn prompt_crawling() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I crawl multiple pages and follow links?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "Use the scrape_url tool with crawling parameters to follow links and extract content from multiple pages.\n\n\
+                 MULTI-PAGE CRAWLING:\n\n\
+                 1. Crawl documentation site:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://docs.rs/serde/latest/serde/\",\n\
+                        \"max_depth\": 2,\n\
+                        \"limit\": 20\n\
+                    })\n\n\
+                 2. Crawl with subdomain access:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://example.com/docs\",\n\
+                        \"max_depth\": 3,\n\
+                        \"limit\": 50,\n\
+                        \"allow_subdomains\": true\n\
+                    })\n\n\
+                 3. Control crawl rate:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://api.example.com/docs\",\n\
+                        \"crawl_rate_rps\": 1,\n\
+                        \"max_depth\": 2\n\
+                    })\n\n\
+                 CRAWL PARAMETERS:\n\
+                 - max_depth: How deep to follow links (default: 3)\n\
+                 - limit: Max pages to crawl (default: unbounded)\n\
+                 - allow_subdomains: Follow subdomain links\n\
+                 - crawl_rate_rps: Requests per second (default: 2)\n\n\
+                 CRAWL BEHAVIOR:\n\
+                 - Follows links within domain\n\
+                 - Respects depth limit\n\
+                 - Extracts text content\n\
+                 - Converts to markdown\n\n\
+                 DEPTH EXPLANATION:\n\
+                 - Depth 0: Only the starting URL\n\
+                 - Depth 1: Starting URL + direct links\n\
+                 - Depth 2: Above + links from depth 1 pages\n\
+                 - Depth 3: Above + links from depth 2 pages\n\n\
+                 RATE LIMITING:\n\
+                 - crawl_rate_rps controls politeness\n\
+                 - Default: 2 requests per second\n\
+                 - Lower for slower, more polite crawling\n\
+                 - Higher for faster crawling (be careful)\n\n\
+                 BEST PRACTICES:\n\
+                 1. Set reasonable limits (50-100 pages)\n\
+                 2. Use depth 2-3 for most sites\n\
+                 3. Lower crawl_rate_rps for polite crawling\n\
+                 4. Enable search for later queries\n\
+                 5. Use background for large crawls",
+            ),
+        },
+    ]
+}
+
+/// Searching crawled content
+fn prompt_search() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I search through content I've already crawled?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "After crawling a site, use the SEARCH action to perform full-text search on the indexed content.\n\n\
+                 SEARCHING CRAWLED CONTENT:\n\n\
+                 1. First crawl the site:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://docs.rs/tokio\",\n\
+                        \"max_depth\": 2,\n\
+                        \"enable_search\": true\n\
+                    })\n\n\
+                 2. Search indexed content:\n\
+                    scrape_url({\n\
+                        \"action\": \"SEARCH\",\n\
+                        \"crawl_id\": 0,\n\
+                        \"query\": \"spawn blocking\"\n\
+                    })\n\n\
+                 RESPONSE:\n\
+                 {\n\
+                   \"results\": [\n\
+                     {\n\
+                       \"url\": \"https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html\",\n\
+                       \"title\": \"spawn_blocking - Tokio\",\n\
+                       \"snippet\": \"Runs the provided closure on a thread...\",\n\
+                       \"score\": 0.95\n\
+                     }\n\
+                   ]\n\
+                 }\n\n\
+                 3. Search with pagination:\n\
+                    scrape_url({\n\
+                        \"action\": \"SEARCH\",\n\
+                        \"crawl_id\": 0,\n\
+                        \"query\": \"async\",\n\
+                        \"search_limit\": 20,\n\
+                        \"search_offset\": 0\n\
+                    })\n\n\
+                 SEARCH PARAMETERS:\n\
+                 - enable_search: Enable indexing (default: true)\n\
+                 - search_limit: Max results (default: 10)\n\
+                 - search_offset: Pagination offset\n\
+                 - search_highlight: Highlight matches (default: true)\n\n\
+                 HOW SEARCH WORKS:\n\
+                 - Uses Tantivy full-text search engine\n\
+                 - Indexes content during crawl\n\
+                 - Returns relevance-scored results\n\
+                 - Supports pagination for large result sets\n\
+                 - Highlights matching text in snippets\n\n\
+                 SEARCH WORKFLOW:\n\
+                 1. Crawl with enable_search: true (default)\n\
+                 2. Wait for crawl to complete\n\
+                 3. Use SEARCH action with queries\n\
+                 4. Paginate through results if needed\n\n\
+                 PAGINATION:\n\
+                 - search_limit: Number of results per page\n\
+                 - search_offset: Skip first N results\n\
+                 - Example: offset=0, limit=10 (first 10)\n\
+                 - Example: offset=10, limit=10 (next 10)\n\n\
+                 SEARCH TIPS:\n\
+                 - Use specific keywords for better results\n\
+                 - Multiple words search for all terms\n\
+                 - Results ordered by relevance score\n\
+                 - Snippets show context around matches",
+            ),
+        },
+    ]
+}
+
+/// Background crawl management
+fn prompt_background() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I run large crawls in the background and check their progress?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "Use await_completion_ms parameter to control timeout behavior. Set to 0 for fire-and-forget background crawling.\n\n\
+                 BACKGROUND CRAWL MANAGEMENT:\n\n\
+                 1. Start background crawl:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://large-docs-site.com\",\n\
+                        \"max_depth\": 3,\n\
+                        \"limit\": 100,\n\
+                        \"await_completion_ms\": 0\n\
+                    })\n\
+                    // Returns immediately, crawl continues\n\n\
+                 2. Check progress:\n\
+                    scrape_url({\n\
+                        \"action\": \"READ\",\n\
+                        \"crawl_id\": 0\n\
+                    })\n\n\
+                 RESPONSE:\n\
+                 {\n\
+                   \"crawl_id\": 0,\n\
+                   \"status\": \"running\",\n\
+                   \"pages_crawled\": 25,\n\
+                   \"pages_queued\": 75,\n\
+                   \"errors\": 2\n\
+                 }\n\n\
+                 3. List all crawls:\n\
+                    scrape_url({\n\
+                        \"action\": \"LIST\"\n\
+                    })\n\n\
+                 RESPONSE:\n\
+                 {\n\
+                   \"crawls\": [\n\
+                     { \"crawl_id\": 0, \"status\": \"running\", \"url\": \"...\" },\n\
+                     { \"crawl_id\": 1, \"status\": \"completed\", \"url\": \"...\" }\n\
+                   ]\n\
+                 }\n\n\
+                 4. Kill crawl:\n\
+                    scrape_url({\n\
+                        \"action\": \"KILL\",\n\
+                        \"crawl_id\": 0\n\
+                    })\n\n\
+                 TIMEOUT BEHAVIOR:\n\
+                 - await_completion_ms: 0 = fire-and-forget\n\
+                 - await_completion_ms: 60000 = wait up to 1 minute\n\
+                 - Default: 600000 (10 minutes)\n\n\
+                 WHEN TIMEOUT OCCURS:\n\
+                 - Returns current progress\n\
+                 - Crawl continues in background\n\
+                 - Use READ action to check status\n\
+                 - Can search once completed\n\n\
+                 CRAWL STATUSES:\n\
+                 - \"running\": Currently crawling pages\n\
+                 - \"completed\": Finished successfully\n\
+                 - \"failed\": Encountered fatal error\n\
+                 - \"cancelled\": Stopped via KILL action\n\n\
+                 MONITORING WORKFLOW:\n\
+                 1. Start with await_completion_ms: 0\n\
+                 2. Check with READ periodically\n\
+                 3. When status is \"completed\", search is ready\n\
+                 4. KILL if no longer needed\n\n\
+                 MULTIPLE CRAWLS:\n\
+                 Use different crawl_id for parallel crawls:\n\
+                 scrape_url({\"crawl_id\": 0, \"url\": \"https://site1.com\", ...})\n\
+                 scrape_url({\"crawl_id\": 1, \"url\": \"https://site2.com\", ...})\n\
+                 Each crawl is independent and can run concurrently.\n\n\
+                 BEST PRACTICES:\n\
+                 1. Use background for crawls over 50 pages\n\
+                 2. Check progress with READ action\n\
+                 3. Use LIST to see all active crawls\n\
+                 4. KILL crawls when no longer needed\n\
+                 5. Each crawl_id has independent state",
+            ),
+        },
+    ]
+}
+
+/// Content extraction options
+fn prompt_extraction() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "What content extraction options are available when scraping?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "The scrape_url tool offers multiple content extraction options for different use cases.\n\n\
+                 CONTENT EXTRACTION OPTIONS:\n\n\
+                 1. Save to directory:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://docs.example.com\",\n\
+                        \"output_dir\": \"./scraped/example-docs\",\n\
+                        \"save_markdown\": true\n\
+                    })\n\n\
+                 2. Extract tables:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://api-reference.example.com\",\n\
+                        \"extract_tables\": true,\n\
+                        \"extract_images\": false\n\
+                    })\n\n\
+                 3. Include links:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://wiki.example.com\",\n\
+                        \"include_links\": true\n\
+                    })\n\n\
+                 4. Screenshots:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://ui-docs.example.com\",\n\
+                        \"save_screenshots\": true\n\
+                    })\n\n\
+                 EXTRACTION OPTIONS:\n\
+                 - save_markdown: Save .md files (default: true)\n\
+                 - extract_tables: Parse HTML tables (default: true)\n\
+                 - extract_images: Get image URLs (default: false)\n\
+                 - include_links: Include hyperlinks (default: true)\n\
+                 - save_screenshots: Capture pages (default: false)\n\n\
+                 CONTENT TYPES:\n\
+                 - content_types: [\"markdown\", \"html\", \"json\"]\n\n\
+                 OUTPUT DIRECTORY:\n\
+                 - output_dir: Where to save files\n\
+                 - Creates directory if it doesn't exist\n\
+                 - Files named by page title or URL\n\
+                 - Maintains crawl metadata\n\n\
+                 MARKDOWN CONVERSION:\n\
+                 - Converts HTML to clean markdown\n\
+                 - Preserves structure (headings, lists, code)\n\
+                 - Removes navigation and boilerplate\n\
+                 - Maintains links if include_links: true\n\n\
+                 TABLE EXTRACTION:\n\
+                 - Parses HTML tables to markdown tables\n\
+                 - Preserves cell content and structure\n\
+                 - Useful for documentation and reference\n\n\
+                 IMAGE EXTRACTION:\n\
+                 - Extracts image URLs and alt text\n\
+                 - Does not download images by default\n\
+                 - Useful for finding diagrams and figures\n\n\
+                 SCREENSHOTS:\n\
+                 - Captures rendered page appearance\n\
+                 - Saved as PNG files\n\
+                 - Warning: Significantly slower\n\
+                 - Use only when visual fidelity matters\n\n\
+                 PERFORMANCE NOTES:\n\
+                 - save_screenshots: Slow (renders each page)\n\
+                 - extract_images: Fast (just parses HTML)\n\
+                 - extract_tables: Fast (HTML parsing)\n\
+                 - save_markdown: Fast (default format)\n\n\
+                 USE CASES:\n\
+                 - Documentation: markdown + tables\n\
+                 - Reference: markdown + links + output_dir\n\
+                 - Visual docs: screenshots (if needed)\n\
+                 - API docs: tables + markdown",
+            ),
+        },
+    ]
+}
+
+/// Comprehensive guide covering all scenarios
+fn prompt_comprehensive() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "Give me a complete guide to using the scrape_url tool effectively.",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "The scrape_url tool provides comprehensive web crawling with content extraction, markdown conversion, and full-text search indexing.\n\n\
+                 COMPLETE SCRAPE_URL GUIDE:\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 OVERVIEW\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 scrape_url provides:\n\
+                 - Single page and multi-page crawling\n\
+                 - Markdown content extraction\n\
+                 - Full-text search indexing (Tantivy)\n\
+                 - Background crawl management\n\
+                 - Configurable extraction options\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 ACTIONS\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 CRAWL: Start new crawl\n\
+                   scrape_url({ \"action\": \"CRAWL\", \"url\": \"...\" })\n\n\
+                 READ: Check crawl progress\n\
+                   scrape_url({ \"action\": \"READ\", \"crawl_id\": 0 })\n\n\
+                 LIST: List all crawls\n\
+                   scrape_url({ \"action\": \"LIST\" })\n\n\
+                 KILL: Stop crawl\n\
+                   scrape_url({ \"action\": \"KILL\", \"crawl_id\": 0 })\n\n\
+                 SEARCH: Search indexed content\n\
+                   scrape_url({ \"action\": \"SEARCH\", \"crawl_id\": 0, \"query\": \"...\" })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 CRAWL CONFIGURATION\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Depth & Scope:\n\
+                 - max_depth: Link depth (default: 3, max: 255)\n\
+                 - limit: Page limit (default: unbounded)\n\
+                 - allow_subdomains: Follow subdomains (default: false)\n\n\
+                 Rate Limiting:\n\
+                 - crawl_rate_rps: Requests/sec (default: 2.0)\n\
+                 - timeout_seconds: Per-page timeout (default: 60)\n\n\
+                 Background:\n\
+                 - await_completion_ms: Wait time (default: 600000)\n\
+                   - 0 = fire-and-forget\n\
+                   - Timeout returns progress, crawl continues\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 SEARCH CONFIGURATION\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 - enable_search: Enable indexing (default: true)\n\
+                 - search_limit: Results per query (default: 10)\n\
+                 - search_offset: Pagination offset (default: 0)\n\
+                 - search_highlight: Highlight matches (default: true)\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 CONTENT EXTRACTION\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 - save_markdown: Save .md files (default: true)\n\
+                 - output_dir: Directory for saved content\n\
+                 - extract_tables: Parse tables (default: true)\n\
+                 - extract_images: Get images (default: false)\n\
+                 - include_links: Keep hyperlinks (default: true)\n\
+                 - save_screenshots: Capture pages (default: false)\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 COMPLETE WORKFLOW EXAMPLE\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 1. Start documentation crawl:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://docs.rs/axum\",\n\
+                        \"max_depth\": 2,\n\
+                        \"limit\": 50,\n\
+                        \"enable_search\": true,\n\
+                        \"await_completion_ms\": 120000\n\
+                    })\n\n\
+                 2. Search for specific topic:\n\
+                    scrape_url({\n\
+                        \"action\": \"SEARCH\",\n\
+                        \"crawl_id\": 0,\n\
+                        \"query\": \"middleware authentication\"\n\
+                    })\n\n\
+                 3. Get more results:\n\
+                    scrape_url({\n\
+                        \"action\": \"SEARCH\",\n\
+                        \"crawl_id\": 0,\n\
+                        \"query\": \"middleware\",\n\
+                        \"search_limit\": 20,\n\
+                        \"search_offset\": 10\n\
+                    })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 BACKGROUND CRAWL WORKFLOW\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 1. Start large crawl:\n\
+                    scrape_url({\n\
+                        \"action\": \"CRAWL\",\n\
+                        \"url\": \"https://large-docs.example.com\",\n\
+                        \"max_depth\": 3,\n\
+                        \"limit\": 200,\n\
+                        \"await_completion_ms\": 0\n\
+                    })\n\n\
+                 2. Monitor progress:\n\
+                    scrape_url({ \"action\": \"READ\", \"crawl_id\": 0 })\n\n\
+                 3. When done, search:\n\
+                    scrape_url({\n\
+                        \"action\": \"SEARCH\",\n\
+                        \"crawl_id\": 0,\n\
+                        \"query\": \"topic of interest\"\n\
+                    })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 INTEGRATION WITH OTHER TOOLS\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 web_search + scrape_url:\n\
+                   web_search({ \"query\": \"rust axum tutorial\" })\n\
+                   // Get URL from results\n\
+                   scrape_url({ \"action\": \"CRAWL\", \"url\": \"result_url\" })\n\n\
+                 scrape_url + memory:\n\
+                   scrape_url({ ... })\n\
+                   // Extract key info\n\
+                   memory_memorize({ \"library\": \"docs\", \"content\": \"...\" })\n\n\
+                 scrape_url + reasoning:\n\
+                   scrape_url({ \"action\": \"SEARCH\", ... })\n\
+                   sequential_thinking({\n\
+                       \"thought\": \"Based on docs, the approach should be...\",\n\
+                       ...\n\
+                   })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 BEST PRACTICES\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 1. Set reasonable limits (50-100 pages)\n\
+                 2. Use depth 2-3 for most sites\n\
+                 3. Lower crawl_rate_rps for polite crawling\n\
+                 4. Enable search for later queries\n\
+                 5. Use background for large crawls\n\
+                 6. Save output_dir for persistence\n\
+                 7. Kill crawls when no longer needed\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 COMMON USE CASES\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Documentation:\n\
+                   Crawl library docs, search for API patterns\n\n\
+                 Research:\n\
+                   Scrape multiple sources, build knowledge base\n\n\
+                 Reference:\n\
+                   Save docs locally for offline access\n\n\
+                 Learning:\n\
+                   Index tutorials, search for examples\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 PARAMETER REFERENCE\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 REQUIRED:\n\
+                 - action: CRAWL, READ, LIST, KILL, or SEARCH\n\
+                 - url: Target URL (required for CRAWL)\n\
+                 - query: Search query (required for SEARCH)\n\n\
+                 OPTIONAL:\n\
+                 - crawl_id: Crawl instance (default: 0)\n\
+                 - max_depth: Link depth (default: 3)\n\
+                 - limit: Page limit (default: unbounded)\n\
+                 - allow_subdomains: Follow subdomains (default: false)\n\
+                 - crawl_rate_rps: Requests/sec (default: 2.0)\n\
+                 - await_completion_ms: Wait time (default: 600000)\n\
+                 - enable_search: Enable indexing (default: true)\n\
+                 - search_limit: Results per query (default: 10)\n\
+                 - search_offset: Pagination (default: 0)\n\
+                 - search_highlight: Highlight matches (default: true)\n\
+                 - save_markdown: Save .md (default: true)\n\
+                 - output_dir: Save directory (default: none)\n\
+                 - extract_tables: Parse tables (default: true)\n\
+                 - extract_images: Get images (default: false)\n\
+                 - include_links: Keep links (default: true)\n\
+                 - save_screenshots: Capture pages (default: false)\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 DECISION TREE: WHICH ACTION TO USE?\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Need to SCRAPE pages? → CRAWL\n\
+                 - Single page: scrape_url({ \"action\": \"CRAWL\", \"url\": \"...\" })\n\
+                 - Multiple: Add max_depth and limit\n\
+                 - Background: Set await_completion_ms: 0\n\n\
+                 Need to CHECK progress? → READ\n\
+                 - After timeout: scrape_url({ \"action\": \"READ\", \"crawl_id\": 0 })\n\
+                 - Background task: Check status periodically\n\n\
+                 Need to FIND content? → SEARCH\n\
+                 - After crawl: scrape_url({ \"action\": \"SEARCH\", \"query\": \"...\" })\n\
+                 - Paginate: Use search_offset and search_limit\n\n\
+                 Need to SEE all crawls? → LIST\n\
+                 - scrape_url({ \"action\": \"LIST\" })\n\n\
+                 Need to STOP crawl? → KILL\n\
+                 - scrape_url({ \"action\": \"KILL\", \"crawl_id\": 0 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 TROUBLESHOOTING\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Crawl times out:\n\
+                 - Increase await_completion_ms\n\
+                 - Or use await_completion_ms: 0 and check with READ\n\n\
+                 Too many pages:\n\
+                 - Reduce max_depth\n\
+                 - Set a limit parameter\n\n\
+                 Search returns nothing:\n\
+                 - Ensure enable_search: true during crawl\n\
+                 - Wait for crawl to complete\n\
+                 - Check crawl status with READ\n\n\
+                 Rate limited by server:\n\
+                 - Lower crawl_rate_rps\n\
+                 - Check site's robots.txt\n\n\
+                 Missing content:\n\
+                 - Some sites block scrapers\n\
+                 - JavaScript-heavy sites may not work\n\
+                 - Try direct documentation URLs\n\n\
+                 Remember: You are crawling real websites. Be polite with crawl rates, respect robots.txt, set reasonable limits, and use search to find what you need!",
+            ),
+        },
+    ]
+}

@@ -1,0 +1,8 @@
+//! Scrape URL tool prompt arguments and prompts
+
+pub mod prompt_args;
+pub mod prompts;
+
+// Re-export for convenient access
+pub use prompt_args::*;
+pub use prompts::*;

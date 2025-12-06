@@ -1,7 +1,7 @@
 //! Tool name → deserializer mapping registry (macro-generated)
 
 use super::{error::DeserializeError, types::AnyToolOutput};
-use crate::{browser, citescrape, claude_agent, config, database, filesystem, git, github, introspection, process, prompt, reasoning, terminal};
+use crate::{browser, citescrape, claude_agent, config, database, filesystem, git, github, introspection, memory, process, prompt, reasoning, terminal};
 
 /// Macro to generate the tool deserialization registry.
 ///
@@ -153,12 +153,14 @@ tool_registry! {
     // TERMINAL (1 tool)
     terminal::TERMINAL => Terminal(terminal::TerminalOutput),
 
-    // CLAUDE AGENT (5 tools)
+    // CLAUDE AGENT (1 tool)
     claude_agent::CLAUDE_AGENT => ClaudeAgent(claude_agent::ClaudeAgentOutput),
-    claude_agent::MEMORY_MEMORIZE => MemoryMemorize(claude_agent::MemorizeOutput),
-    claude_agent::MEMORY_RECALL => MemoryRecall(claude_agent::RecallOutput),
-    claude_agent::MEMORY_LIST_LIBRARIES => MemoryListLibraries(claude_agent::ListMemoryLibrariesOutput),
-    claude_agent::MEMORY_CHECK_MEMORIZE_STATUS => MemoryCheckMemorizeStatus(claude_agent::CheckMemorizeStatusOutput),
+
+    // MEMORY (4 tools)
+    memory::MEMORY_MEMORIZE => MemoryMemorize(memory::MemorizeOutput),
+    memory::MEMORY_RECALL => MemoryRecall(memory::RecallOutput),
+    memory::MEMORY_LIST_LIBRARIES => MemoryListLibraries(memory::ListMemoryLibrariesOutput),
+    memory::MEMORY_CHECK_MEMORIZE_STATUS => MemoryCheckMemorizeStatus(memory::CheckMemorizeStatusOutput),
 
     // CONFIG (2 tools)
     config::CONFIG_GET => ConfigGet(config::ConfigGetOutput),

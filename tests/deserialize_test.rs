@@ -25,7 +25,7 @@ fn test_deserialize_terminal_output() {
             assert_eq!(output.exit_code, Some(0));
             assert_eq!(output.cwd, "/home/user/project");
             assert_eq!(output.duration_ms, 1523);
-            assert_eq!(output.completed, true);
+            assert!(output.completed);
         }
         _ => panic!("Expected Terminal variant, got {:?}", result.typed),
     }
@@ -55,7 +55,7 @@ fn test_deserialize_terminal_output_with_error() {
             assert_eq!(output.exit_code, Some(127)); // Command not found
             assert_eq!(output.cwd, "/tmp");
             assert_eq!(output.duration_ms, 250);
-            assert_eq!(output.completed, true);
+            assert!(output.completed);
         }
         _ => panic!("Expected Terminal variant"),
     }
@@ -84,7 +84,7 @@ fn test_deserialize_terminal_output_still_running() {
             assert_eq!(output.exit_code, None); // Still running
             assert_eq!(output.cwd, "/home/user");
             assert_eq!(output.duration_ms, 5000);
-            assert_eq!(output.completed, false);
+            assert!(!output.completed);
         }
         _ => panic!("Expected Terminal variant"),
     }

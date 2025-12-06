@@ -1,0 +1,492 @@
+//! Prompt messages for sequential_thinking tool
+
+use crate::tool::PromptProvider;
+use rmcp::model::{PromptMessage, PromptMessageRole, PromptMessageContent, PromptArgument};
+use super::prompt_args::SequentialThinkingPromptArgs;
+
+/// Prompt provider for sequential_thinking tool
+///
+/// This is the ONLY way to provide prompts for sequential_thinking - tools cannot implement inline.
+/// The PromptProvider trait is sealed and can only be implemented in kodegen-mcp-schema.
+pub struct SequentialThinkingPrompts;
+
+impl PromptProvider for SequentialThinkingPrompts {
+    type PromptArgs = SequentialThinkingPromptArgs;
+
+    fn generate_prompts(args: &Self::PromptArgs) -> Vec<PromptMessage> {
+        match args.scenario.as_deref() {
+            Some("basic") => prompt_basic(),
+            Some("revision") => prompt_revision(),
+            Some("branching") => prompt_branching(),
+            Some("sessions") => prompt_sessions(),
+            Some("patterns") => prompt_patterns(),
+            _ => prompt_comprehensive(),
+        }
+    }
+
+    fn prompt_arguments() -> Vec<PromptArgument> {
+        vec![
+            PromptArgument {
+                name: "scenario".to_string(),
+                title: None,
+                description: Some("Scenario to show examples for: basic, revision, branching, sessions, patterns, comprehensive".to_string()),
+                required: Some(false),
+            }
+        ]
+    }
+}
+
+// ============================================================================
+// HELPER FUNCTIONS - TEACH AI AGENTS HOW TO USE SEQUENTIAL THINKING
+// ============================================================================
+
+/// Basic sequential thinking
+fn prompt_basic() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I use sequential thinking for step-by-step problem solving?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "SEQUENTIAL THINKING:\n\n\
+                 1. Start thinking chain:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Analyzing the memory leak. First, identify allocation patterns.\",\n\
+                        \"thought_number\": 1,\n\
+                        \"total_thoughts\": 4,\n\
+                        \"next_thought_needed\": true\n\
+                    })\n\n\
+                 2. Continue sequence:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Found Vec growing without bounds in process_events(). No cleanup.\",\n\
+                        \"thought_number\": 2,\n\
+                        \"total_thoughts\": 4,\n\
+                        \"next_thought_needed\": true\n\
+                    })\n\n\
+                 3. Build on previous:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"The Vec stores event handlers but never removes completed ones.\",\n\
+                        \"thought_number\": 3,\n\
+                        \"total_thoughts\": 4,\n\
+                        \"next_thought_needed\": true\n\
+                    })\n\n\
+                 4. Conclude:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Fix: Add cleanup logic to remove completed handlers. Use retain().\",\n\
+                        \"thought_number\": 4,\n\
+                        \"total_thoughts\": 4,\n\
+                        \"next_thought_needed\": false\n\
+                    })\n\n\
+                 KEY PARAMETERS:\n\
+                 - thought: Your current reasoning\n\
+                 - thought_number: Step in sequence\n\
+                 - total_thoughts: Estimated steps needed\n\
+                 - next_thought_needed: true to continue",
+            ),
+        },
+    ]
+}
+
+/// Revising thoughts when assumptions change
+fn prompt_revision() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I revise earlier thoughts when I discover new information?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "REVISING THOUGHTS:\n\n\
+                 1. Initial thought:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"The bug is in the parser. Line 45 has wrong regex.\",\n\
+                        \"thought_number\": 1,\n\
+                        \"total_thoughts\": 3,\n\
+                        \"next_thought_needed\": true\n\
+                    })\n\n\
+                 2. Realize error, revise:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Wait, the regex is correct. Issue is in the tokenizer feeding wrong input.\",\n\
+                        \"thought_number\": 2,\n\
+                        \"total_thoughts\": 4,\n\
+                        \"next_thought_needed\": true,\n\
+                        \"is_revision\": true,\n\
+                        \"revises_thought\": 1\n\
+                    })\n\n\
+                 3. Continue with corrected understanding:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Tokenizer strips whitespace that parser needs. Fix tokenizer.\",\n\
+                        \"thought_number\": 3,\n\
+                        \"total_thoughts\": 4,\n\
+                        \"next_thought_needed\": true\n\
+                    })\n\n\
+                 REVISION PARAMETERS:\n\
+                 - is_revision: true (marks as revision)\n\
+                 - revises_thought: which thought to revise\n\n\
+                 WHEN TO REVISE:\n\
+                 - Found incorrect assumption\n\
+                 - New information changes understanding\n\
+                 - Need to correct earlier reasoning",
+            ),
+        },
+    ]
+}
+
+/// Branching to explore alternatives
+fn prompt_branching() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I create branches to explore multiple solution paths?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "BRANCHING THOUGHTS:\n\n\
+                 1. Main thought path:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Database is slow. Could be indexes or query structure.\",\n\
+                        \"thought_number\": 1,\n\
+                        \"total_thoughts\": 5,\n\
+                        \"next_thought_needed\": true\n\
+                    })\n\n\
+                 2. Continue main path:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Checking indexes first. Missing index on user_id column.\",\n\
+                        \"thought_number\": 2,\n\
+                        \"total_thoughts\": 5,\n\
+                        \"next_thought_needed\": true\n\
+                    })\n\n\
+                 3. Branch to explore alternative:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Alternative: Query uses SELECT *. Could optimize columns.\",\n\
+                        \"thought_number\": 3,\n\
+                        \"total_thoughts\": 5,\n\
+                        \"next_thought_needed\": true,\n\
+                        \"branch_from_thought\": 1,\n\
+                        \"branch_id\": \"column-optimization\"\n\
+                    })\n\n\
+                 4. Continue branch:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Selecting only needed columns reduces data transfer 80%.\",\n\
+                        \"thought_number\": 4,\n\
+                        \"total_thoughts\": 5,\n\
+                        \"next_thought_needed\": true,\n\
+                        \"branch_id\": \"column-optimization\"\n\
+                    })\n\n\
+                 BRANCHING PARAMETERS:\n\
+                 - branch_from_thought: thought number to branch from\n\
+                 - branch_id: identifier for this branch\n\n\
+                 USE CASES:\n\
+                 - Explore multiple hypotheses\n\
+                 - Compare solutions\n\
+                 - Parallel investigation paths",
+            ),
+        },
+    ]
+}
+
+/// Session management for persistent thinking
+fn prompt_sessions() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "How do I manage thinking sessions for complex investigations?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "MANAGING SESSIONS:\n\n\
+                 1. Start named session:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Investigating auth failure for user login flow.\",\n\
+                        \"thought_number\": 1,\n\
+                        \"total_thoughts\": 6,\n\
+                        \"next_thought_needed\": true,\n\
+                        \"session_id\": \"auth-investigation-001\"\n\
+                    })\n\n\
+                 2. Continue same session:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Token validation passes but session creation fails.\",\n\
+                        \"thought_number\": 2,\n\
+                        \"total_thoughts\": 6,\n\
+                        \"next_thought_needed\": true,\n\
+                        \"session_id\": \"auth-investigation-001\"\n\
+                    })\n\n\
+                 3. Extend when needed:\n\
+                    sequential_thinking({\n\
+                        \"thought\": \"Need more analysis. Session table has constraint issue.\",\n\
+                        \"thought_number\": 6,\n\
+                        \"total_thoughts\": 8,\n\
+                        \"next_thought_needed\": true,\n\
+                        \"session_id\": \"auth-investigation-001\",\n\
+                        \"needs_more_thoughts\": true\n\
+                    })\n\n\
+                 SESSION BENEFITS:\n\
+                 - State maintained across calls\n\
+                 - Can pause and resume\n\
+                 - Organized investigation tracking\n\
+                 - Branch management per session\n\n\
+                 NEEDS_MORE_THOUGHTS:\n\
+                 - Extends total when estimate was low\n\
+                 - Dynamically adapts to problem complexity",
+            ),
+        },
+    ]
+}
+
+/// Common thinking patterns
+fn prompt_patterns() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "What are common thinking patterns I can use for different types of problems?",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "COMMON THINKING PATTERNS:\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 DEBUGGING PATTERN\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 1. Observe symptom\n\
+                 2. Form hypothesis\n\
+                 3. Test hypothesis (may revise)\n\
+                 4. Identify root cause\n\
+                 5. Propose solution\n\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Error: 'undefined is not a function'. Symptom points to missing method.\",\n\
+                     \"thought_number\": 1,\n\
+                     \"total_thoughts\": 5,\n\
+                     \"next_thought_needed\": true\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 ARCHITECTURE DECISION\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 1. Define requirements\n\
+                 2. List options (branch for each)\n\
+                 3. Evaluate tradeoffs\n\
+                 4. Make recommendation\n\
+                 5. Document decision\n\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Need message queue. Options: RabbitMQ, Kafka, Redis Streams.\",\n\
+                     \"thought_number\": 1,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": true\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 ROOT CAUSE ANALYSIS\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 1. State problem\n\
+                 2. Ask \"why?\" (5 whys technique)\n\
+                 3. Each answer → deeper cause\n\
+                 4. Reach fundamental cause\n\
+                 5. Propose prevention\n\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Deploy failed. Why? Tests passed locally but failed in CI.\",\n\
+                     \"thought_number\": 1,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": true\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 FEATURE PLANNING\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 1. User story breakdown\n\
+                 2. Technical requirements\n\
+                 3. Implementation approach\n\
+                 4. Edge cases (branch each)\n\
+                 5. Testing strategy",
+            ),
+        },
+    ]
+}
+
+/// Comprehensive guide to sequential thinking
+fn prompt_comprehensive() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text(
+                "Give me a complete guide to using sequential_thinking for problem solving.",
+            ),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "COMPLETE SEQUENTIAL_THINKING GUIDE:\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 OVERVIEW\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Sequential thinking provides:\n\
+                 - Step-by-step reasoning chains\n\
+                 - Revision of earlier thoughts\n\
+                 - Branching for alternatives\n\
+                 - Session management for persistence\n\
+                 - Dynamic adaptation to problem size\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 REQUIRED PARAMETERS\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 {\n\
+                     \"thought\": \"Your current thinking\",\n\
+                     \"thought_number\": 1,        // Which step (1-based)\n\
+                     \"total_thoughts\": 5,        // Estimated total\n\
+                     \"next_thought_needed\": true // Continue thinking?\n\
+                 }\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 OPTIONAL PARAMETERS\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Session management:\n\
+                 - session_id: String ID for persistent session\n\
+                 - needs_more_thoughts: Extend total_thoughts\n\n\
+                 Revision:\n\
+                 - is_revision: Mark as revising earlier thought\n\
+                 - revises_thought: Which thought number to revise\n\n\
+                 Branching:\n\
+                 - branch_from_thought: Create branch from this thought\n\
+                 - branch_id: Name for the branch\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 COMPLETE EXAMPLE: Bug Investigation\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Step 1 - Identify:\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Users report 500 error on checkout. Need to trace request path.\",\n\
+                     \"thought_number\": 1,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": true,\n\
+                     \"session_id\": \"checkout-bug\"\n\
+                 })\n\n\
+                 Step 2 - Gather data:\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Logs show PaymentService.process() throwing NullPointerException.\",\n\
+                     \"thought_number\": 2,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": true,\n\
+                     \"session_id\": \"checkout-bug\"\n\
+                 })\n\n\
+                 Step 3 - Hypothesis:\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Hypothesis: Payment method is null when user has no saved cards.\",\n\
+                     \"thought_number\": 3,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": true,\n\
+                     \"session_id\": \"checkout-bug\"\n\
+                 })\n\n\
+                 Step 4 - Verify:\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Confirmed: getDefaultPaymentMethod() returns null for new users.\",\n\
+                     \"thought_number\": 4,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": true,\n\
+                     \"session_id\": \"checkout-bug\"\n\
+                 })\n\n\
+                 Step 5 - Solution:\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Fix: Add null check, redirect to payment entry for new users.\",\n\
+                     \"thought_number\": 5,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": true,\n\
+                     \"session_id\": \"checkout-bug\"\n\
+                 })\n\n\
+                 Step 6 - Conclude:\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Root cause: Missing null guard. Fix deployed. Add test for null case.\",\n\
+                     \"thought_number\": 6,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": false,\n\
+                     \"session_id\": \"checkout-bug\"\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 REVISION EXAMPLE\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Initial (wrong):\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Memory leak in frontend. React component not unmounting.\",\n\
+                     \"thought_number\": 1,\n\
+                     \"total_thoughts\": 4,\n\
+                     \"next_thought_needed\": true\n\
+                 })\n\n\
+                 Revise when proven wrong:\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Actually, unmount is fine. Leak is in WebSocket listener not cleaned up.\",\n\
+                     \"thought_number\": 2,\n\
+                     \"total_thoughts\": 4,\n\
+                     \"next_thought_needed\": true,\n\
+                     \"is_revision\": true,\n\
+                     \"revises_thought\": 1\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 BRANCHING EXAMPLE\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 Main path:\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Need to optimize API. Two options: caching or query optimization.\",\n\
+                     \"thought_number\": 1,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": true\n\
+                 })\n\n\
+                 Branch A - Caching:\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Caching option: Redis with 5min TTL. Reduces DB load 80%.\",\n\
+                     \"thought_number\": 2,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": true,\n\
+                     \"branch_from_thought\": 1,\n\
+                     \"branch_id\": \"caching\"\n\
+                 })\n\n\
+                 Branch B - Query:\n\
+                 sequential_thinking({\n\
+                     \"thought\": \"Query option: Add indexes, rewrite N+1. Reduces latency 60%.\",\n\
+                     \"thought_number\": 2,\n\
+                     \"total_thoughts\": 6,\n\
+                     \"next_thought_needed\": true,\n\
+                     \"branch_from_thought\": 1,\n\
+                     \"branch_id\": \"query-opt\"\n\
+                 })\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 VS REASONER TOOL\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 sequential_thinking:\n\
+                 - Simpler, linear progression\n\
+                 - Focus on revision and branching\n\
+                 - Good for investigations\n\
+                 - Lighter weight\n\n\
+                 reasoner:\n\
+                 - Advanced strategies (MCTS, Beam)\n\
+                 - Automatic path scoring\n\
+                 - Best for complex decisions\n\
+                 - Heavier computation\n\n\
+                 Choose sequential_thinking for:\n\
+                 - Step-by-step debugging\n\
+                 - Linear investigations\n\
+                 - When revisions likely needed\n\
+                 - Simpler problems\n\n\
+                 Choose reasoner for:\n\
+                 - Complex multi-factor decisions\n\
+                 - Need to evaluate many paths\n\
+                 - Want automatic best-path selection\n\n\
+                 ═══════════════════════════════════════════════════════════════\n\
+                 BEST PRACTICES\n\
+                 ═══════════════════════════════════════════════════════════════\n\n\
+                 1. Use session_id for multi-step investigations\n\
+                 2. Revise early when assumptions wrong\n\
+                 3. Branch when exploring alternatives\n\
+                 4. Set realistic total_thoughts estimate\n\
+                 5. Use needs_more_thoughts when needed\n\
+                 6. Clear thought descriptions help tracking",
+            ),
+        },
+    ]
+}
