@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_INTROSPECTION, INSPECT_TOOL_CALLS};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::InspectToolCallsPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical name for the inspect_tool_calls tool
-pub const INSPECT_TOOL_CALLS: &str = "inspect_tool_calls";
 
 // ============================================================================
 // TOOL ARGUMENTS
@@ -92,8 +86,6 @@ pub struct ToolCallRecord {
 // ============================================================================
 
 #[tool_metadata(
-    name = "inspect_tool_calls",
-    category = "introspection",
     description = "View tool invocation history with filtering by tool name, time range, and success status. Essential for debugging and workflow analysis"
 )]
 impl ToolArgs for InspectToolCallsArgs {
@@ -101,6 +93,6 @@ impl ToolArgs for InspectToolCallsArgs {
     type Prompts = InspectToolCallsPrompts;
 
     const NAME: &'static str = INSPECT_TOOL_CALLS;
-    const CATEGORY: &'static str = "introspection";
+    const CATEGORY: &'static str = CATEGORY_INTROSPECTION;
     const DESCRIPTION: &'static str = "View tool invocation history with filtering by tool name, time range, and success status. Essential for debugging and workflow analysis";
 }

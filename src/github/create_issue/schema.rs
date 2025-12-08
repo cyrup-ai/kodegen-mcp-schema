@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_CREATE_ISSUE};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::CreateIssuePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for creating an issue
-pub const GITHUB_CREATE_ISSUE: &str = "github_create_issue";
 
 // ============================================================================
 // ARGS STRUCT
@@ -57,8 +51,6 @@ pub struct GitHubCreateIssueOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_create_issue",
-    category = "github",
     description = "Create a new issue in a repository"
 )]
 impl ToolArgs for CreateIssueArgs {
@@ -66,6 +58,6 @@ impl ToolArgs for CreateIssueArgs {
     type Prompts = CreateIssuePrompts;
 
     const NAME: &'static str = GITHUB_CREATE_ISSUE;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create a new issue in a repository";
 }

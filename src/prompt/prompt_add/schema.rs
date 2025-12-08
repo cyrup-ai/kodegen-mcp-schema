@@ -2,13 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for prompt_add
-pub const PROMPT_ADD: &str = "prompt_add";
+use kodegen_config::{CATEGORY_PROMPT, PROMPT_ADD};
 
 // ============================================================================
 // PROMPT ADD TOOL
@@ -57,8 +51,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::PromptAddPrompts;
 
 #[tool_metadata(
-    name = "prompt_add",
-    category = "prompt",
     description = "Create new reusable Jinja2 prompt template with variables, metadata, and categorization"
 )]
 impl ToolArgs for AddPromptArgs {
@@ -66,6 +58,6 @@ impl ToolArgs for AddPromptArgs {
     type Prompts = PromptAddPrompts;
 
     const NAME: &'static str = PROMPT_ADD;
-    const CATEGORY: &'static str = "prompt";
+    const CATEGORY: &'static str = CATEGORY_PROMPT;
     const DESCRIPTION: &'static str = "Create new reusable Jinja2 prompt template with variables, metadata, and categorization";
 }

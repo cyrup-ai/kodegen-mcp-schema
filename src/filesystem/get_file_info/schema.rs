@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_GET_FILE_INFO};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::GetFileInfoPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_get_file_info
-pub const FS_GET_FILE_INFO: &str = "fs_get_file_info";
 
 // ============================================================================
 // GET FILE INFO ARGS
@@ -54,8 +48,6 @@ pub struct FsGetFileInfoOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_get_file_info",
-    category = "filesystem",
     description = "Retrieve detailed metadata about a file or directory including size, creation time, permissions, and type"
 )]
 impl ToolArgs for FsGetFileInfoArgs {
@@ -63,6 +55,6 @@ impl ToolArgs for FsGetFileInfoArgs {
     type Prompts = GetFileInfoPrompts;
 
     const NAME: &'static str = FS_GET_FILE_INFO;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Retrieve detailed metadata about a file or directory including size, creation time, permissions, and type";
 }

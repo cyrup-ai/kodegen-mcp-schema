@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_GET_FILE_CONTENTS};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::GetFileContentsPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for getting file contents
-pub const GITHUB_GET_FILE_CONTENTS: &str = "github_get_file_contents";
 
 // ============================================================================
 // ARGS STRUCT
@@ -76,8 +70,6 @@ pub struct GitHubDirectoryEntry {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_get_file_contents",
-    category = "github",
     description = "Get file or directory contents from a GitHub repository"
 )]
 impl ToolArgs for GetFileContentsArgs {
@@ -85,6 +77,6 @@ impl ToolArgs for GetFileContentsArgs {
     type Prompts = GetFileContentsPrompts;
 
     const NAME: &'static str = GITHUB_GET_FILE_CONTENTS;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get file or directory contents from a GitHub repository";
 }

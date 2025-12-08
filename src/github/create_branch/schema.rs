@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_CREATE_BRANCH};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::CreateBranchPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for creating a branch
-pub const GITHUB_CREATE_BRANCH: &str = "github_create_branch";
 
 // ============================================================================
 // ARGS STRUCT
@@ -50,8 +44,6 @@ pub struct GitHubCreateBranchOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_create_branch",
-    category = "github",
     description = "Create a new branch in a repository"
 )]
 impl ToolArgs for CreateBranchArgs {
@@ -59,6 +51,6 @@ impl ToolArgs for CreateBranchArgs {
     type Prompts = CreateBranchPrompts;
 
     const NAME: &'static str = GITHUB_CREATE_BRANCH;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create a new branch in a repository";
 }

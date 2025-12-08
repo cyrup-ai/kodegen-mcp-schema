@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_PROCESS, PROCESS_KILL};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ProcessKillPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for process_kill
-pub const PROCESS_KILL: &str = "process_kill";
 
 // ============================================================================
 // PROCESS KILL TOOL
@@ -40,8 +34,6 @@ pub struct ProcessKillOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "process_kill",
-    category = "process",
     description = "Terminate a process by PID. Sends SIGKILL signal - the process cannot catch or ignore it. Use with caution"
 )]
 impl ToolArgs for ProcessKillArgs {
@@ -49,6 +41,6 @@ impl ToolArgs for ProcessKillArgs {
     type Prompts = ProcessKillPrompts;
 
     const NAME: &'static str = PROCESS_KILL;
-    const CATEGORY: &'static str = "process";
+    const CATEGORY: &'static str = CATEGORY_PROCESS;
     const DESCRIPTION: &'static str = "Terminate a process by PID. Sends SIGKILL signal - the process cannot catch or ignore it. Use with caution";
 }

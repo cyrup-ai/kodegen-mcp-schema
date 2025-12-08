@@ -1,5 +1,21 @@
 //! GitHub API tools schema module
 
+// Re-export all github tool name constants from kodegen_config
+pub use kodegen_config::{
+    GITHUB_ACCEPT_REPO_INVITATION, GITHUB_ADD_ISSUE_COMMENT, GITHUB_ADD_PULL_REQUEST_REVIEW_COMMENT,
+    GITHUB_CODE_SCANNING_ALERTS, GITHUB_CREATE_BRANCH, GITHUB_CREATE_ISSUE,
+    GITHUB_CREATE_OR_UPDATE_FILE, GITHUB_CREATE_PULL_REQUEST, GITHUB_CREATE_PULL_REQUEST_REVIEW,
+    GITHUB_CREATE_RELEASE, GITHUB_CREATE_REPOSITORY, GITHUB_DELETE_BRANCH, GITHUB_DELETE_FILE,
+    GITHUB_FORK_REPOSITORY, GITHUB_GET_COMMIT, GITHUB_GET_FILE_CONTENTS, GITHUB_GET_ISSUE,
+    GITHUB_GET_ISSUE_COMMENTS, GITHUB_GET_ME, GITHUB_GET_PULL_REQUEST_FILES,
+    GITHUB_GET_PULL_REQUEST_REVIEWS, GITHUB_GET_PULL_REQUEST_STATUS, GITHUB_LIST_BRANCHES,
+    GITHUB_LIST_COMMITS, GITHUB_LIST_ISSUES, GITHUB_LIST_PULL_REQUESTS, GITHUB_LIST_REPOS,
+    GITHUB_MERGE_PULL_REQUEST, GITHUB_PENDING_INVITATIONS, GITHUB_PUSH_FILE, GITHUB_PUSH_FILES,
+    GITHUB_REQUEST_COPILOT_REVIEW, GITHUB_SEARCH_CODE, GITHUB_SEARCH_ISSUES,
+    GITHUB_SEARCH_REPOSITORIES, GITHUB_SEARCH_USERS, GITHUB_SECRET_SCANNING_ALERTS,
+    GITHUB_UPDATE_ISSUE, GITHUB_UPDATE_PULL_REQUEST,
+};
+
 // Search operations
 pub mod search_code;
 pub mod search_repositories;
@@ -62,7 +78,6 @@ pub mod pending_invitations;
 // Search operations
 // Re-export search_code tool
 pub use search_code::{
-    GITHUB_SEARCH_CODE,
     SearchCodeArgs,
     GitHubSearchCodeOutput,
     GitHubCodeSearchResult,
@@ -71,7 +86,6 @@ pub use search_code::{
 
 // Re-export search_repositories tool
 pub use search_repositories::{
-    GITHUB_SEARCH_REPOSITORIES,
     SearchRepositoriesArgs,
     GitHubSearchReposOutput,
     GitHubRepoSearchResult,
@@ -81,7 +95,6 @@ pub use search_repositories::{
 
 // Re-export search_issues tool
 pub use search_issues::{
-    GITHUB_SEARCH_ISSUES,
     SearchIssuesArgs,
     GitHubSearchIssuesOutput,
     SearchIssuesPromptArgs,
@@ -91,7 +104,6 @@ pub use search_issues::{
 
 // Re-export search_users tool
 pub use search_users::{
-    GITHUB_SEARCH_USERS,
     SearchUsersArgs,
     GitHubSearchUsersOutput,
     GitHubUserSearchResult,
@@ -107,7 +119,6 @@ pub use list_repos::{
 
 // Re-export create_repository tool
 pub use create_repository::{
-    GITHUB_CREATE_REPOSITORY,
     CreateRepositoryArgs,
     GitHubCreateRepoOutput,
     CreateRepositoryPrompts,
@@ -115,7 +126,6 @@ pub use create_repository::{
 
 // Re-export fork_repository tool
 pub use fork_repository::{
-    GITHUB_FORK_REPOSITORY,
     ForkRepositoryArgs,
     GitHubForkRepoOutput,
     GitHubForkRepositoryPromptArgs,
@@ -124,7 +134,6 @@ pub use fork_repository::{
 
 // Re-export get_file_contents tool
 pub use get_file_contents::{
-    GITHUB_GET_FILE_CONTENTS,
     GetFileContentsArgs,
     GitHubGetFileContentsOutput,
     GitHubFileContent,
@@ -134,7 +143,6 @@ pub use get_file_contents::{
 
 // Re-export create_or_update_file tool
 pub use create_or_update_file::{
-    GITHUB_CREATE_OR_UPDATE_FILE,
     CreateOrUpdateFileArgs,
     GitHubCreateOrUpdateFileOutput,
     CreateOrUpdateFilePrompts,
@@ -154,7 +162,6 @@ pub use push_file::{
 
 // Re-export push_files tool
 pub use push_files::{
-    GITHUB_PUSH_FILES,
     PushFilesArgs,
     GitHubPushFilesOutput,
     PushFilesPrompts,
@@ -163,7 +170,6 @@ pub use push_files::{
 // Branch operations
 // Re-export list_branches tool
 pub use list_branches::{
-    GITHUB_LIST_BRANCHES,
     ListBranchesArgs,
     GitHubListBranchesOutput,
     GitHubBranch,
@@ -172,7 +178,6 @@ pub use list_branches::{
 
 // Re-export create_branch tool
 pub use create_branch::{
-    GITHUB_CREATE_BRANCH,
     CreateBranchArgs,
     GitHubCreateBranchOutput,
     CreateBranchPromptArgs,
@@ -181,7 +186,6 @@ pub use create_branch::{
 
 // Re-export delete_branch tool
 pub use delete_branch::{
-    GITHUB_DELETE_BRANCH,
     DeleteBranchArgs,
     GitHubDeleteBranchOutput,
     DeleteBranchPromptArgs,
@@ -190,7 +194,6 @@ pub use delete_branch::{
 
 // Re-export list_commits tool
 pub use list_commits::{
-    GITHUB_LIST_COMMITS,
     ListCommitsArgs,
     GitHubListCommitsOutput,
     GitHubCommitSummary,
@@ -200,7 +203,6 @@ pub use list_commits::{
 // Issue operations
 // Re-export list_issues tool
 pub use list_issues::{
-    GITHUB_LIST_ISSUES,
     ListIssuesArgs,
     GitHubListIssuesOutput,
     GitHubIssueSummary,
@@ -210,7 +212,6 @@ pub use list_issues::{
 
 // Re-export get_issue tool
 pub use get_issue::{
-    GITHUB_GET_ISSUE,
     GetIssueArgs,
     GitHubGetIssueOutput,
     GitHubIssue,
@@ -220,7 +221,6 @@ pub use get_issue::{
 
 // Re-export create_issue tool
 pub use create_issue::{
-    GITHUB_CREATE_ISSUE,
     CreateIssueArgs,
     GitHubCreateIssueOutput,
     CreateIssuePromptArgs,
@@ -229,7 +229,6 @@ pub use create_issue::{
 
 // Re-export update_issue tool
 pub use update_issue::{
-    GITHUB_UPDATE_ISSUE,
     UpdateIssueArgs,
     GitHubUpdateIssueOutput,
     UpdateIssuePromptArgs,
@@ -238,7 +237,6 @@ pub use update_issue::{
 
 // Re-export get_issue_comments tool
 pub use get_issue_comments::{
-    GITHUB_GET_ISSUE_COMMENTS,
     GetIssueCommentsArgs,
     GitHubGetIssueCommentsOutput,
     GitHubComment,
@@ -248,7 +246,6 @@ pub use get_issue_comments::{
 
 // Re-export add_issue_comment tool
 pub use add_issue_comment::{
-    GITHUB_ADD_ISSUE_COMMENT,
     AddIssueCommentArgs,
     GitHubAddIssueCommentOutput,
     AddIssueCommentPromptArgs,
@@ -258,7 +255,6 @@ pub use add_issue_comment::{
 // Pull request operations
 // Re-export list_pull_requests tool
 pub use list_pull_requests::{
-    GITHUB_LIST_PULL_REQUESTS,
     ListPullRequestsArgs,
     GitHubListPrsOutput,
     GitHubPrSummary,
@@ -268,7 +264,6 @@ pub use list_pull_requests::{
 
 // Re-export create_pull_request tool
 pub use create_pull_request::{
-    GITHUB_CREATE_PULL_REQUEST,
     CreatePullRequestArgs,
     GitHubCreatePrOutput,
     CreatePullRequestPrompts,
@@ -276,7 +271,6 @@ pub use create_pull_request::{
 
 // Re-export update_pull_request tool
 pub use update_pull_request::{
-    GITHUB_UPDATE_PULL_REQUEST,
     UpdatePullRequestArgs,
     GitHubUpdatePrOutput,
     UpdatePullRequestPromptArgs,
@@ -285,7 +279,6 @@ pub use update_pull_request::{
 
 // Re-export merge_pull_request tool
 pub use merge_pull_request::{
-    GITHUB_MERGE_PULL_REQUEST,
     MergePullRequestArgs,
     GitHubMergePrOutput,
     MergePullRequestPrompts,
@@ -293,7 +286,6 @@ pub use merge_pull_request::{
 
 // Re-export get_pull_request_status tool
 pub use get_pull_request_status::{
-    GITHUB_GET_PULL_REQUEST_STATUS,
     GetPullRequestStatusArgs,
     GitHubGetPrStatusOutput,
     GetPullRequestStatusPrompts,
@@ -301,7 +293,6 @@ pub use get_pull_request_status::{
 
 // Re-export get_pull_request_files tool
 pub use get_pull_request_files::{
-    GITHUB_GET_PULL_REQUEST_FILES,
     GetPullRequestFilesArgs,
     GitHubGetPrFilesOutput,
     GitHubPrFile,
@@ -310,7 +301,6 @@ pub use get_pull_request_files::{
 
 // Re-export get_pull_request_reviews tool
 pub use get_pull_request_reviews::{
-    GITHUB_GET_PULL_REQUEST_REVIEWS,
     GetPullRequestReviewsArgs,
     GitHubPrReviewsOutput,
     GitHubReview,
@@ -320,7 +310,6 @@ pub use get_pull_request_reviews::{
 
 // Re-export create_pull_request_review tool
 pub use create_pull_request_review::{
-    GITHUB_CREATE_PULL_REQUEST_REVIEW,
     CreatePullRequestReviewArgs,
     GitHubCreatePrReviewOutput,
     CreatePullRequestReviewPromptArgs,
@@ -329,7 +318,6 @@ pub use create_pull_request_review::{
 
 // Re-export add_pull_request_review_comment tool
 pub use add_pull_request_review_comment::{
-    GITHUB_ADD_PULL_REQUEST_REVIEW_COMMENT,
     AddPullRequestReviewCommentArgs,
     GitHubAddPrReviewCommentOutput,
     AddPullRequestReviewCommentPromptArgs,
@@ -338,7 +326,6 @@ pub use add_pull_request_review_comment::{
 
 // Re-export request_copilot_review tool
 pub use request_copilot_review::{
-    GITHUB_REQUEST_COPILOT_REVIEW,
     RequestCopilotReviewArgs,
     GitHubRequestCopilotReviewOutput,
     RequestCopilotReviewPromptArgs,
@@ -348,7 +335,6 @@ pub use request_copilot_review::{
 // Security operations
 // Re-export code_scanning_alerts tool
 pub use code_scanning_alerts::{
-    GITHUB_CODE_SCANNING_ALERTS,
     CodeScanningAlertsArgs,
     GitHubCodeScanningAlertsOutput,
     GitHubCodeScanningAlert,
@@ -357,7 +343,6 @@ pub use code_scanning_alerts::{
 
 // Re-export secret_scanning_alerts tool
 pub use secret_scanning_alerts::{
-    GITHUB_SECRET_SCANNING_ALERTS,
     SecretScanningAlertsArgs,
     GitHubSecretScanningAlertsOutput,
     GitHubSecretScanningAlert,
@@ -367,7 +352,6 @@ pub use secret_scanning_alerts::{
 // User & commit operations
 // Re-export get_me tool
 pub use get_me::{
-    GITHUB_GET_ME,
     GetMeArgs,
     GitHubGetMeOutput,
     GetMePrompts,
@@ -375,7 +359,6 @@ pub use get_me::{
 
 // Re-export get_commit tool
 pub use get_commit::{
-    GITHUB_GET_COMMIT,
     GetCommitArgs,
     GitHubGetCommitOutput,
     GitHubCommitDetail,

@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_SEARCH_ISSUES};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::SearchIssuesPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for GitHub issue search
-pub const GITHUB_SEARCH_ISSUES: &str = "github_search_issues";
 
 // ============================================================================
 // ARGS STRUCT
@@ -64,8 +58,6 @@ pub struct GitHubIssueSummary {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_search_issues",
-    category = "github",
     description = "Search issues and pull requests across GitHub using query syntax"
 )]
 impl ToolArgs for SearchIssuesArgs {
@@ -73,6 +65,6 @@ impl ToolArgs for SearchIssuesArgs {
     type Prompts = SearchIssuesPrompts;
 
     const NAME: &'static str = GITHUB_SEARCH_ISSUES;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Search issues and pull requests across GitHub using query syntax";
 }

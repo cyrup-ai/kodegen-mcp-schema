@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_CREATE_DIRECTORY};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::CreateDirectoryPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_create_directory
-pub const FS_CREATE_DIRECTORY: &str = "fs_create_directory";
 
 // ============================================================================
 // CREATE DIRECTORY ARGS
@@ -42,8 +36,6 @@ pub struct FsCreateDirectoryOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_create_directory",
-    category = "filesystem",
     description = "Create a new directory or ensure a directory exists. Automatically creates parent directories (like mkdir -p)"
 )]
 impl ToolArgs for FsCreateDirectoryArgs {
@@ -51,6 +43,6 @@ impl ToolArgs for FsCreateDirectoryArgs {
     type Prompts = CreateDirectoryPrompts;
 
     const NAME: &'static str = FS_CREATE_DIRECTORY;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Create a new directory or ensure a directory exists. Automatically creates parent directories (like mkdir -p)";
 }

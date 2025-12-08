@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_CHECKOUT};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::GitCheckoutPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_checkout
-pub const GIT_CHECKOUT: &str = "git_checkout";
 
 // ============================================================================
 // GIT_CHECKOUT TOOL
@@ -54,8 +48,6 @@ pub struct GitCheckoutOutput {
 }
 
 #[tool_metadata(
-    name = "git_checkout",
-    category = "git",
     description = "Switch branches or restore files from a specific revision"
 )]
 impl ToolArgs for GitCheckoutArgs {
@@ -63,6 +55,6 @@ impl ToolArgs for GitCheckoutArgs {
     type Prompts = GitCheckoutPrompts;
 
     const NAME: &'static str = GIT_CHECKOUT;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Switch branches or restore files from a specific revision";
 }

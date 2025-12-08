@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_OPEN};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::OpenPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_open
-pub const GIT_OPEN: &str = "git_open";
 
 // ============================================================================
 // GIT_OPEN TOOL
@@ -38,8 +32,6 @@ pub struct GitOpenOutput {
 }
 
 #[tool_metadata(
-    name = "git_open",
-    category = "git",
     description = "Open an existing Git repository and get its current state"
 )]
 impl ToolArgs for GitOpenArgs {
@@ -47,6 +39,6 @@ impl ToolArgs for GitOpenArgs {
     type Prompts = OpenPrompts;
 
     const NAME: &'static str = GIT_OPEN;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Open an existing Git repository and get its current state";
 }

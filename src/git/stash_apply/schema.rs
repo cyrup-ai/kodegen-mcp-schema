@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_STASH_APPLY};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::StashApplyPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_stash_apply
-pub const GIT_STASH_APPLY: &str = "git_stash_apply";
 
 // ============================================================================
 // GIT_STASH_APPLY TOOL
@@ -63,8 +57,6 @@ pub struct GitStashApplyOutput {
 }
 
 #[tool_metadata(
-    name = "git_stash_apply",
-    category = "git",
     description = "Apply stashed changes without removing from stash"
 )]
 impl ToolArgs for GitStashApplyArgs {
@@ -72,6 +64,6 @@ impl ToolArgs for GitStashApplyArgs {
     type Prompts = StashApplyPrompts;
 
     const NAME: &'static str = GIT_STASH_APPLY;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Apply stashed changes without removing from stash";
 }

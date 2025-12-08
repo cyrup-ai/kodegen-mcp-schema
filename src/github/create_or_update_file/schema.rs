@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_CREATE_OR_UPDATE_FILE};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::CreateOrUpdateFilePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for creating or updating a file
-pub const GITHUB_CREATE_OR_UPDATE_FILE: &str = "github_create_or_update_file";
 
 // ============================================================================
 // ARGS STRUCT
@@ -61,8 +55,6 @@ pub struct GitHubCreateOrUpdateFileOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_create_or_update_file",
-    category = "github",
     description = "Create or update a file in a repository"
 )]
 impl ToolArgs for CreateOrUpdateFileArgs {
@@ -70,6 +62,6 @@ impl ToolArgs for CreateOrUpdateFileArgs {
     type Prompts = CreateOrUpdateFilePrompts;
 
     const NAME: &'static str = GITHUB_CREATE_OR_UPDATE_FILE;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create or update a file in a repository";
 }

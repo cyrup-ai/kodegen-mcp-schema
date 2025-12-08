@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_DATABASE, DB_TABLE_INDEXES};
 use crate::{ToolArgs, tool_metadata};
 use super::super::types::IndexInfo;
 use super::prompts::TableIndexesPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Tool name: Get table index information
-pub const DB_TABLE_INDEXES: &str = "db_table_indexes";
 
 // ============================================================================
 // TOOL ARGUMENTS
@@ -46,8 +40,6 @@ pub struct GetTableIndexesOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "db_table_indexes",
-    category = "database",
     description = "View indexes on a table including types (btree, hash, gin), columns, and uniqueness constraints for query optimization."
 )]
 impl ToolArgs for GetTableIndexesArgs {
@@ -55,6 +47,6 @@ impl ToolArgs for GetTableIndexesArgs {
     type Prompts = TableIndexesPrompts;
 
     const NAME: &'static str = DB_TABLE_INDEXES;
-    const CATEGORY: &'static str = "database";
+    const CATEGORY: &'static str = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "View indexes on a table including types (btree, hash, gin), columns, and uniqueness constraints for query optimization.";
 }

@@ -2,13 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for scrape_url
-pub const SCRAPE_URL: &str = "scrape_url";
+use kodegen_config::{CATEGORY_CITESCRAPE, SCRAPE_URL};
 
 // ============================================================================
 // ACTION ENUM (shared with web_search conceptually, but owned by scrape_url)
@@ -203,8 +197,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::ScrapeUrlPrompts;
 
 #[tool_metadata(
-    name = "scrape_url",
-    category = "citescrape",
     description = "Unified website crawler with action-based dispatch (CRAWL/READ/LIST/KILL/SEARCH). Crawl entire sites, save to disk, build Tantivy search index"
 )]
 impl ToolArgs for ScrapeUrlArgs {
@@ -212,6 +204,6 @@ impl ToolArgs for ScrapeUrlArgs {
     type Prompts = ScrapeUrlPrompts;
 
     const NAME: &'static str = SCRAPE_URL;
-    const CATEGORY: &'static str = "citescrape";
+    const CATEGORY: &'static str = CATEGORY_CITESCRAPE;
     const DESCRIPTION: &'static str = "Unified website crawler with action-based dispatch (CRAWL/READ/LIST/KILL/SEARCH). Crawl entire sites, save to disk, build Tantivy search index";
 }

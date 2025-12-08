@@ -1,12 +1,14 @@
 //! Citescrape category module
 
+// Re-export all citescrape tool name constants from kodegen_config
+pub use kodegen_config::{FETCH, SCRAPE_URL, WEB_SEARCH};
+
 pub mod fetch;
 pub mod scrape_url;
 pub mod web_search;
 
 // Re-export scrape_url tool
 pub use scrape_url::{
-    SCRAPE_URL,
     ScrapeUrlArgs,
     ScrapeUrlOutput,
     ScrapeUrlPromptArgs,
@@ -18,7 +20,6 @@ pub use scrape_url::{
 
 // Re-export web_search tool
 pub use web_search::{
-    WEB_SEARCH,
     WebSearchArgs,
     WebSearchOutput,
     WebSearchPromptArgs,
@@ -28,7 +29,6 @@ pub use web_search::{
 
 // Re-export fetch tool
 pub use fetch::{
-    FETCH,
     FetchArgs,
     FetchOutput,
     FetchPromptArgs,

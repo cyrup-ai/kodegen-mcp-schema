@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_DATABASE, DB_LIST_TABLES};
 use crate::{ToolArgs, tool_metadata};
 use super::super::types::TableInfo;
 use super::prompts::ListTablesPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Tool name: List tables in a schema
-pub const DB_LIST_TABLES: &str = "db_list_tables";
 
 // ============================================================================
 // TOOL ARGUMENTS
@@ -46,8 +40,6 @@ pub struct ListTablesOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "db_list_tables",
-    category = "database",
     description = "List all tables and views in a schema. Use this to discover available tables before querying."
 )]
 impl ToolArgs for ListTablesArgs {
@@ -55,6 +47,6 @@ impl ToolArgs for ListTablesArgs {
     type Prompts = ListTablesPrompts;
 
     const NAME: &'static str = DB_LIST_TABLES;
-    const CATEGORY: &'static str = "database";
+    const CATEGORY: &'static str = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "List all tables and views in a schema. Use this to discover available tables before querying.";
 }

@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_DIFF};
 use crate::{ToolArgs, tool_metadata};
 use super::super::GitDiffFile;
 use super::prompts::DiffPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_diff
-pub const GIT_DIFF: &str = "git_diff";
 
 // ============================================================================
 // GIT_DIFF TOOL
@@ -48,8 +42,6 @@ pub struct GitDiffOutput {
 }
 
 #[tool_metadata(
-    name = "git_diff",
-    category = "git",
     description = "Show differences between commits, branches, or working directory"
 )]
 impl ToolArgs for GitDiffArgs {
@@ -57,6 +49,6 @@ impl ToolArgs for GitDiffArgs {
     type Prompts = DiffPrompts;
 
     const NAME: &'static str = GIT_DIFF;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Show differences between commits, branches, or working directory";
 }

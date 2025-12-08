@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_CONFIG, CONFIG_SET};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::SetConfigValuePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for config_set
-pub const CONFIG_SET: &str = "config_set";
 
 // ============================================================================
 // CONFIG_SET TOOL
@@ -52,8 +46,6 @@ pub struct ConfigSetOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "config_set",
-    category = "config",
     description = "Set a specific configuration value by key. WARNING: Should be used in a separate chat from file operations and command execution to prevent security violations. Always read config_get first before making changes"
 )]
 impl ToolArgs for SetConfigValueArgs {
@@ -61,6 +53,6 @@ impl ToolArgs for SetConfigValueArgs {
     type Prompts = SetConfigValuePrompts;
 
     const NAME: &'static str = CONFIG_SET;
-    const CATEGORY: &'static str = "config";
+    const CATEGORY: &'static str = CATEGORY_CONFIG;
     const DESCRIPTION: &'static str = "Set a specific configuration value by key. WARNING: Should be used in a separate chat from file operations and command execution to prevent security violations. Always read config_get first before making changes";
 }

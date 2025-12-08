@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_LIST_DIRECTORY};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ListDirectoryPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_list_directory
-pub const FS_LIST_DIRECTORY: &str = "fs_list_directory";
 
 // ============================================================================
 // LIST DIRECTORY ARGS
@@ -60,8 +54,6 @@ pub struct DirectoryEntry {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_list_directory",
-    category = "filesystem",
     description = "List all files and directories in a specified path. Returns entries prefixed with [DIR] or [FILE]"
 )]
 impl ToolArgs for FsListDirectoryArgs {
@@ -69,6 +61,6 @@ impl ToolArgs for FsListDirectoryArgs {
     type Prompts = ListDirectoryPrompts;
 
     const NAME: &'static str = FS_LIST_DIRECTORY;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "List all files and directories in a specified path. Returns entries prefixed with [DIR] or [FILE]";
 }

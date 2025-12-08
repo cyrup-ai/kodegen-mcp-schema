@@ -2,17 +2,11 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_CONFIG, CONFIG_GET};
 use chrono::{DateTime, Utc};
 pub use rmcp::model::Implementation as ClientInfo;
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ConfigGetPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for config_get
-pub const CONFIG_GET: &str = "config_get";
 
 // ============================================================================
 // CONFIG_GET TOOL
@@ -94,8 +88,6 @@ pub struct ClientRecord {
 // ============================================================================
 
 #[tool_metadata(
-    name = "config_get",
-    category = "config",
     description = "Get complete server configuration including security settings (blocked commands, allowed directories), shell preferences, resource limits, and live statistics"
 )]
 impl ToolArgs for GetConfigArgs {
@@ -103,6 +95,6 @@ impl ToolArgs for GetConfigArgs {
     type Prompts = ConfigGetPrompts;
 
     const NAME: &'static str = CONFIG_GET;
-    const CATEGORY: &'static str = "config";
+    const CATEGORY: &'static str = CATEGORY_CONFIG;
     const DESCRIPTION: &'static str = "Get complete server configuration including security settings (blocked commands, allowed directories), shell preferences, resource limits, and live statistics";
 }

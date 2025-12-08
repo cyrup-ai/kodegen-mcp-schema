@@ -1,5 +1,11 @@
 //! Memory category module
 
+// Re-export all memory tool name constants from kodegen_config
+pub use kodegen_config::{
+    MEMORY_CHECK_MEMORIZE_STATUS, MEMORY_LIST_LIBRARIES,
+    MEMORY_MEMORIZE, MEMORY_RECALL,
+};
+
 pub mod list_libraries;
 pub mod memorize;
 pub mod recall;
@@ -7,14 +13,12 @@ pub mod check_memorize_status;
 
 // Re-export list_libraries tool
 pub use list_libraries::{
-    MEMORY_LIST_LIBRARIES,
     ListMemoryLibrariesArgs,
     ListMemoryLibrariesOutput,
 };
 
 // Re-export memorize tool
 pub use memorize::{
-    MEMORY_MEMORIZE,
     MemorizeArgs,
     MemorizeOutput,
     MemorizePromptArgs,
@@ -23,7 +27,6 @@ pub use memorize::{
 
 // Re-export recall tool
 pub use recall::{
-    MEMORY_RECALL,
     RecallArgs,
     RecallOutput,
     MemoryRecallPromptArgs,
@@ -33,7 +36,6 @@ pub use recall::{
 
 // Re-export check_memorize_status tool
 pub use check_memorize_status::{
-    MEMORY_CHECK_MEMORIZE_STATUS,
     CheckMemorizeStatusArgs,
     CheckMemorizeStatusOutput,
     CheckMemorizeStatusPromptArgs,

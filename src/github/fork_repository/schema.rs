@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_FORK_REPOSITORY};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ForkRepositoryPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for forking a repository
-pub const GITHUB_FORK_REPOSITORY: &str = "github_fork_repository";
 
 // ============================================================================
 // ARGS STRUCT
@@ -51,8 +45,6 @@ pub struct GitHubForkRepoOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_fork_repository",
-    category = "github",
     description = "Fork a repository to your account or organization"
 )]
 impl ToolArgs for ForkRepositoryArgs {
@@ -60,6 +52,6 @@ impl ToolArgs for ForkRepositoryArgs {
     type Prompts = ForkRepositoryPrompts;
 
     const NAME: &'static str = GITHUB_FORK_REPOSITORY;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Fork a repository to your account or organization";
 }

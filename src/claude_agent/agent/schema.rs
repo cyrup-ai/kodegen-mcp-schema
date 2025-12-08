@@ -2,14 +2,8 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_CLAUDE_AGENT, CLAUDE_AGENT};
 use crate::ToolArgs;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Tool name constant for unified claude_agent tool
-pub const CLAUDE_AGENT: &str = "claude_agent";
 
 // ============================================================================
 // ACTION ENUM
@@ -174,8 +168,6 @@ use crate::tool_metadata;
 use super::prompts::ClaudeAgentPrompts;
 
 #[tool_metadata(
-    name = "claude_agent",
-    category = "agent",
     description = "Unified Claude agent interface with action-based dispatch (SPAWN/SEND/READ/LIST/KILL). Spawn autonomous sub-agents for task delegation and parallel processing"
 )]
 impl ToolArgs for ClaudeAgentArgs {
@@ -183,6 +175,6 @@ impl ToolArgs for ClaudeAgentArgs {
     type Prompts = ClaudeAgentPrompts;
 
     const NAME: &'static str = CLAUDE_AGENT;
-    const CATEGORY: &'static str = "agent";
+    const CATEGORY: &'static str = CATEGORY_CLAUDE_AGENT;
     const DESCRIPTION: &'static str = "Unified Claude agent interface with action-based dispatch (SPAWN/SEND/READ/LIST/KILL). Spawn autonomous sub-agents for task delegation and parallel processing";
 }

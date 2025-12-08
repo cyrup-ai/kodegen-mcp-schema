@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_CODE_SCANNING_ALERTS};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::CodeScanningAlertsPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for code scanning alerts
-pub const GITHUB_CODE_SCANNING_ALERTS: &str = "github_code_scanning_alerts";
 
 // ============================================================================
 // ARGS STRUCT
@@ -69,8 +63,6 @@ pub struct GitHubCodeScanningAlert {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_code_scanning_alerts",
-    category = "github",
     description = "Get code scanning alerts for a repository"
 )]
 impl ToolArgs for CodeScanningAlertsArgs {
@@ -78,6 +70,6 @@ impl ToolArgs for CodeScanningAlertsArgs {
     type Prompts = CodeScanningAlertsPrompts;
 
     const NAME: &'static str = GITHUB_CODE_SCANNING_ALERTS;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get code scanning alerts for a repository";
 }

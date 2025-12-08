@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_GET_COMMIT};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::GetCommitPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for getting a commit
-pub const GITHUB_GET_COMMIT: &str = "github_get_commit";
 
 // ============================================================================
 // ARGS STRUCT
@@ -85,8 +79,6 @@ pub struct GitHubCommitFile {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_get_commit",
-    category = "github",
     description = "Get details about a specific commit"
 )]
 impl ToolArgs for GetCommitArgs {
@@ -94,6 +86,6 @@ impl ToolArgs for GetCommitArgs {
     type Prompts = GetCommitPrompts;
 
     const NAME: &'static str = GITHUB_GET_COMMIT;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get details about a specific commit";
 }

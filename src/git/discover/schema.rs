@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_DISCOVER};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::DiscoverPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_discover
-pub const GIT_DISCOVER: &str = "git_discover";
 
 // ============================================================================
 // GIT_DISCOVER TOOL
@@ -37,8 +31,6 @@ pub struct GitDiscoverOutput {
 }
 
 #[tool_metadata(
-    name = "git_discover",
-    category = "git",
     description = "Find the Git repository root from any path inside it"
 )]
 impl ToolArgs for GitDiscoverArgs {
@@ -46,6 +38,6 @@ impl ToolArgs for GitDiscoverArgs {
     type Prompts = DiscoverPrompts;
 
     const NAME: &'static str = GIT_DISCOVER;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Find the Git repository root from any path inside it";
 }

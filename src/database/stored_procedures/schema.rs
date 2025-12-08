@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_DATABASE, DB_STORED_PROCEDURES};
 use crate::{ToolArgs, tool_metadata};
 use super::super::types::ProcedureInfo;
 use super::prompts::StoredProceduresPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Tool name: List stored procedures
-pub const DB_STORED_PROCEDURES: &str = "db_stored_procedures";
 
 // ============================================================================
 // TOOL ARGUMENTS
@@ -47,8 +41,6 @@ pub struct GetStoredProceduresOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "db_stored_procedures",
-    category = "database",
     description = "List stored procedures (functions) in a schema with parameters and return types."
 )]
 impl ToolArgs for GetStoredProceduresArgs {
@@ -56,6 +48,6 @@ impl ToolArgs for GetStoredProceduresArgs {
     type Prompts = StoredProceduresPrompts;
 
     const NAME: &'static str = DB_STORED_PROCEDURES;
-    const CATEGORY: &'static str = "database";
+    const CATEGORY: &'static str = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "List stored procedures (functions) in a schema with parameters and return types.";
 }

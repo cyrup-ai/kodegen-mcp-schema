@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_SEARCH};
 use crate::{ToolArgs, tool_metadata};
 use crate::filesystem::shared::*;
 use super::prompts::SearchPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_search
-pub const FS_SEARCH: &str = "fs_search";
 
 // ============================================================================
 // SEARCH ARGS
@@ -305,8 +299,6 @@ pub struct FileMatchCount {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_search",
-    category = "filesystem",
     description = "Blazing-fast content and filename search powered by ripgrep. Respects .gitignore automatically. Supports regex, case modes, file filtering, and background execution"
 )]
 impl ToolArgs for FsSearchArgs {
@@ -314,6 +306,6 @@ impl ToolArgs for FsSearchArgs {
     type Prompts = SearchPrompts;
 
     const NAME: &'static str = FS_SEARCH;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Blazing-fast content and filename search powered by ripgrep. Respects .gitignore automatically. Supports regex, case modes, file filtering, and background execution";
 }

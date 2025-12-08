@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_LIST_COMMITS};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ListCommitsPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for listing commits
-pub const GITHUB_LIST_COMMITS: &str = "github_list_commits";
 
 // ============================================================================
 // ARGS STRUCT
@@ -76,8 +70,6 @@ pub struct GitHubCommitSummary {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_list_commits",
-    category = "github",
     description = "List commits in a GitHub repository"
 )]
 impl ToolArgs for ListCommitsArgs {
@@ -85,6 +77,6 @@ impl ToolArgs for ListCommitsArgs {
     type Prompts = ListCommitsPrompts;
 
     const NAME: &'static str = GITHUB_LIST_COMMITS;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "List commits in a GitHub repository";
 }

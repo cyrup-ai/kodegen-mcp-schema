@@ -2,13 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for web_search
-pub const WEB_SEARCH: &str = "web_search";
+use kodegen_config::{CATEGORY_CITESCRAPE, WEB_SEARCH};
 
 // ============================================================================
 // WEB SEARCH TOOL
@@ -51,8 +45,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::WebSearchPrompts;
 
 #[tool_metadata(
-    name = "web_search",
-    category = "citescrape",
     description = "Perform web search using DuckDuckGo and return structured results with titles, URLs, and snippets"
 )]
 impl ToolArgs for WebSearchArgs {
@@ -60,6 +52,6 @@ impl ToolArgs for WebSearchArgs {
     type Prompts = WebSearchPrompts;
 
     const NAME: &'static str = WEB_SEARCH;
-    const CATEGORY: &'static str = "citescrape";
+    const CATEGORY: &'static str = CATEGORY_CITESCRAPE;
     const DESCRIPTION: &'static str = "Perform web search using DuckDuckGo and return structured results with titles, URLs, and snippets";
 }

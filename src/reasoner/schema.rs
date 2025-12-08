@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_REASONER, REASONER};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ReasonerPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for reasoner tool
-pub const REASONER: &str = "reasoner";
 
 // ============================================================================
 // REASONER TOOL
@@ -89,8 +83,6 @@ pub struct ReasonerOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "reasoner",
-    category = "reasoning",
     description = "Advanced reasoning tool with multiple strategies (beam search, MCTS). Processes thoughts step-by-step, supports branching and revision, and tracks best reasoning paths. Use for complex problem-solving that requires exploration of multiple solution approaches."
 )]
 impl ToolArgs for ReasonerArgs {
@@ -98,6 +90,6 @@ impl ToolArgs for ReasonerArgs {
     type Prompts = ReasonerPrompts;
 
     const NAME: &'static str = REASONER;
-    const CATEGORY: &'static str = "reasoning";
+    const CATEGORY: &'static str = CATEGORY_REASONER;
     const DESCRIPTION: &'static str = "Advanced reasoning tool with multiple strategies (beam search, MCTS). Processes thoughts step-by-step, supports branching and revision, and tracks best reasoning paths. Use for complex problem-solving that requires exploration of multiple solution approaches.";
 }

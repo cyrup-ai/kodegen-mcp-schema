@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_WORKTREE_UNLOCK};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::WorktreeUnlockPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_worktree_unlock
-pub const GIT_WORKTREE_UNLOCK: &str = "git_worktree_unlock";
 
 // ============================================================================
 // GIT_WORKTREE_UNLOCK TOOL
@@ -39,8 +33,6 @@ pub struct GitWorktreeUnlockOutput {
 }
 
 #[tool_metadata(
-    name = "git_worktree_unlock",
-    category = "git",
     description = "Unlock a working tree to allow automatic cleanup"
 )]
 impl ToolArgs for GitWorktreeUnlockArgs {
@@ -48,6 +40,6 @@ impl ToolArgs for GitWorktreeUnlockArgs {
     type Prompts = WorktreeUnlockPrompts;
 
     const NAME: &'static str = GIT_WORKTREE_UNLOCK;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Unlock a working tree to allow automatic cleanup";
 }

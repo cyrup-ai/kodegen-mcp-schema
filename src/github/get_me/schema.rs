@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_GET_ME};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::GetMePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for getting authenticated user info
-pub const GITHUB_GET_ME: &str = "github_get_me";
 
 // ============================================================================
 // ARGS STRUCT
@@ -51,8 +45,6 @@ pub struct GitHubGetMeOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_get_me",
-    category = "github",
     description = "Get authenticated user information"
 )]
 impl ToolArgs for GetMeArgs {
@@ -60,6 +52,6 @@ impl ToolArgs for GetMeArgs {
     type Prompts = GetMePrompts;
 
     const NAME: &'static str = GITHUB_GET_ME;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get authenticated user information";
 }

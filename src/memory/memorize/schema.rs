@@ -2,13 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for memory_memorize
-pub const MEMORY_MEMORIZE: &str = "memory_memorize";
+use kodegen_config::{CATEGORY_MEMORY, MEMORY_MEMORIZE};
 
 // ============================================================================
 // MEMORY MEMORIZE TOOL
@@ -48,8 +42,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::MemorizePrompts;
 
 #[tool_metadata(
-    name = "memory_memorize",
-    category = "memory",
     description = "Store content in a named memory library with automatic embedding generation. The memory will be tagged with the library name and can be retrieved later using recall(). Each library is a separate namespace for organizing memories."
 )]
 impl ToolArgs for MemorizeArgs {
@@ -57,6 +49,6 @@ impl ToolArgs for MemorizeArgs {
     type Prompts = MemorizePrompts;
 
     const NAME: &'static str = MEMORY_MEMORIZE;
-    const CATEGORY: &'static str = "memory";
+    const CATEGORY: &'static str = CATEGORY_MEMORY;
     const DESCRIPTION: &'static str = "Store content in a named memory library with automatic embedding generation. The memory will be tagged with the library name and can be retrieved later using recall(). Each library is a separate namespace for organizing memories.";
 }

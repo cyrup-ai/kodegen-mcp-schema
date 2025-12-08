@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_REQUEST_COPILOT_REVIEW};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::RequestCopilotReviewPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for requesting Copilot review
-pub const GITHUB_REQUEST_COPILOT_REVIEW: &str = "github_request_copilot_review";
 
 // ============================================================================
 // ARGS STRUCT
@@ -47,8 +41,6 @@ pub struct GitHubRequestCopilotReviewOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_request_copilot_review",
-    category = "github",
     description = "Request Copilot review for pull request"
 )]
 impl ToolArgs for RequestCopilotReviewArgs {
@@ -56,6 +48,6 @@ impl ToolArgs for RequestCopilotReviewArgs {
     type Prompts = RequestCopilotReviewPrompts;
 
     const NAME: &'static str = GITHUB_REQUEST_COPILOT_REVIEW;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Request Copilot review for pull request";
 }

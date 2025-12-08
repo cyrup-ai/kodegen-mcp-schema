@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_ADD_ISSUE_COMMENT};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::AddIssueCommentPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for adding an issue comment
-pub const GITHUB_ADD_ISSUE_COMMENT: &str = "github_add_issue_comment";
 
 // ============================================================================
 // ARGS STRUCT
@@ -50,8 +44,6 @@ pub struct GitHubAddIssueCommentOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_add_issue_comment",
-    category = "github",
     description = "Add a comment to an existing GitHub issue"
 )]
 impl ToolArgs for AddIssueCommentArgs {
@@ -59,6 +51,6 @@ impl ToolArgs for AddIssueCommentArgs {
     type Prompts = AddIssueCommentPrompts;
 
     const NAME: &'static str = GITHUB_ADD_ISSUE_COMMENT;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Add a comment to an existing GitHub issue";
 }

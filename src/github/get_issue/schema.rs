@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_GET_ISSUE};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::GetIssuePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for getting an issue
-pub const GITHUB_GET_ISSUE: &str = "github_get_issue";
 
 // ============================================================================
 // ARGS STRUCT
@@ -63,8 +57,6 @@ pub struct GitHubIssue {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_get_issue",
-    category = "github",
     description = "Get details about a specific GitHub issue"
 )]
 impl ToolArgs for GetIssueArgs {
@@ -72,6 +64,6 @@ impl ToolArgs for GetIssueArgs {
     type Prompts = GetIssuePrompts;
 
     const NAME: &'static str = GITHUB_GET_ISSUE;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get details about a specific GitHub issue";
 }

@@ -2,14 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_BROWSER, BROWSER_WEB_SEARCH};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::WebSearchPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-pub const BROWSER_WEB_SEARCH: &str = "browser_web_search";
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -59,8 +54,6 @@ pub struct WebSearchResult {
 // ============================================================================
 
 #[tool_metadata(
-    name = "browser_web_search",
-    category = "browser",
     description = "Perform web searches using various search engines and retrieve ranked results with titles, URLs, and snippets"
 )]
 impl ToolArgs for BrowserWebSearchArgs {
@@ -68,6 +61,6 @@ impl ToolArgs for BrowserWebSearchArgs {
     type Prompts = WebSearchPrompts;
 
     const NAME: &'static str = BROWSER_WEB_SEARCH;
-    const CATEGORY: &'static str = "browser";
+    const CATEGORY: &'static str = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Perform web searches using various search engines and retrieve ranked results with titles, URLs, and snippets";
 }

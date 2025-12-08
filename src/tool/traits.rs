@@ -885,25 +885,15 @@ where
         use rmcp::model::CallToolResult;
         
         Box::pin(async move {
-            let start = std::time::Instant::now();
-
             // Extract arguments and execution context
             let Parameters(args) = Parameters::<T::Args>::from_context_part(&mut context)?;
             let exec_ctx = ToolExecutionContext::from_context_part(&mut context)?;
 
-            // Serialize args for history
-            let args_json = serde_json::to_value(&args)
-                .unwrap_or_else(|_| serde_json::json!({}));
-
             // Execute tool - returns ToolResponse<<T::Args as ToolArgs>::Output>
             let result = self.tool.execute(args, exec_ctx).await;
-            let duration_ms = u64::try_from(start.elapsed().as_millis()).unwrap_or(u64::MAX);
 
             match result {
                 Ok(response) => {
-                    // Get typed metadata as JSON for history
-                    let output_json = response.metadata_as_json();
-                    
                     // Convert ToolResponse to Vec<Content>
                     let contents = response.into_contents()
                         .map_err(|e| rmcp::ErrorData::internal_error(
@@ -911,32 +901,9 @@ where
                             None
                         ))?;
 
-                    // Record to history
-                    if let Some(history) = super::tool_history::get_global_history() {
-                        history.add_call(
-                            T::name().to_string(),
-                            args_json,
-                            output_json,
-                            Some(duration_ms),
-                        );
-                    }
-
                     Ok(CallToolResult::success(contents))
                 }
                 Err(e) => {
-                    // Record error to history
-                    let error_json = serde_json::json!({
-                        "error": e.to_string(),
-                        "is_error": true
-                    });
-                    if let Some(history) = super::tool_history::get_global_history() {
-                        history.add_call(
-                            T::name().to_string(),
-                            args_json,
-                            error_json,
-                            Some(duration_ms),
-                        );
-                    }
                     Err(rmcp::ErrorData::from(e))
                 }
             }

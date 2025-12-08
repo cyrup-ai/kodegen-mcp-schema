@@ -1,5 +1,11 @@
 //! Database category module
 
+// Re-export all database tool name constants from kodegen_config
+pub use kodegen_config::{
+    DB_EXECUTE_SQL, DB_LIST_SCHEMAS, DB_LIST_TABLES, DB_POOL_STATS,
+    DB_STORED_PROCEDURES, DB_TABLE_INDEXES, DB_TABLE_SCHEMA,
+};
+
 // Shared types
 pub mod types;
 
@@ -17,7 +23,6 @@ pub use types::*;
 
 // Re-export execute_sql tool
 pub use execute_sql::{
-    DB_EXECUTE_SQL,
     ExecuteSQLArgs,
     ExecuteSQLOutput,
     DbExecuteSqlPromptArgs,
@@ -26,7 +31,6 @@ pub use execute_sql::{
 
 // Re-export list_schemas tool
 pub use list_schemas::{
-    DB_LIST_SCHEMAS,
     ListSchemasArgs,
     ListSchemasOutput,
     ListSchemasPromptArgs,
@@ -35,7 +39,6 @@ pub use list_schemas::{
 
 // Re-export list_tables tool
 pub use list_tables::{
-    DB_LIST_TABLES,
     ListTablesArgs,
     ListTablesOutput,
     ListTablesPromptArgs,
@@ -44,7 +47,6 @@ pub use list_tables::{
 
 // Re-export table_schema tool
 pub use table_schema::{
-    DB_TABLE_SCHEMA,
     GetTableSchemaArgs,
     GetTableSchemaOutput,
     GetTableSchemaPromptArgs,
@@ -53,7 +55,6 @@ pub use table_schema::{
 
 // Re-export table_indexes tool
 pub use table_indexes::{
-    DB_TABLE_INDEXES,
     GetTableIndexesArgs,
     GetTableIndexesOutput,
     GetTableIndexesPromptArgs,
@@ -62,7 +63,6 @@ pub use table_indexes::{
 
 // Re-export stored_procedures tool
 pub use stored_procedures::{
-    DB_STORED_PROCEDURES,
     GetStoredProceduresArgs,
     GetStoredProceduresOutput,
     GetStoredProceduresPromptArgs,
@@ -71,7 +71,6 @@ pub use stored_procedures::{
 
 // Re-export pool_stats tool
 pub use pool_stats::{
-    DB_POOL_STATS,
     GetPoolStatsArgs,
     GetPoolStatsOutput,
     GetPoolStatsPromptArgs,

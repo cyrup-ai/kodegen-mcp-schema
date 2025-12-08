@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_INIT};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::InitPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_init
-pub const GIT_INIT: &str = "git_init";
 
 // ============================================================================
 // GIT_INIT TOOL
@@ -45,8 +39,6 @@ pub struct GitInitOutput {
 }
 
 #[tool_metadata(
-    name = "git_init",
-    category = "git",
     description = "Initialize a new Git repository at the specified path"
 )]
 impl ToolArgs for GitInitArgs {
@@ -54,6 +46,6 @@ impl ToolArgs for GitInitArgs {
     type Prompts = InitPrompts;
 
     const NAME: &'static str = GIT_INIT;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Initialize a new Git repository at the specified path";
 }

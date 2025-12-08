@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_TAG};
 use crate::{ToolArgs, tool_metadata};
 use super::super::GitTagInfo;
 use super::prompts::TagPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_tag
-pub const GIT_TAG: &str = "git_tag";
 
 
 // ============================================================================
@@ -77,8 +71,6 @@ pub struct GitTagOutput {
 }
 
 #[tool_metadata(
-    name = "git_tag",
-    category = "git",
     description = "Create, list, or delete tags in a repository"
 )]
 impl ToolArgs for GitTagArgs {
@@ -86,6 +78,6 @@ impl ToolArgs for GitTagArgs {
     type Prompts = TagPrompts;
 
     const NAME: &'static str = GIT_TAG;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create, list, or delete tags in a repository";
 }

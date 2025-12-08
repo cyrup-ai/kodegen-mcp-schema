@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_LIST_BRANCHES};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ListBranchesPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for listing branches
-pub const GITHUB_LIST_BRANCHES: &str = "github_list_branches";
 
 // ============================================================================
 // ARGS STRUCT
@@ -58,8 +52,6 @@ pub struct GitHubBranch {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_list_branches",
-    category = "github",
     description = "List branches in a GitHub repository"
 )]
 impl ToolArgs for ListBranchesArgs {
@@ -67,6 +59,6 @@ impl ToolArgs for ListBranchesArgs {
     type Prompts = ListBranchesPrompts;
 
     const NAME: &'static str = GITHUB_LIST_BRANCHES;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "List branches in a GitHub repository";
 }

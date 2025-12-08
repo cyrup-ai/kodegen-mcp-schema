@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_DATABASE, DB_LIST_SCHEMAS};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ListSchemasPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Tool name: List database schemas
-pub const DB_LIST_SCHEMAS: &str = "db_list_schemas";
 
 // ============================================================================
 // TOOL ARGUMENTS
@@ -38,8 +32,6 @@ pub struct ListSchemasOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "db_list_schemas",
-    category = "database",
     description = "List all schemas (namespaces) in the database. Use this to discover database structure before querying."
 )]
 impl ToolArgs for ListSchemasArgs {
@@ -47,6 +39,6 @@ impl ToolArgs for ListSchemasArgs {
     type Prompts = ListSchemasPrompts;
 
     const NAME: &'static str = DB_LIST_SCHEMAS;
-    const CATEGORY: &'static str = "database";
+    const CATEGORY: &'static str = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "List all schemas (namespaces) in the database. Use this to discover database structure before querying.";
 }

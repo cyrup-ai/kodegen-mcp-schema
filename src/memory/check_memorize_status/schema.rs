@@ -2,13 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for memory_check_memorize_status
-pub const MEMORY_CHECK_MEMORIZE_STATUS: &str = "memory_check_memorize_status";
+use kodegen_config::{CATEGORY_MEMORY, MEMORY_CHECK_MEMORIZE_STATUS};
 
 // ============================================================================
 // MEMORY CHECK MEMORIZE STATUS TOOL
@@ -65,8 +59,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::CheckMemorizeStatusPrompts;
 
 #[tool_metadata(
-    name = "memory_check_memorize_status",
-    category = "memory",
     description = "Check the status of a memorize operation. Use this to verify if an asynchronous memorization has completed, is still in progress, or has failed."
 )]
 impl ToolArgs for CheckMemorizeStatusArgs {
@@ -74,6 +66,6 @@ impl ToolArgs for CheckMemorizeStatusArgs {
     type Prompts = CheckMemorizeStatusPrompts;
 
     const NAME: &'static str = MEMORY_CHECK_MEMORIZE_STATUS;
-    const CATEGORY: &'static str = "memory";
+    const CATEGORY: &'static str = CATEGORY_MEMORY;
     const DESCRIPTION: &'static str = "Check the status of a memorize operation. Use this to verify if an asynchronous memorization has completed, is still in progress, or has failed.";
 }

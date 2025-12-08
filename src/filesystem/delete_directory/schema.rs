@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_DELETE_DIRECTORY};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::DeleteDirectoryPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_delete_directory
-pub const FS_DELETE_DIRECTORY: &str = "fs_delete_directory";
 
 // ============================================================================
 // DELETE DIRECTORY ARGS
@@ -45,8 +39,6 @@ pub struct FsDeleteDirectoryOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_delete_directory",
-    category = "filesystem",
     description = "Delete a directory and all its contents recursively. This operation is permanent and cannot be undone"
 )]
 impl ToolArgs for FsDeleteDirectoryArgs {
@@ -54,6 +46,6 @@ impl ToolArgs for FsDeleteDirectoryArgs {
     type Prompts = DeleteDirectoryPrompts;
 
     const NAME: &'static str = FS_DELETE_DIRECTORY;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Delete a directory and all its contents recursively. This operation is permanent and cannot be undone";
 }

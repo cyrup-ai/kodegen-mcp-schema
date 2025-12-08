@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_LOG};
 use crate::{ToolArgs, tool_metadata};
 use super::super::GitCommitInfo;
 use super::prompts::LogPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_log
-pub const GIT_LOG: &str = "git_log";
 
 // ============================================================================
 // GIT_LOG TOOL
@@ -49,8 +43,6 @@ pub struct GitLogOutput {
 }
 
 #[tool_metadata(
-    name = "git_log",
-    category = "git",
     description = "View commit history with optional filtering"
 )]
 impl ToolArgs for GitLogArgs {
@@ -58,6 +50,6 @@ impl ToolArgs for GitLogArgs {
     type Prompts = LogPrompts;
 
     const NAME: &'static str = GIT_LOG;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "View commit history with optional filtering";
 }

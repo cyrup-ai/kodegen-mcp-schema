@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 use schemars::JsonSchema;
-use crate::{browser, citescrape, claude_agent, config, database, filesystem, git, github, introspection, memory, process, prompt, reasoning, terminal};
+use crate::{browser, citescrape, claude_agent, config, database, filesystem, git, github, introspection, memory, process, prompt, reasoner, sequential_thinking, terminal};
 
 /// Combined result containing both display text and typed output.
 ///
@@ -180,10 +180,14 @@ pub enum AnyToolOutput {
     PromptEdit(prompt::PromptEditOutput),
 
     // ========================================================================
-    // REASONING TOOLS (2 tools)
+    // REASONER TOOL
     // ========================================================================
-    Reasoner(reasoning::ReasonerOutput),
-    SequentialThinking(reasoning::SequentialThinkingOutput),
+    Reasoner(reasoner::ReasonerOutput),
+
+    // ========================================================================
+    // SEQUENTIAL THINKING TOOL
+    // ========================================================================
+    SequentialThinking(sequential_thinking::SequentialThinkingOutput),
 
     // ========================================================================
     // INTROSPECTION TOOLS (2 tools)

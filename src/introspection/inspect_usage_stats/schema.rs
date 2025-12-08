@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_INTROSPECTION, INSPECT_USAGE_STATS};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::InspectUsageStatsPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical name for the inspect_usage_stats tool
-pub const INSPECT_USAGE_STATS: &str = "inspect_usage_stats";
 
 // ============================================================================
 // TOOL ARGUMENTS
@@ -65,8 +59,6 @@ pub struct ToolUsageStats {
 // ============================================================================
 
 #[tool_metadata(
-    name = "inspect_usage_stats",
-    category = "introspection",
     description = "Analyze aggregated tool usage statistics including call counts, success rates, and performance metrics. Essential for optimization and performance analysis"
 )]
 impl ToolArgs for InspectUsageStatsArgs {
@@ -74,6 +66,6 @@ impl ToolArgs for InspectUsageStatsArgs {
     type Prompts = InspectUsageStatsPrompts;
 
     const NAME: &'static str = INSPECT_USAGE_STATS;
-    const CATEGORY: &'static str = "introspection";
+    const CATEGORY: &'static str = CATEGORY_INTROSPECTION;
     const DESCRIPTION: &'static str = "Analyze aggregated tool usage statistics including call counts, success rates, and performance metrics. Essential for optimization and performance analysis";
 }

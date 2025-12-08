@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_CREATE_REPOSITORY};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::CreateRepositoryPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for creating a repository
-pub const GITHUB_CREATE_REPOSITORY: &str = "github_create_repository";
 
 // ============================================================================
 // ARGS STRUCT
@@ -93,8 +87,6 @@ pub struct GitHubCreateRepoOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_create_repository",
-    category = "github",
     description = "Create a new GitHub repository"
 )]
 impl ToolArgs for CreateRepositoryArgs {
@@ -102,6 +94,6 @@ impl ToolArgs for CreateRepositoryArgs {
     type Prompts = CreateRepositoryPrompts;
 
     const NAME: &'static str = GITHUB_CREATE_REPOSITORY;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create a new GitHub repository";
 }

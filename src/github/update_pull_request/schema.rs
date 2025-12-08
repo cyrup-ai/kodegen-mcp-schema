@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_UPDATE_PULL_REQUEST};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::UpdatePullRequestPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for updating a pull request
-pub const GITHUB_UPDATE_PULL_REQUEST: &str = "github_update_pull_request";
 
 // ============================================================================
 // ARGS STRUCT
@@ -62,8 +56,6 @@ pub struct GitHubUpdatePrOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_update_pull_request",
-    category = "github",
     description = "Update an existing pull request"
 )]
 impl ToolArgs for UpdatePullRequestArgs {
@@ -71,6 +63,6 @@ impl ToolArgs for UpdatePullRequestArgs {
     type Prompts = UpdatePullRequestPrompts;
 
     const NAME: &'static str = GITHUB_UPDATE_PULL_REQUEST;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Update an existing pull request";
 }

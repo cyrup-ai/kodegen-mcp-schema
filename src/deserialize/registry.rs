@@ -1,7 +1,7 @@
 //! Tool name → deserializer mapping registry (macro-generated)
 
 use super::{error::DeserializeError, types::AnyToolOutput};
-use crate::{browser, citescrape, claude_agent, config, database, filesystem, git, github, introspection, memory, process, prompt, reasoning, terminal};
+use crate::{browser, citescrape, claude_agent, config, database, filesystem, git, github, introspection, memory, process, prompt, reasoner, sequential_thinking, terminal};
 
 /// Macro to generate the tool deserialization registry.
 ///
@@ -172,9 +172,11 @@ tool_registry! {
     prompt::PROMPT_DELETE => PromptDelete(prompt::PromptDeleteOutput),
     prompt::PROMPT_EDIT => PromptEdit(prompt::PromptEditOutput),
 
-    // REASONING (2 tools)
-    reasoning::REASONER => Reasoner(reasoning::ReasonerOutput),
-    reasoning::SEQUENTIAL_THINKING => SequentialThinking(reasoning::SequentialThinkingOutput),
+    // REASONER TOOL
+    reasoner::REASONER => Reasoner(reasoner::ReasonerOutput),
+
+    // SEQUENTIAL THINKING TOOL
+    sequential_thinking::SEQUENTIAL_THINKING => SequentialThinking(sequential_thinking::SequentialThinkingOutput),
 
     // INTROSPECTION (2 tools)
     introspection::INSPECT_TOOL_CALLS => InspectToolCalls(introspection::InspectToolCallsOutput),

@@ -2,17 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_RESET};
 use crate::{ToolArgs, tool_metadata};
 use super::super::ResetMode;
 use super::prompts::ResetPrompts;
-
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_reset
-pub const GIT_RESET: &str = "git_reset";
 
 
 // ============================================================================
@@ -54,8 +47,6 @@ pub struct GitResetOutput {
 }
 
 #[tool_metadata(
-    name = "git_reset",
-    category = "git",
     description = "Reset current HEAD to a specified state (soft/mixed/hard)"
 )]
 impl ToolArgs for GitResetArgs {
@@ -63,6 +54,6 @@ impl ToolArgs for GitResetArgs {
     type Prompts = ResetPrompts;
 
     const NAME: &'static str = GIT_RESET;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Reset current HEAD to a specified state (soft/mixed/hard)";
 }

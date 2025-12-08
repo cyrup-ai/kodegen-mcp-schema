@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_SEARCH_USERS};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::SearchUsersPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for GitHub user search
-pub const GITHUB_SEARCH_USERS: &str = "github_search_users";
 
 // ============================================================================
 // ARGS STRUCT
@@ -71,8 +65,6 @@ pub struct GitHubUserSearchResult {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_search_users",
-    category = "github",
     description = "Search users across GitHub using query syntax"
 )]
 impl ToolArgs for SearchUsersArgs {
@@ -80,6 +72,6 @@ impl ToolArgs for SearchUsersArgs {
     type Prompts = SearchUsersPrompts;
 
     const NAME: &'static str = GITHUB_SEARCH_USERS;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Search users across GitHub using query syntax";
 }

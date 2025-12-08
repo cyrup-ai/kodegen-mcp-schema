@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_EDIT_BLOCK};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::EditBlockPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_edit_block
-pub const FS_EDIT_BLOCK: &str = "fs_edit_block";
 
 // ============================================================================
 // EDIT BLOCK ARGS
@@ -56,8 +50,6 @@ pub struct FsEditBlockOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_edit_block",
-    category = "filesystem",
     description = "Apply surgical text replacements to files. Takes old_string and new_string, performs exact string replacement"
 )]
 impl ToolArgs for FsEditBlockArgs {
@@ -65,6 +57,6 @@ impl ToolArgs for FsEditBlockArgs {
     type Prompts = EditBlockPrompts;
 
     const NAME: &'static str = FS_EDIT_BLOCK;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Apply surgical text replacements to files. Takes old_string and new_string, performs exact string replacement";
 }

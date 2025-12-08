@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_REVERT};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::RevertPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_revert
-pub const GIT_REVERT: &str = "git_revert";
 
 // ============================================================================
 // GIT_REVERT TOOL
@@ -132,8 +126,6 @@ pub struct RevertCommitInfo {
 }
 
 #[tool_metadata(
-    name = "git_revert",
-    category = "git",
     description = "Create new commits that undo changes from previous commits"
 )]
 impl ToolArgs for GitRevertArgs {
@@ -141,6 +133,6 @@ impl ToolArgs for GitRevertArgs {
     type Prompts = RevertPrompts;
 
     const NAME: &'static str = GIT_REVERT;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create new commits that undo changes from previous commits";
 }

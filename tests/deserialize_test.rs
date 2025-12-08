@@ -1,5 +1,6 @@
 //! Integration tests for MCP tool output deserialization
 
+use kodegen_config::TERMINAL;
 use kodegen_mcp_schema::{deserialize_tool_output, AnyToolOutput};
 use std::fs;
 
@@ -10,7 +11,7 @@ fn test_deserialize_terminal_output() {
         .expect("Failed to read terminal_output.json fixture");
 
     // Deserialize using the tool name and full MCP response
-    let result = deserialize_tool_output("terminal", &mcp_response_json)
+    let result = deserialize_tool_output(TERMINAL, &mcp_response_json)
         .expect("Failed to deserialize terminal output");
 
     // Verify display text was extracted correctly
@@ -45,7 +46,7 @@ fn test_deserialize_terminal_output_with_error() {
         }
     ]"#;
 
-    let result = deserialize_tool_output("terminal", mcp_response_json)
+    let result = deserialize_tool_output(TERMINAL, mcp_response_json)
         .expect("Failed to deserialize terminal output");
 
     // Verify error case
@@ -75,7 +76,7 @@ fn test_deserialize_terminal_output_still_running() {
         }
     ]"#;
 
-    let result = deserialize_tool_output("terminal", mcp_response_json)
+    let result = deserialize_tool_output(TERMINAL, mcp_response_json)
         .expect("Failed to deserialize terminal output");
 
     match result.typed {
@@ -111,7 +112,7 @@ fn test_deserialize_malformed_json() {
         {"type": "text", "text": "not valid json{{{"}
     ]"#;
 
-    let result = deserialize_tool_output("terminal", mcp_response_json);
+    let result = deserialize_tool_output(TERMINAL, mcp_response_json);
 
     assert!(result.is_err());
     let err = result.unwrap_err();
@@ -125,7 +126,7 @@ fn test_deserialize_missing_content() {
         {"type": "text", "text": "Display text only"}
     ]"#;
 
-    let result = deserialize_tool_output("terminal", mcp_response_json);
+    let result = deserialize_tool_output(TERMINAL, mcp_response_json);
 
     assert!(result.is_err());
     let err = result.unwrap_err();

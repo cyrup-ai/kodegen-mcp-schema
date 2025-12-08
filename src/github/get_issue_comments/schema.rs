@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_GET_ISSUE_COMMENTS};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::GetIssueCommentsPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for getting issue comments
-pub const GITHUB_GET_ISSUE_COMMENTS: &str = "github_get_issue_comments";
 
 // ============================================================================
 // ARGS STRUCT
@@ -57,8 +51,6 @@ pub struct GitHubComment {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_get_issue_comments",
-    category = "github",
     description = "Get all comments on a GitHub issue"
 )]
 impl ToolArgs for GetIssueCommentsArgs {
@@ -66,6 +58,6 @@ impl ToolArgs for GetIssueCommentsArgs {
     type Prompts = GetIssueCommentsPrompts;
 
     const NAME: &'static str = GITHUB_GET_ISSUE_COMMENTS;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get all comments on a GitHub issue";
 }

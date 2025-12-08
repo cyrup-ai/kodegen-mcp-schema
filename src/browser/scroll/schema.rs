@@ -2,14 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_BROWSER, BROWSER_SCROLL};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ScrollPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-pub const BROWSER_SCROLL: &str = "browser_scroll";
 
 // ============================================================================
 // INPUT ARGS
@@ -48,8 +43,6 @@ pub struct BrowserScrollOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "browser_scroll",
-    category = "browser",
     description = "Scroll the page in specified direction or to a specific element, useful for lazy-loaded content"
 )]
 impl ToolArgs for BrowserScrollArgs {
@@ -57,6 +50,6 @@ impl ToolArgs for BrowserScrollArgs {
     type Prompts = ScrollPrompts;
 
     const NAME: &'static str = BROWSER_SCROLL;
-    const CATEGORY: &'static str = "browser";
+    const CATEGORY: &'static str = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Scroll the page in specified direction or to a specific element, useful for lazy-loaded content";
 }

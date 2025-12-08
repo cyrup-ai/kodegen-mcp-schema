@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_BRANCH_LIST};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::BranchListPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_branch_list
-pub const GIT_BRANCH_LIST: &str = "git_branch_list";
 
 // ============================================================================
 // GIT_BRANCH_LIST TOOL
@@ -36,8 +30,6 @@ pub struct GitBranchListOutput {
 }
 
 #[tool_metadata(
-    name = "git_branch_list",
-    category = "git",
     description = "List all branches in the repository"
 )]
 impl ToolArgs for GitBranchListArgs {
@@ -45,6 +37,6 @@ impl ToolArgs for GitBranchListArgs {
     type Prompts = BranchListPrompts;
 
     const NAME: &'static str = GIT_BRANCH_LIST;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "List all branches in the repository";
 }

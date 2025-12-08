@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_DELETE_BRANCH};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::DeleteBranchPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for deleting a branch
-pub const GITHUB_DELETE_BRANCH: &str = "github_delete_branch";
 
 // ============================================================================
 // ARGS STRUCT
@@ -47,8 +41,6 @@ pub struct GitHubDeleteBranchOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_delete_branch",
-    category = "github",
     description = "Delete a branch from a repository"
 )]
 impl ToolArgs for DeleteBranchArgs {
@@ -56,6 +48,6 @@ impl ToolArgs for DeleteBranchArgs {
     type Prompts = DeleteBranchPrompts;
 
     const NAME: &'static str = GITHUB_DELETE_BRANCH;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Delete a branch from a repository";
 }

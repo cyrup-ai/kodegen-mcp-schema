@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_TERMINAL, TERMINAL};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::TerminalPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for unified terminal tool
-pub const TERMINAL: &str = "terminal";
 
 // ============================================================================
 // UNIFIED TERMINAL TOOL
@@ -141,8 +135,6 @@ pub struct TerminalOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "terminal",
-    category = "terminal",
     description = "Execute shell commands in persistent, stateful terminal sessions with support for parallel execution and background tasks"
 )]
 impl ToolArgs for TerminalInput {
@@ -150,6 +142,6 @@ impl ToolArgs for TerminalInput {
     type Prompts = TerminalPrompts;
 
     const NAME: &'static str = TERMINAL;
-    const CATEGORY: &'static str = "terminal";
+    const CATEGORY: &'static str = CATEGORY_TERMINAL;
     const DESCRIPTION: &'static str = "Execute shell commands in persistent, stateful terminal sessions with support for parallel execution and background tasks";
 }

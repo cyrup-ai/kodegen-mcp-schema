@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_REMOTE_REMOVE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::RemoteRemovePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_remote_remove
-pub const GIT_REMOTE_REMOVE: &str = "git_remote_remove";
 
 // ============================================================================
 // GIT_REMOTE_REMOVE TOOL
@@ -39,8 +33,6 @@ pub struct GitRemoteRemoveOutput {
 }
 
 #[tool_metadata(
-    name = "git_remote_remove",
-    category = "git",
     description = "Remove a remote repository connection"
 )]
 impl ToolArgs for GitRemoteRemoveArgs {
@@ -48,6 +40,6 @@ impl ToolArgs for GitRemoteRemoveArgs {
     type Prompts = RemoteRemovePrompts;
 
     const NAME: &'static str = GIT_REMOTE_REMOVE;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Remove a remote repository connection";
 }

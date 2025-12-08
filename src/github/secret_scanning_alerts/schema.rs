@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_SECRET_SCANNING_ALERTS};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::SecretScanningAlertsPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for secret scanning alerts
-pub const GITHUB_SECRET_SCANNING_ALERTS: &str = "github_secret_scanning_alerts";
 
 // ============================================================================
 // ARGS STRUCT
@@ -64,8 +58,6 @@ pub struct GitHubSecretScanningAlert {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_secret_scanning_alerts",
-    category = "github",
     description = "List secret scanning alerts"
 )]
 impl ToolArgs for SecretScanningAlertsArgs {
@@ -73,6 +65,6 @@ impl ToolArgs for SecretScanningAlertsArgs {
     type Prompts = SecretScanningAlertsPrompts;
 
     const NAME: &'static str = GITHUB_SECRET_SCANNING_ALERTS;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "List secret scanning alerts";
 }

@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_WORKTREE_REMOVE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::WorktreeRemovePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_worktree_remove
-pub const GIT_WORKTREE_REMOVE: &str = "git_worktree_remove";
 
 // ============================================================================
 // GIT_WORKTREE_REMOVE TOOL
@@ -43,8 +37,6 @@ pub struct GitWorktreeRemoveOutput {
 }
 
 #[tool_metadata(
-    name = "git_worktree_remove",
-    category = "git",
     description = "Remove a working tree and its administrative files"
 )]
 impl ToolArgs for GitWorktreeRemoveArgs {
@@ -52,6 +44,6 @@ impl ToolArgs for GitWorktreeRemoveArgs {
     type Prompts = WorktreeRemovePrompts;
 
     const NAME: &'static str = GIT_WORKTREE_REMOVE;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Remove a working tree and its administrative files";
 }

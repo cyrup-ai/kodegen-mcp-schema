@@ -2,13 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for memory_list_libraries
-pub const MEMORY_LIST_LIBRARIES: &str = "memory_list_libraries";
+use kodegen_config::{CATEGORY_MEMORY, MEMORY_LIST_LIBRARIES};
 
 // ============================================================================
 // MEMORY LIST LIBRARIES TOOL
@@ -39,8 +33,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::MemoryListLibrariesPrompts;
 
 #[tool_metadata(
-    name = "memory_list_libraries",
-    category = "memory",
     description = "List all unique memory library names that have been created. Returns a list of all libraries that contain at least one memory. Use this to discover what libraries are available for recall."
 )]
 impl ToolArgs for ListMemoryLibrariesArgs {
@@ -48,6 +40,6 @@ impl ToolArgs for ListMemoryLibrariesArgs {
     type Prompts = MemoryListLibrariesPrompts;
 
     const NAME: &'static str = MEMORY_LIST_LIBRARIES;
-    const CATEGORY: &'static str = "memory";
+    const CATEGORY: &'static str = CATEGORY_MEMORY;
     const DESCRIPTION: &'static str = "List all unique memory library names that have been created. Returns a list of all libraries that contain at least one memory. Use this to discover what libraries are available for recall.";
 }

@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_GET_PULL_REQUEST_STATUS};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::GetPullRequestStatusPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for getting pull request status
-pub const GITHUB_GET_PULL_REQUEST_STATUS: &str = "github_get_pull_request_status";
 
 // ============================================================================
 // ARGS STRUCT
@@ -52,8 +46,6 @@ pub struct GitHubGetPrStatusOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_get_pull_request_status",
-    category = "github",
     description = "Get pull request status"
 )]
 impl ToolArgs for GetPullRequestStatusArgs {
@@ -61,6 +53,6 @@ impl ToolArgs for GetPullRequestStatusArgs {
     type Prompts = GetPullRequestStatusPrompts;
 
     const NAME: &'static str = GITHUB_GET_PULL_REQUEST_STATUS;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get pull request status";
 }

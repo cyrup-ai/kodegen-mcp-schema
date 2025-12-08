@@ -44,7 +44,7 @@ pub mod tool;
 // Re-export tool infrastructure for convenience
 pub use tool::{
     Tool, ToolResponse, ToolExecutionContext,
-    McpError, ToolHistory
+    McpError, ToolCallRecord
 };
 
 // ============================================================================
@@ -105,7 +105,8 @@ pub mod github;
 pub mod browser;
 pub mod citescrape;
 pub mod database;
-pub mod reasoning;
+pub mod reasoner;
+pub mod sequential_thinking;
 pub mod claude_agent;
 pub mod memory;
 pub mod prompt;
@@ -208,9 +209,11 @@ impl tool::SealedPromptProvider for introspection::inspect_tool_calls::InspectTo
 impl tool::SealedPromptProvider for introspection::inspect_usage_stats::InspectUsageStatsPrompts {}
 impl tool::SealedPromptProvider for introspection::list_tools::IntrospectionListToolsPrompts {}
 
-// Reasoning tools
-impl tool::SealedPromptProvider for reasoning::reasoner::ReasonerPrompts {}
-impl tool::SealedPromptProvider for reasoning::sequential_thinking::SequentialThinkingPrompts {}
+// Reasoner tool
+impl tool::SealedPromptProvider for reasoner::ReasonerPrompts {}
+
+// Sequential thinking tool
+impl tool::SealedPromptProvider for sequential_thinking::SequentialThinkingPrompts {}
 
 // Prompt management tools
 impl tool::SealedPromptProvider for prompt::prompt_add::PromptAddPrompts {}

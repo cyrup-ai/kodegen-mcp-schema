@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_PROCESS, PROCESS_LIST};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ProcessListPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for process_list
-pub const PROCESS_LIST: &str = "process_list";
 
 // ============================================================================
 // PROCESS LIST TOOL
@@ -58,8 +52,6 @@ pub struct ProcessInfo {
 // ============================================================================
 
 #[tool_metadata(
-    name = "process_list",
-    category = "process",
     description = "List all running processes with PID, command name, CPU usage, and memory usage. Supports filtering by process name"
 )]
 impl ToolArgs for ProcessListArgs {
@@ -67,6 +59,6 @@ impl ToolArgs for ProcessListArgs {
     type Prompts = ProcessListPrompts;
 
     const NAME: &'static str = PROCESS_LIST;
-    const CATEGORY: &'static str = "process";
+    const CATEGORY: &'static str = CATEGORY_PROCESS;
     const DESCRIPTION: &'static str = "List all running processes with PID, command name, CPU usage, and memory usage. Supports filtering by process name";
 }

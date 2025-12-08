@@ -2,13 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for prompt_delete
-pub const PROMPT_DELETE: &str = "prompt_delete";
+use kodegen_config::{CATEGORY_PROMPT, PROMPT_DELETE};
 
 // ============================================================================
 // PROMPT DELETE TOOL
@@ -48,8 +42,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::PromptDeletePrompts;
 
 #[tool_metadata(
-    name = "prompt_delete",
-    category = "prompt",
     description = "Delete prompt template with required confirmation to prevent accidental removal"
 )]
 impl ToolArgs for DeletePromptArgs {
@@ -57,6 +49,6 @@ impl ToolArgs for DeletePromptArgs {
     type Prompts = PromptDeletePrompts;
 
     const NAME: &'static str = PROMPT_DELETE;
-    const CATEGORY: &'static str = "prompt";
+    const CATEGORY: &'static str = CATEGORY_PROMPT;
     const DESCRIPTION: &'static str = "Delete prompt template with required confirmation to prevent accidental removal";
 }

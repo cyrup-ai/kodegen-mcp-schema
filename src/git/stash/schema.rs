@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_STASH};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::StashPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_stash
-pub const GIT_STASH: &str = "git_stash";
 
 
 // ============================================================================
@@ -66,8 +60,6 @@ pub struct GitStashOutput {
 }
 
 #[tool_metadata(
-    name = "git_stash",
-    category = "git",
     description = "Temporarily store uncommitted changes and restore them later"
 )]
 impl ToolArgs for GitStashArgs {
@@ -75,6 +67,6 @@ impl ToolArgs for GitStashArgs {
     type Prompts = StashPrompts;
 
     const NAME: &'static str = GIT_STASH;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Temporarily store uncommitted changes and restore them later";
 }

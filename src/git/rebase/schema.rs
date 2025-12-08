@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_REBASE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::RebasePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_rebase
-pub const GIT_REBASE: &str = "git_rebase";
 
 // ============================================================================
 // GIT_REBASE TOOL
@@ -65,8 +59,6 @@ pub struct GitRebaseOutput {
 }
 
 #[tool_metadata(
-    name = "git_rebase",
-    category = "git",
     description = "Reapply commits on top of another base"
 )]
 impl ToolArgs for GitRebaseArgs {
@@ -74,6 +66,6 @@ impl ToolArgs for GitRebaseArgs {
     type Prompts = RebasePrompts;
 
     const NAME: &'static str = GIT_REBASE;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Reapply commits on top of another base";
 }

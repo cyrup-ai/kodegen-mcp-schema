@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_CONFIG_GET};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ConfigGetPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_config_get
-pub const GIT_CONFIG_GET: &str = "git_config_get";
 
 // ============================================================================
 // GIT_CONFIG_GET TOOL
@@ -83,8 +77,6 @@ pub enum GitConfigGetOutput {
 }
 
 #[tool_metadata(
-    name = "git_config_get",
-    category = "git",
     description = "Read Git configuration values"
 )]
 impl ToolArgs for GitConfigGetArgs {
@@ -92,6 +84,6 @@ impl ToolArgs for GitConfigGetArgs {
     type Prompts = ConfigGetPrompts;
 
     const NAME: &'static str = GIT_CONFIG_GET;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Read Git configuration values";
 }

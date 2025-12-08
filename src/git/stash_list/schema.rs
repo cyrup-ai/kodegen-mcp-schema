@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_STASH_LIST};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::StashListPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_stash_list
-pub const GIT_STASH_LIST: &str = "git_stash_list";
 
 // ============================================================================
 // GIT_STASH_LIST TOOL
@@ -51,8 +45,6 @@ pub struct GitStashListOutput {
 }
 
 #[tool_metadata(
-    name = "git_stash_list",
-    category = "git",
     description = "List all stashed changes in the repository"
 )]
 impl ToolArgs for GitStashListArgs {
@@ -60,6 +52,6 @@ impl ToolArgs for GitStashListArgs {
     type Prompts = StashListPrompts;
 
     const NAME: &'static str = GIT_STASH_LIST;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "List all stashed changes in the repository";
 }

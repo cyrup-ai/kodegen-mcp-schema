@@ -1,5 +1,8 @@
 //! Prompt category module
 
+// Re-export all prompt tool name constants from kodegen_config
+pub use kodegen_config::{PROMPT_ADD, PROMPT_DELETE, PROMPT_EDIT, PROMPT_GET};
+
 pub mod prompt_add;
 pub mod prompt_delete;
 pub mod prompt_edit;
@@ -7,7 +10,6 @@ pub mod prompt_get;
 
 // Re-export prompt_get tool (includes all shared types)
 pub use prompt_get::{
-    PROMPT_GET,
     GetPromptArgs,
     GetPromptAction,
     PromptGetOutput,
@@ -29,7 +31,6 @@ pub use prompt_get::{
 
 // Re-export prompt_add tool
 pub use prompt_add::{
-    PROMPT_ADD,
     AddPromptArgs,
     PromptAddOutput,
     AddPromptPromptArgs,
@@ -38,7 +39,6 @@ pub use prompt_add::{
 
 // Re-export prompt_delete tool
 pub use prompt_delete::{
-    PROMPT_DELETE,
     DeletePromptArgs,
     PromptDeleteOutput,
     DeletePromptPromptArgs,
@@ -47,7 +47,6 @@ pub use prompt_delete::{
 
 // Re-export prompt_edit tool
 pub use prompt_edit::{
-    PROMPT_EDIT,
     EditPromptArgs,
     PromptEditOutput,
     EditPromptPromptArgs,

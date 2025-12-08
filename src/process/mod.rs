@@ -1,11 +1,13 @@
 //! Process category module
 
+// Re-export all process tool name constants from kodegen_config
+pub use kodegen_config::{PROCESS_KILL, PROCESS_LIST};
+
 pub mod process_kill;
 pub mod process_list;
 
 // Explicit re-exports to avoid ambiguous globs
 pub use process_kill::{
-    PROCESS_KILL,
     ProcessKillArgs,
     ProcessKillOutput,
     ProcessKillPromptArgs,
@@ -13,7 +15,6 @@ pub use process_kill::{
 };
 
 pub use process_list::{
-    PROCESS_LIST,
     ProcessListArgs,
     ProcessListOutput,
     ProcessListPromptArgs,

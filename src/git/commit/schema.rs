@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_COMMIT};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::CommitPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_commit
-pub const GIT_COMMIT: &str = "git_commit";
 
 // ============================================================================
 // GIT_COMMIT TOOL
@@ -52,8 +46,6 @@ pub struct GitCommitOutput {
 }
 
 #[tool_metadata(
-    name = "git_commit",
-    category = "git",
     description = "Create a commit with staged changes"
 )]
 impl ToolArgs for GitCommitArgs {
@@ -61,6 +53,6 @@ impl ToolArgs for GitCommitArgs {
     type Prompts = CommitPrompts;
 
     const NAME: &'static str = GIT_COMMIT;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create a commit with staged changes";
 }

@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_BRANCH_DELETE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::BranchDeletePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_branch_delete
-pub const GIT_BRANCH_DELETE: &str = "git_branch_delete";
 
 // ============================================================================
 // GIT_BRANCH_DELETE TOOL
@@ -43,8 +37,6 @@ pub struct GitBranchDeleteOutput {
 }
 
 #[tool_metadata(
-    name = "git_branch_delete",
-    category = "git",
     description = "Delete a branch from the repository"
 )]
 impl ToolArgs for GitBranchDeleteArgs {
@@ -52,6 +44,6 @@ impl ToolArgs for GitBranchDeleteArgs {
     type Prompts = BranchDeletePrompts;
 
     const NAME: &'static str = GIT_BRANCH_DELETE;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Delete a branch from the repository";
 }

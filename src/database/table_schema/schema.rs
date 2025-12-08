@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_DATABASE, DB_TABLE_SCHEMA};
 use crate::{ToolArgs, tool_metadata};
 use super::super::types::ColumnInfo;
 use super::prompts::TableSchemaPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Tool name: Get table schema (column information)
-pub const DB_TABLE_SCHEMA: &str = "db_table_schema";
 
 // ============================================================================
 // TOOL ARGUMENTS
@@ -50,8 +44,6 @@ pub struct GetTableSchemaOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "db_table_schema",
-    category = "database",
     description = "Get complete table structure including columns, data types, constraints, primary keys, and foreign key relationships."
 )]
 impl ToolArgs for GetTableSchemaArgs {
@@ -59,6 +51,6 @@ impl ToolArgs for GetTableSchemaArgs {
     type Prompts = TableSchemaPrompts;
 
     const NAME: &'static str = DB_TABLE_SCHEMA;
-    const CATEGORY: &'static str = "database";
+    const CATEGORY: &'static str = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "Get complete table structure including columns, data types, constraints, primary keys, and foreign key relationships.";
 }

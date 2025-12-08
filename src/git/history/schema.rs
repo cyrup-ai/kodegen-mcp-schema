@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_HISTORY};
 use crate::{ToolArgs, tool_metadata};
 use super::super::GitHistoryCommit;
 use super::prompts::HistoryPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_history
-pub const GIT_HISTORY: &str = "git_history";
 
 
 // ============================================================================
@@ -88,8 +82,6 @@ pub struct GitHistoryOutput {
 }
 
 #[tool_metadata(
-    name = "git_history",
-    category = "git",
     description = "View commit history and changes for a specific file"
 )]
 impl ToolArgs for GitHistoryArgs {
@@ -97,6 +89,6 @@ impl ToolArgs for GitHistoryArgs {
     type Prompts = HistoryPrompts;
 
     const NAME: &'static str = GIT_HISTORY;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "View commit history and changes for a specific file";
 }

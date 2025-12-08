@@ -2,14 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_BROWSER, BROWSER_TYPE_TEXT};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::TypeTextPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-pub const BROWSER_TYPE_TEXT: &str = "browser_type_text";
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -58,8 +53,6 @@ pub struct BrowserTypeOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "browser_type_text",
-    category = "browser",
     description = "Type text into input fields, textareas, and other editable elements with optional clear-first behavior"
 )]
 impl ToolArgs for BrowserTypeTextArgs {
@@ -67,6 +60,6 @@ impl ToolArgs for BrowserTypeTextArgs {
     type Prompts = TypeTextPrompts;
 
     const NAME: &'static str = BROWSER_TYPE_TEXT;
-    const CATEGORY: &'static str = "browser";
+    const CATEGORY: &'static str = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Type text into input fields, textareas, and other editable elements with optional clear-first behavior";
 }

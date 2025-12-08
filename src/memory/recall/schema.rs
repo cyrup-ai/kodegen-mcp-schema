@@ -2,13 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for memory_recall
-pub const MEMORY_RECALL: &str = "memory_recall";
+use kodegen_config::{CATEGORY_MEMORY, MEMORY_RECALL};
 
 // ============================================================================
 // DEFAULT HELPERS
@@ -78,8 +72,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::MemoryRecallPrompts;
 
 #[tool_metadata(
-    name = "memory_recall",
-    category = "memory",
     description = "Retrieve relevant memories from a library using semantic search. Searches for content similar to the provided context and returns the most relevant results. Uses vector similarity (cosine) to find semantically related memories."
 )]
 impl ToolArgs for RecallArgs {
@@ -87,6 +79,6 @@ impl ToolArgs for RecallArgs {
     type Prompts = MemoryRecallPrompts;
 
     const NAME: &'static str = MEMORY_RECALL;
-    const CATEGORY: &'static str = "memory";
+    const CATEGORY: &'static str = CATEGORY_MEMORY;
     const DESCRIPTION: &'static str = "Retrieve relevant memories from a library using semantic search. Searches for content similar to the provided context and returns the most relevant results. Uses vector similarity (cosine) to find semantically related memories.";
 }

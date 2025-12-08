@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_UPDATE_ISSUE};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::UpdateIssuePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for updating an issue
-pub const GITHUB_UPDATE_ISSUE: &str = "github_update_issue";
 
 // ============================================================================
 // ARGS STRUCT
@@ -62,8 +56,6 @@ pub struct GitHubUpdateIssueOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_update_issue",
-    category = "github",
     description = "Update an existing GitHub issue"
 )]
 impl ToolArgs for UpdateIssueArgs {
@@ -71,6 +63,6 @@ impl ToolArgs for UpdateIssueArgs {
     type Prompts = UpdateIssuePrompts;
 
     const NAME: &'static str = GITHUB_UPDATE_ISSUE;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Update an existing GitHub issue";
 }

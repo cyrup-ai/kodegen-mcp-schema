@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_TAG_CREATE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::TagCreatePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_tag_create
-pub const GIT_TAG_CREATE: &str = "git_tag_create";
 
 // ============================================================================
 // GIT_TAG_CREATE TOOL
@@ -54,8 +48,6 @@ pub struct GitTagCreateOutput {
 }
 
 #[tool_metadata(
-    name = "git_tag_create",
-    category = "git",
     description = "Create annotated or lightweight tags to mark specific points in repository history"
 )]
 impl ToolArgs for GitTagCreateArgs {
@@ -63,6 +55,6 @@ impl ToolArgs for GitTagCreateArgs {
     type Prompts = TagCreatePrompts;
 
     const NAME: &'static str = GIT_TAG_CREATE;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create annotated or lightweight tags to mark specific points in repository history";
 }

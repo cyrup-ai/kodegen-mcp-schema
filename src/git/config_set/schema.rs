@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_CONFIG_SET};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ConfigSetPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_config_set
-pub const GIT_CONFIG_SET: &str = "git_config_set";
 
 // ============================================================================
 // GIT_CONFIG_SET TOOL
@@ -63,8 +57,6 @@ pub struct GitConfigSetOutput {
 }
 
 #[tool_metadata(
-    name = "git_config_set",
-    category = "git",
     description = "Set Git configuration values"
 )]
 impl ToolArgs for GitConfigSetArgs {
@@ -72,6 +64,6 @@ impl ToolArgs for GitConfigSetArgs {
     type Prompts = ConfigSetPrompts;
 
     const NAME: &'static str = GIT_CONFIG_SET;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Set Git configuration values";
 }

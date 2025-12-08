@@ -3,13 +3,8 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-// Constants for non-migrated tools
-pub const BROWSER_AGENT_KILL: &str = "browser_agent_kill";
-pub const BROWSER_EVAL: &str = "browser_eval";
+// Re-export tool name constants from kodegen_config
+pub use kodegen_config::{BROWSER_AGENT_KILL, BROWSER_EVAL};
 
 // ============================================================================
 // WAIT CONDITION

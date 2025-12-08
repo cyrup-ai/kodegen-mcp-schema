@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_SEARCH_REPOSITORIES};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::SearchRepositoriesPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for GitHub repository search
-pub const GITHUB_SEARCH_REPOSITORIES: &str = "github_search_repositories";
 
 // ============================================================================
 // ARGS STRUCT
@@ -74,8 +68,6 @@ pub struct GitHubRepoSearchResult {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_search_repositories",
-    category = "github",
     description = "Search repositories across GitHub using query syntax"
 )]
 impl ToolArgs for SearchRepositoriesArgs {
@@ -83,6 +75,6 @@ impl ToolArgs for SearchRepositoriesArgs {
     type Prompts = SearchRepositoriesPrompts;
 
     const NAME: &'static str = GITHUB_SEARCH_REPOSITORIES;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Search repositories across GitHub using query syntax";
 }

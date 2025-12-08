@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_MERGE_PULL_REQUEST};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::MergePullRequestPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for merging a pull request
-pub const GITHUB_MERGE_PULL_REQUEST: &str = "github_merge_pull_request";
 
 // ============================================================================
 // ARGS STRUCT
@@ -61,8 +55,6 @@ pub struct GitHubMergePrOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_merge_pull_request",
-    category = "github",
     description = "Merge a pull request"
 )]
 impl ToolArgs for MergePullRequestArgs {
@@ -70,6 +62,6 @@ impl ToolArgs for MergePullRequestArgs {
     type Prompts = MergePullRequestPrompts;
 
     const NAME: &'static str = GITHUB_MERGE_PULL_REQUEST;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Merge a pull request";
 }

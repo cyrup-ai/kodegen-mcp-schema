@@ -2,13 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for prompt_edit
-pub const PROMPT_EDIT: &str = "prompt_edit";
+use kodegen_config::{CATEGORY_PROMPT, PROMPT_EDIT};
 
 // ============================================================================
 // PROMPT EDIT TOOL
@@ -50,8 +44,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::PromptEditPrompts;
 
 #[tool_metadata(
-    name = "prompt_edit",
-    category = "prompt",
     description = "Update existing prompt template content, metadata, or variables with version iteration support"
 )]
 impl ToolArgs for EditPromptArgs {
@@ -59,6 +51,6 @@ impl ToolArgs for EditPromptArgs {
     type Prompts = PromptEditPrompts;
 
     const NAME: &'static str = PROMPT_EDIT;
-    const CATEGORY: &'static str = "prompt";
+    const CATEGORY: &'static str = CATEGORY_PROMPT;
     const DESCRIPTION: &'static str = "Update existing prompt template content, metadata, or variables with version iteration support";
 }

@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_WORKTREE_ADD};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::WorktreeAddPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_worktree_add
-pub const GIT_WORKTREE_ADD: &str = "git_worktree_add";
 
 // ============================================================================
 // GIT_WORKTREE_ADD TOOL
@@ -50,8 +44,6 @@ pub struct GitWorktreeAddOutput {
 }
 
 #[tool_metadata(
-    name = "git_worktree_add",
-    category = "git",
     description = "Create a new linked working tree for parallel development"
 )]
 impl ToolArgs for GitWorktreeAddArgs {
@@ -59,6 +51,6 @@ impl ToolArgs for GitWorktreeAddArgs {
     type Prompts = WorktreeAddPrompts;
 
     const NAME: &'static str = GIT_WORKTREE_ADD;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create a new linked working tree for parallel development";
 }

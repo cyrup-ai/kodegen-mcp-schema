@@ -2,14 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_BROWSER, BROWSER_CLICK};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ClickPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-pub const BROWSER_CLICK: &str = "browser_click";
 
 // ============================================================================
 // INPUT ARGS
@@ -47,8 +42,6 @@ pub struct BrowserClickOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "browser_click",
-    category = "browser",
     description = "Click an element on the page using CSS selectors with automatic wait for clickability"
 )]
 impl ToolArgs for BrowserClickArgs {
@@ -56,6 +49,6 @@ impl ToolArgs for BrowserClickArgs {
     type Prompts = ClickPrompts;
 
     const NAME: &'static str = BROWSER_CLICK;
-    const CATEGORY: &'static str = "browser";
+    const CATEGORY: &'static str = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Click an element on the page using CSS selectors with automatic wait for clickability";
 }

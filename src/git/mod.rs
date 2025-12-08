@@ -3,6 +3,18 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+// Re-export all git tool name constants from kodegen_config
+pub use kodegen_config::{
+    GIT_ADD, GIT_BRANCH_CREATE, GIT_BRANCH_DELETE, GIT_BRANCH_LIST, GIT_BRANCH_RENAME,
+    GIT_CHERRY_PICK, GIT_CHECKOUT, GIT_CLONE, GIT_COMMIT, GIT_CONFIG_GET, GIT_CONFIG_SET,
+    GIT_DIFF, GIT_DISCOVER, GIT_FETCH, GIT_HISTORY, GIT_INIT, GIT_LOG, GIT_MERGE, GIT_OPEN,
+    GIT_PULL, GIT_PUSH, GIT_REBASE, GIT_REMOTE_ADD, GIT_REMOTE_LIST, GIT_REMOTE_REMOVE,
+    GIT_RESET, GIT_REVERT, GIT_SHOW, GIT_STASH, GIT_STASH_APPLY, GIT_STASH_LIST,
+    GIT_STASH_POP, GIT_STATUS, GIT_TAG, GIT_TAG_CREATE, GIT_TAG_LIST, GIT_WORKTREE_ADD,
+    GIT_WORKTREE_LIST, GIT_WORKTREE_LOCK, GIT_WORKTREE_PRUNE, GIT_WORKTREE_REMOVE,
+    GIT_WORKTREE_UNLOCK,
+};
+
 // ============================================================================
 // SHARED TYPES (used by multiple tools)
 // ============================================================================
@@ -179,7 +191,6 @@ pub mod show;
 
 // Re-export init tool
 pub use init::{
-    GIT_INIT,
     GitInitArgs,
     GitInitOutput,
     GitInitPromptArgs,
@@ -188,7 +199,6 @@ pub use init::{
 
 // Re-export open tool
 pub use open::{
-    GIT_OPEN,
     GitOpenArgs,
     GitOpenOutput,
     GitOpenPromptArgs,
@@ -197,7 +207,6 @@ pub use open::{
 
 // Re-export clone tool
 pub use clone::{
-    GIT_CLONE,
     GitCloneArgs,
     GitCloneOutput,
     GitClonePromptArgs,
@@ -206,7 +215,6 @@ pub use clone::{
 
 // Re-export discover tool
 pub use discover::{
-    GIT_DISCOVER,
     GitDiscoverArgs,
     GitDiscoverOutput,
     GitDiscoverPromptArgs,
@@ -215,7 +223,6 @@ pub use discover::{
 
 // Re-export add tool
 pub use add::{
-    GIT_ADD,
     GitAddArgs,
     GitAddOutput,
     GitAddPromptArgs,
@@ -224,7 +231,6 @@ pub use add::{
 
 // Re-export commit tool
 pub use commit::{
-    GIT_COMMIT,
     GitCommitArgs,
     GitCommitOutput,
     GitCommitPromptArgs,
@@ -233,7 +239,6 @@ pub use commit::{
 
 // Re-export log tool
 pub use log::{
-    GIT_LOG,
     GitLogArgs,
     GitLogOutput,
     GitLogPromptArgs,
@@ -242,7 +247,6 @@ pub use log::{
 
 // Re-export history tool
 pub use history::{
-    GIT_HISTORY,
     GitHistoryArgs,
     GitHistoryOutput,
     GitHistoryPromptArgs,
@@ -251,7 +255,6 @@ pub use history::{
 
 // Re-export diff tool
 pub use diff::{
-    GIT_DIFF,
     GitDiffArgs,
     GitDiffOutput,
     GitDiffPromptArgs,
@@ -260,7 +263,6 @@ pub use diff::{
 
 // Re-export branch_create tool
 pub use branch_create::{
-    GIT_BRANCH_CREATE,
     GitBranchCreateArgs,
     GitBranchCreateOutput,
     GitBranchCreatePromptArgs,
@@ -269,7 +271,6 @@ pub use branch_create::{
 
 // Re-export branch_delete tool
 pub use branch_delete::{
-    GIT_BRANCH_DELETE,
     GitBranchDeleteArgs,
     GitBranchDeleteOutput,
     GitBranchDeletePromptArgs,
@@ -278,7 +279,6 @@ pub use branch_delete::{
 
 // Re-export branch_list tool
 pub use branch_list::{
-    GIT_BRANCH_LIST,
     GitBranchListArgs,
     GitBranchListOutput,
     GitBranchListPromptArgs,
@@ -287,7 +287,6 @@ pub use branch_list::{
 
 // Re-export branch_rename tool
 pub use branch_rename::{
-    GIT_BRANCH_RENAME,
     GitBranchRenameArgs,
     GitBranchRenameOutput,
     GitBranchRenamePromptArgs,
@@ -296,7 +295,6 @@ pub use branch_rename::{
 
 // Re-export checkout tool
 pub use checkout::{
-    GIT_CHECKOUT,
     GitCheckoutArgs,
     GitCheckoutOutput,
     GitCheckoutPromptArgs,
@@ -305,7 +303,6 @@ pub use checkout::{
 
 // Re-export cherry_pick tool
 pub use cherry_pick::{
-    GIT_CHERRY_PICK,
     GitCherryPickArgs,
     GitCherryPickOutput,
     GitCherryPickPromptArgs,
@@ -314,7 +311,6 @@ pub use cherry_pick::{
 
 // Re-export config_get tool
 pub use config_get::{
-    GIT_CONFIG_GET,
     GitConfigGetArgs,
     GitConfigGetOutput,
     GitConfigGetPromptArgs,
@@ -324,7 +320,6 @@ pub use config_get::{
 
 // Re-export config_set tool
 pub use config_set::{
-    GIT_CONFIG_SET,
     GitConfigSetArgs,
     GitConfigSetOutput,
     GitConfigSetPromptArgs,
@@ -333,7 +328,6 @@ pub use config_set::{
 
 // Re-export fetch tool
 pub use fetch::{
-    GIT_FETCH,
     GitFetchArgs,
     GitFetchOutput,
     GitFetchPromptArgs,
@@ -342,7 +336,6 @@ pub use fetch::{
 
 // Re-export merge tool
 pub use merge::{
-    GIT_MERGE,
     GitMergeArgs,
     GitMergeOutput,
     GitMergePromptArgs,
@@ -351,7 +344,6 @@ pub use merge::{
 
 // Re-export rebase tool
 pub use rebase::{
-    GIT_REBASE,
     GitRebaseArgs,
     GitRebaseOutput,
     GitRebasePromptArgs,
@@ -360,7 +352,6 @@ pub use rebase::{
 
 // Re-export worktree_add tool
 pub use worktree_add::{
-    GIT_WORKTREE_ADD,
     GitWorktreeAddArgs,
     GitWorktreeAddOutput,
     GitWorktreeAddPromptArgs,
@@ -369,7 +360,6 @@ pub use worktree_add::{
 
 // Re-export worktree_list tool
 pub use worktree_list::{
-    GIT_WORKTREE_LIST,
     GitWorktreeListArgs,
     GitWorktreeListOutput,
     GitWorktreeListPromptArgs,
@@ -378,7 +368,6 @@ pub use worktree_list::{
 
 // Re-export worktree_lock tool
 pub use worktree_lock::{
-    GIT_WORKTREE_LOCK,
     GitWorktreeLockArgs,
     GitWorktreeLockOutput,
     GitWorktreeLockPromptArgs,
@@ -387,7 +376,6 @@ pub use worktree_lock::{
 
 // Re-export worktree_unlock tool
 pub use worktree_unlock::{
-    GIT_WORKTREE_UNLOCK,
     GitWorktreeUnlockArgs,
     GitWorktreeUnlockOutput,
     GitWorktreeUnlockPromptArgs,
@@ -396,7 +384,6 @@ pub use worktree_unlock::{
 
 // Re-export worktree_prune tool
 pub use worktree_prune::{
-    GIT_WORKTREE_PRUNE,
     GitWorktreePruneArgs,
     GitWorktreePruneOutput,
     GitWorktreePrunePromptArgs,
@@ -405,7 +392,6 @@ pub use worktree_prune::{
 
 // Re-export worktree_remove tool
 pub use worktree_remove::{
-    GIT_WORKTREE_REMOVE,
     GitWorktreeRemoveArgs,
     GitWorktreeRemoveOutput,
     GitWorktreeRemovePromptArgs,
@@ -414,7 +400,6 @@ pub use worktree_remove::{
 
 // Re-export pull tool
 pub use pull::{
-    GIT_PULL,
     GitPullArgs,
     GitPullOutput,
     GitPullPromptArgs,
@@ -423,7 +408,6 @@ pub use pull::{
 
 // Re-export push tool
 pub use push::{
-    GIT_PUSH,
     GitPushArgs,
     GitPushOutput,
     GitPushPromptArgs,
@@ -432,7 +416,6 @@ pub use push::{
 
 // Re-export remote_add tool
 pub use remote_add::{
-    GIT_REMOTE_ADD,
     GitRemoteAddArgs,
     GitRemoteAddOutput,
     GitRemoteAddPromptArgs,
@@ -441,7 +424,6 @@ pub use remote_add::{
 
 // Re-export remote_list tool
 pub use remote_list::{
-    GIT_REMOTE_LIST,
     GitRemoteListArgs,
     GitRemoteListOutput,
     GitRemoteListPromptArgs,
@@ -450,7 +432,6 @@ pub use remote_list::{
 
 // Re-export remote_remove tool
 pub use remote_remove::{
-    GIT_REMOTE_REMOVE,
     GitRemoteRemoveArgs,
     GitRemoteRemoveOutput,
     GitRemoteRemovePromptArgs,
@@ -459,7 +440,6 @@ pub use remote_remove::{
 
 // Re-export reset tool
 pub use reset::{
-    GIT_RESET,
     GitResetArgs,
     GitResetOutput,
     GitResetPromptArgs,
@@ -468,7 +448,6 @@ pub use reset::{
 
 // Re-export revert tool
 pub use revert::{
-    GIT_REVERT,
     GitRevertArgs,
     GitRevertOutput,
     GitRevertPromptArgs,
@@ -477,7 +456,6 @@ pub use revert::{
 
 // Re-export status tool
 pub use status::{
-    GIT_STATUS,
     GitStatusArgs,
     GitStatusOutput,
     GitStatusPromptArgs,
@@ -486,7 +464,6 @@ pub use status::{
 
 // Re-export stash tool
 pub use stash::{
-    GIT_STASH,
     GitStashArgs,
     GitStashOutput,
     GitStashSavePromptArgs,
@@ -495,7 +472,6 @@ pub use stash::{
 
 // Re-export stash_apply tool
 pub use stash_apply::{
-    GIT_STASH_APPLY,
     GitStashApplyArgs,
     GitStashApplyOutput,
     GitStashApplyPromptArgs,
@@ -504,7 +480,6 @@ pub use stash_apply::{
 
 // Re-export stash_list tool
 pub use stash_list::{
-    GIT_STASH_LIST,
     GitStashListArgs,
     GitStashListOutput,
     GitStashListPromptArgs,
@@ -520,7 +495,6 @@ pub use stash_pop::{
 
 // Re-export tag tool
 pub use tag::{
-    GIT_TAG,
     GitTagArgs,
     GitTagOutput,
     GitTagPromptArgs,
@@ -529,7 +503,6 @@ pub use tag::{
 
 // Re-export tag_create tool
 pub use tag_create::{
-    GIT_TAG_CREATE,
     GitTagCreateArgs,
     GitTagCreateOutput,
     GitTagCreatePromptArgs,

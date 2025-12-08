@@ -2,14 +2,8 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_PROMPT, PROMPT_GET};
 use std::collections::HashMap;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for prompt_get
-pub const PROMPT_GET: &str = "prompt_get";
 
 // ============================================================================
 // SHARED TYPES (used by multiple prompt tools)
@@ -239,8 +233,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::PromptGetPrompts;
 
 #[tool_metadata(
-    name = "prompt_get",
-    category = "prompt",
     description = "Retrieve prompt template by name, render with variables, or list available templates by category"
 )]
 impl ToolArgs for GetPromptArgs {
@@ -248,6 +240,6 @@ impl ToolArgs for GetPromptArgs {
     type Prompts = PromptGetPrompts;
 
     const NAME: &'static str = PROMPT_GET;
-    const CATEGORY: &'static str = "prompt";
+    const CATEGORY: &'static str = CATEGORY_PROMPT;
     const DESCRIPTION: &'static str = "Retrieve prompt template by name, render with variables, or list available templates by category";
 }

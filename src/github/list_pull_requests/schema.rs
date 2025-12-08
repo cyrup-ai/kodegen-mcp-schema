@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_LIST_PULL_REQUESTS};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ListPullRequestsPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for listing pull requests
-pub const GITHUB_LIST_PULL_REQUESTS: &str = "github_list_pull_requests";
 
 // ============================================================================
 // ARGS STRUCT
@@ -69,8 +63,6 @@ pub struct GitHubPrSummary {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_list_pull_requests",
-    category = "github",
     description = "List pull requests in a GitHub repository"
 )]
 impl ToolArgs for ListPullRequestsArgs {
@@ -78,6 +70,6 @@ impl ToolArgs for ListPullRequestsArgs {
     type Prompts = ListPullRequestsPrompts;
 
     const NAME: &'static str = GITHUB_LIST_PULL_REQUESTS;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "List pull requests in a GitHub repository";
 }

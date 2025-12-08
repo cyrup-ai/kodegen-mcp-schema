@@ -52,4 +52,4 @@ pub mod tool_history;
 // Re-export the main types for convenience
 pub use error::McpError;
 pub use traits::{Tool, ToolArgs, ToolExecutionContext, ToolResponse, PromptProvider, SealedPromptProvider};
-pub use tool_history::ToolHistory;
+pub use tool_history::ToolCallRecord;

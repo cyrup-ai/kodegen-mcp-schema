@@ -2,14 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_BROWSER, BROWSER_RESEARCH};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ResearchPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-pub const BROWSER_RESEARCH: &str = "browser_research";
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -169,8 +164,6 @@ pub struct ResearchSource {
 // ============================================================================
 
 #[tool_metadata(
-    name = "browser_research",
-    category = "browser",
     description = "Conduct comprehensive web research with multi-page crawling, content analysis, and AI-powered synthesis"
 )]
 impl ToolArgs for BrowserResearchArgs {
@@ -178,6 +171,6 @@ impl ToolArgs for BrowserResearchArgs {
     type Prompts = ResearchPrompts;
 
     const NAME: &'static str = BROWSER_RESEARCH;
-    const CATEGORY: &'static str = "browser";
+    const CATEGORY: &'static str = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Conduct comprehensive web research with multi-page crawling, content analysis, and AI-powered synthesis";
 }

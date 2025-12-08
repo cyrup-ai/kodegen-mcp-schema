@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_BRANCH_RENAME};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::BranchRenamePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_branch_rename
-pub const GIT_BRANCH_RENAME: &str = "git_branch_rename";
 
 // ============================================================================
 // GIT_BRANCH_RENAME TOOL
@@ -47,8 +41,6 @@ pub struct GitBranchRenameOutput {
 }
 
 #[tool_metadata(
-    name = "git_branch_rename",
-    category = "git",
     description = "Rename an existing branch"
 )]
 impl ToolArgs for GitBranchRenameArgs {
@@ -56,6 +48,6 @@ impl ToolArgs for GitBranchRenameArgs {
     type Prompts = BranchRenamePrompts;
 
     const NAME: &'static str = GIT_BRANCH_RENAME;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Rename an existing branch";
 }

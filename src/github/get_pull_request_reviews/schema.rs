@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_GET_PULL_REQUEST_REVIEWS};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::GetPullRequestReviewsPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for getting pull request reviews
-pub const GITHUB_GET_PULL_REQUEST_REVIEWS: &str = "github_get_pull_request_reviews";
 
 // ============================================================================
 // ARGS STRUCT
@@ -56,8 +50,6 @@ pub struct GitHubReview {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_get_pull_request_reviews",
-    category = "github",
     description = "Get pull request reviews"
 )]
 impl ToolArgs for GetPullRequestReviewsArgs {
@@ -65,6 +57,6 @@ impl ToolArgs for GetPullRequestReviewsArgs {
     type Prompts = GetPullRequestReviewsPrompts;
 
     const NAME: &'static str = GITHUB_GET_PULL_REQUEST_REVIEWS;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get pull request reviews";
 }

@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_MOVE_FILE};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::MoveFilePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_move_file
-pub const FS_MOVE_FILE: &str = "fs_move_file";
 
 // ============================================================================
 // MOVE FILE ARGS
@@ -45,8 +39,6 @@ pub struct FsMoveFileOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_move_file",
-    category = "filesystem",
     description = "Move or rename files and directories. Can move files between directories and rename them in a single operation"
 )]
 impl ToolArgs for FsMoveFileArgs {
@@ -54,6 +46,6 @@ impl ToolArgs for FsMoveFileArgs {
     type Prompts = MoveFilePrompts;
 
     const NAME: &'static str = FS_MOVE_FILE;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Move or rename files and directories. Can move files between directories and rename them in a single operation";
 }

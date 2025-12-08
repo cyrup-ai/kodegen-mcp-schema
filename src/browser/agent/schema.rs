@@ -2,14 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_BROWSER, BROWSER_AGENT};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::AgentPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-pub const BROWSER_AGENT: &str = "browser_agent";
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -169,8 +164,6 @@ pub struct BrowserAgentKillOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "browser_agent",
-    category = "browser",
     description = "Autonomous AI agent that accomplishes complex web tasks through multi-step reasoning and adaptive decision-making"
 )]
 impl ToolArgs for BrowserAgentArgs {
@@ -178,6 +171,6 @@ impl ToolArgs for BrowserAgentArgs {
     type Prompts = AgentPrompts;
 
     const NAME: &'static str = BROWSER_AGENT;
-    const CATEGORY: &'static str = "browser";
+    const CATEGORY: &'static str = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Autonomous AI agent that accomplishes complex web tasks through multi-step reasoning and adaptive decision-making";
 }

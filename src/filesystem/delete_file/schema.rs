@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_DELETE_FILE};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::DeleteFilePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_delete_file
-pub const FS_DELETE_FILE: &str = "fs_delete_file";
 
 // ============================================================================
 // DELETE FILE ARGS
@@ -41,8 +35,6 @@ pub struct FsDeleteFileOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_delete_file",
-    category = "filesystem",
     description = "Delete a file from the filesystem. This operation is permanent and cannot be undone"
 )]
 impl ToolArgs for FsDeleteFileArgs {
@@ -50,6 +42,6 @@ impl ToolArgs for FsDeleteFileArgs {
     type Prompts = DeleteFilePrompts;
 
     const NAME: &'static str = FS_DELETE_FILE;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Delete a file from the filesystem. This operation is permanent and cannot be undone";
 }

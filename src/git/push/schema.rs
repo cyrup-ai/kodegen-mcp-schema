@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_PUSH};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::PushPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_push
-pub const GIT_PUSH: &str = "git_push";
 
 
 // ============================================================================
@@ -71,8 +65,6 @@ pub struct GitPushOutput {
 }
 
 #[tool_metadata(
-    name = "git_push",
-    category = "git",
     description = "Push commits to a remote repository"
 )]
 impl ToolArgs for GitPushArgs {
@@ -80,6 +72,6 @@ impl ToolArgs for GitPushArgs {
     type Prompts = PushPrompts;
 
     const NAME: &'static str = GIT_PUSH;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Push commits to a remote repository";
 }

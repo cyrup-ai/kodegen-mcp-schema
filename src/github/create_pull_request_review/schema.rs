@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_CREATE_PULL_REQUEST_REVIEW};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::CreatePullRequestReviewPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for creating a pull request review
-pub const GITHUB_CREATE_PULL_REQUEST_REVIEW: &str = "github_create_pull_request_review";
 
 // ============================================================================
 // ARGS STRUCT
@@ -57,8 +51,6 @@ pub struct GitHubCreatePrReviewOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_create_pull_request_review",
-    category = "github",
     description = "Create a review on a pull request"
 )]
 impl ToolArgs for CreatePullRequestReviewArgs {
@@ -66,6 +58,6 @@ impl ToolArgs for CreatePullRequestReviewArgs {
     type Prompts = CreatePullRequestReviewPrompts;
 
     const NAME: &'static str = GITHUB_CREATE_PULL_REQUEST_REVIEW;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create a review on a pull request";
 }

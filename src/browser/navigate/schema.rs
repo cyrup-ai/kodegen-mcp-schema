@@ -2,14 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_BROWSER, BROWSER_NAVIGATE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::NavigatePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-pub const BROWSER_NAVIGATE: &str = "browser_navigate";
 
 // ============================================================================
 // INPUT ARGS
@@ -47,8 +42,6 @@ pub struct BrowserNavigateOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "browser_navigate",
-    category = "browser",
     description = "Navigate browser to specified URL with configurable load timeout and error handling"
 )]
 impl ToolArgs for BrowserNavigateArgs {
@@ -56,6 +49,6 @@ impl ToolArgs for BrowserNavigateArgs {
     type Prompts = NavigatePrompts;
 
     const NAME: &'static str = BROWSER_NAVIGATE;
-    const CATEGORY: &'static str = "browser";
+    const CATEGORY: &'static str = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Navigate browser to specified URL with configurable load timeout and error handling";
 }

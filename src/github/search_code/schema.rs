@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_SEARCH_CODE};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::SearchCodePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for GitHub code search
-pub const GITHUB_SEARCH_CODE: &str = "github_search_code";
 
 // ============================================================================
 // ARGS STRUCT
@@ -71,8 +65,6 @@ pub struct GitHubCodeSearchResult {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_search_code",
-    category = "github",
     description = "Search code across GitHub repositories using GitHub's code search syntax"
 )]
 impl ToolArgs for SearchCodeArgs {
@@ -80,6 +72,6 @@ impl ToolArgs for SearchCodeArgs {
     type Prompts = SearchCodePrompts;
 
     const NAME: &'static str = GITHUB_SEARCH_CODE;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Search code across GitHub repositories using GitHub's code search syntax";
 }

@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_CHERRY_PICK};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::CherryPickPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_cherry_pick
-pub const GIT_CHERRY_PICK: &str = "git_cherry_pick";
 
 // ============================================================================
 // GIT_CHERRY_PICK TOOL
@@ -124,8 +118,6 @@ pub struct CherryPickCommitInfo {
 }
 
 #[tool_metadata(
-    name = "git_cherry_pick",
-    category = "git",
     description = "Apply changes from specific commits to current branch"
 )]
 impl ToolArgs for GitCherryPickArgs {
@@ -133,6 +125,6 @@ impl ToolArgs for GitCherryPickArgs {
     type Prompts = CherryPickPrompts;
 
     const NAME: &'static str = GIT_CHERRY_PICK;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Apply changes from specific commits to current branch";
 }

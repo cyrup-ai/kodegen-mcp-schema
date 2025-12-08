@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_ADD_PULL_REQUEST_REVIEW_COMMENT};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::AddPullRequestReviewCommentPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for adding a pull request review comment
-pub const GITHUB_ADD_PULL_REQUEST_REVIEW_COMMENT: &str = "github_add_pull_request_review_comment";
 
 // ============================================================================
 // ARGS STRUCT
@@ -74,8 +68,6 @@ pub struct GitHubAddPrReviewCommentOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_add_pull_request_review_comment",
-    category = "github",
     description = "Add a comment to a pull request review"
 )]
 impl ToolArgs for AddPullRequestReviewCommentArgs {
@@ -83,6 +75,6 @@ impl ToolArgs for AddPullRequestReviewCommentArgs {
     type Prompts = AddPullRequestReviewCommentPrompts;
 
     const NAME: &'static str = GITHUB_ADD_PULL_REQUEST_REVIEW_COMMENT;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Add a comment to a pull request review";
 }

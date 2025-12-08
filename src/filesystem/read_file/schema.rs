@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_READ_FILE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ReadFilePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_read_file
-pub const FS_READ_FILE: &str = "fs_read_file";
 
 // ============================================================================
 // READ FILE ARGS
@@ -64,8 +58,6 @@ pub struct FsReadFileOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_read_file",
-    category = "filesystem",
     description = "Read the contents of a file from the filesystem or a URL. Supports text files (returned as text) and image files (returned as base64)"
 )]
 impl ToolArgs for FsReadFileArgs {
@@ -73,6 +65,6 @@ impl ToolArgs for FsReadFileArgs {
     type Prompts = ReadFilePrompts;
 
     const NAME: &'static str = FS_READ_FILE;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Read the contents of a file from the filesystem or a URL. Supports text files (returned as text) and image files (returned as base64)";
 }

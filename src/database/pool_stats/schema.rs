@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_DATABASE, DB_POOL_STATS};
 use crate::{ToolArgs, tool_metadata};
 use super::super::types::{ConnectionStats, PoolConfiguration, PoolHealth};
 use super::prompts::PoolStatsPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Tool name: Get connection pool statistics
-pub const DB_POOL_STATS: &str = "db_pool_stats";
 
 // ============================================================================
 // TOOL ARGUMENTS
@@ -39,8 +33,6 @@ pub struct GetPoolStatsOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "db_pool_stats",
-    category = "database",
     description = "Get connection pool statistics including active/idle connections, utilization, and health metrics."
 )]
 impl ToolArgs for GetPoolStatsArgs {
@@ -48,6 +40,6 @@ impl ToolArgs for GetPoolStatsArgs {
     type Prompts = PoolStatsPrompts;
 
     const NAME: &'static str = DB_POOL_STATS;
-    const CATEGORY: &'static str = "database";
+    const CATEGORY: &'static str = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "Get connection pool statistics including active/idle connections, utilization, and health metrics.";
 }

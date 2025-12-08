@@ -1,11 +1,13 @@
 //! Config category module
 
+// Re-export all config tool name constants from kodegen_config
+pub use kodegen_config::{CONFIG_GET, CONFIG_SET};
+
 pub mod config_get;
 pub mod config_set;
 
 // Re-export config_get tool
 pub use config_get::{
-    CONFIG_GET,
     GetConfigArgs,
     ConfigGetOutput,
     ConfigGetPromptArgs,
@@ -18,7 +20,6 @@ pub use config_get::{
 
 // Re-export config_set tool
 pub use config_set::{
-    CONFIG_SET,
     SetConfigValueArgs,
     ConfigSetOutput,
     SetConfigValuePromptArgs,

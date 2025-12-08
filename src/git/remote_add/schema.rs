@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_REMOTE_ADD};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::RemoteAddPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_remote_add
-pub const GIT_REMOTE_ADD: &str = "git_remote_add";
 
 
 // ============================================================================
@@ -56,8 +50,6 @@ pub struct GitRemoteAddOutput {
 }
 
 #[tool_metadata(
-    name = "git_remote_add",
-    category = "git",
     description = "Add a new remote repository connection"
 )]
 impl ToolArgs for GitRemoteAddArgs {
@@ -65,6 +57,6 @@ impl ToolArgs for GitRemoteAddArgs {
     type Prompts = RemoteAddPrompts;
 
     const NAME: &'static str = GIT_REMOTE_ADD;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Add a new remote repository connection";
 }

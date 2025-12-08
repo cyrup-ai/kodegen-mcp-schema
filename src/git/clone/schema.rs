@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_CLONE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ClonePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_clone
-pub const GIT_CLONE: &str = "git_clone";
 
 // ============================================================================
 // GIT_CLONE TOOL
@@ -52,8 +46,6 @@ pub struct GitCloneOutput {
 }
 
 #[tool_metadata(
-    name = "git_clone",
-    category = "git",
     description = "Clone a remote Git repository to a local path"
 )]
 impl ToolArgs for GitCloneArgs {
@@ -61,6 +53,6 @@ impl ToolArgs for GitCloneArgs {
     type Prompts = ClonePrompts;
 
     const NAME: &'static str = GIT_CLONE;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Clone a remote Git repository to a local path";
 }

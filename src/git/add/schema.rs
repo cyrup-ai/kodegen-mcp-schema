@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_ADD};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::AddPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_add
-pub const GIT_ADD: &str = "git_add";
 
 // ============================================================================
 // GIT_ADD TOOL
@@ -51,8 +45,6 @@ pub struct GitAddOutput {
 }
 
 #[tool_metadata(
-    name = "git_add",
-    category = "git",
     description = "Stage file changes for the next commit"
 )]
 impl ToolArgs for GitAddArgs {
@@ -60,6 +52,6 @@ impl ToolArgs for GitAddArgs {
     type Prompts = AddPrompts;
 
     const NAME: &'static str = GIT_ADD;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Stage file changes for the next commit";
 }

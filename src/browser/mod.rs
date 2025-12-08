@@ -1,5 +1,12 @@
 //! Browser automation and web research tools
 
+// Re-export all browser tool name constants from kodegen_config
+pub use kodegen_config::{
+    BROWSER_AGENT, BROWSER_CLICK, BROWSER_EXTRACT_TEXT, BROWSER_NAVIGATE,
+    BROWSER_RESEARCH, BROWSER_SCREENSHOT, BROWSER_SCROLL, BROWSER_TYPE_TEXT,
+    BROWSER_WEB_SEARCH,
+};
+
 pub mod shared;
 pub mod agent;
 pub mod research;
@@ -16,7 +23,6 @@ pub use shared::*;
 
 // Re-export agent tool
 pub use agent::{
-    BROWSER_AGENT,
     BrowserAgentAction,
     BrowserAgentArgs,
     BrowserAgentOutput,
@@ -28,7 +34,6 @@ pub use agent::{
 
 // Re-export research tool
 pub use research::{
-    BROWSER_RESEARCH,
     BrowserResearchAction,
     BrowserResearchArgs,
     BrowserResearchOutput,
@@ -39,7 +44,6 @@ pub use research::{
 
 // Re-export web_search tool
 pub use web_search::{
-    BROWSER_WEB_SEARCH,
     BrowserWebSearchArgs,
     BrowserWebSearchOutput,
     WebSearchResult,
@@ -49,7 +53,6 @@ pub use web_search::{
 
 // Re-export navigate tool
 pub use navigate::{
-    BROWSER_NAVIGATE,
     BrowserNavigateArgs,
     BrowserNavigateOutput,
     BrowserNavigatePromptArgs,
@@ -58,7 +61,6 @@ pub use navigate::{
 
 // Re-export click tool
 pub use click::{
-    BROWSER_CLICK,
     BrowserClickArgs,
     BrowserClickOutput,
     BrowserClickPromptArgs,
@@ -67,7 +69,6 @@ pub use click::{
 
 // Re-export type_text tool
 pub use type_text::{
-    BROWSER_TYPE_TEXT,
     BrowserTypeTextArgs,
     BrowserTypeOutput,
     BrowserTypeTextPromptArgs,
@@ -76,7 +77,6 @@ pub use type_text::{
 
 // Re-export scroll tool
 pub use scroll::{
-    BROWSER_SCROLL,
     BrowserScrollArgs,
     BrowserScrollOutput,
     BrowserScrollPromptArgs,
@@ -85,7 +85,6 @@ pub use scroll::{
 
 // Re-export screenshot tool
 pub use screenshot::{
-    BROWSER_SCREENSHOT,
     BrowserScreenshotArgs,
     BrowserScreenshotOutput,
     BrowserScreenshotPromptArgs,
@@ -94,7 +93,6 @@ pub use screenshot::{
 
 // Re-export extract_text tool
 pub use extract_text::{
-    BROWSER_EXTRACT_TEXT,
     BrowserExtractTextArgs,
     BrowserExtractTextOutput,
     BrowserExtractTextPromptArgs,

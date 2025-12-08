@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_STATUS};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::StatusPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_status
-pub const GIT_STATUS: &str = "git_status";
 
 // ============================================================================
 // GIT_STATUS TOOL
@@ -44,8 +38,6 @@ pub struct GitStatusOutput {
 }
 
 #[tool_metadata(
-    name = "git_status",
-    category = "git",
     description = "Check working tree status and branch information"
 )]
 impl ToolArgs for GitStatusArgs {
@@ -53,6 +45,6 @@ impl ToolArgs for GitStatusArgs {
     type Prompts = StatusPrompts;
 
     const NAME: &'static str = GIT_STATUS;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Check working tree status and branch information";
 }

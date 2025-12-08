@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_MERGE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::MergePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_merge
-pub const GIT_MERGE: &str = "git_merge";
 
 
 // ============================================================================
@@ -60,8 +54,6 @@ pub struct GitMergeOutput {
 }
 
 #[tool_metadata(
-    name = "git_merge",
-    category = "git",
     description = "Merge changes from one branch into another"
 )]
 impl ToolArgs for GitMergeArgs {
@@ -69,6 +61,6 @@ impl ToolArgs for GitMergeArgs {
     type Prompts = MergePrompts;
 
     const NAME: &'static str = GIT_MERGE;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Merge changes from one branch into another";
 }

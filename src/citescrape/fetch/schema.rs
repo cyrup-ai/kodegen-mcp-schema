@@ -2,9 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-/// Canonical tool name for fetch
-pub const FETCH: &str = "fetch";
+use kodegen_config::{CATEGORY_CITESCRAPE, FETCH};
 
 /// Arguments for `fetch` tool - simplified single-page fetcher
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
@@ -44,8 +42,6 @@ use crate::{ToolArgs, tool_metadata};
 use super::prompts::FetchPrompts;
 
 #[tool_metadata(
-    name = "fetch",
-    category = "citescrape",
     description = "Fetch a single web page and display as ANSI-highlighted markdown. Simplified wrapper around scrape_url for quick page retrieval."
 )]
 impl ToolArgs for FetchArgs {
@@ -53,6 +49,6 @@ impl ToolArgs for FetchArgs {
     type Prompts = FetchPrompts;
 
     const NAME: &'static str = FETCH;
-    const CATEGORY: &'static str = "citescrape";
+    const CATEGORY: &'static str = CATEGORY_CITESCRAPE;
     const DESCRIPTION: &'static str = "Fetch a single web page and display as ANSI-highlighted markdown. Simplified wrapper around scrape_url for quick page retrieval.";
 }

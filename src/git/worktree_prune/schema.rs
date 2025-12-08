@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_WORKTREE_PRUNE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::WorktreePrunePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_worktree_prune
-pub const GIT_WORKTREE_PRUNE: &str = "git_worktree_prune";
 
 // ============================================================================
 // GIT_WORKTREE_PRUNE TOOL
@@ -36,8 +30,6 @@ pub struct GitWorktreePruneOutput {
 }
 
 #[tool_metadata(
-    name = "git_worktree_prune",
-    category = "git",
     description = "Remove stale administrative files for deleted working trees"
 )]
 impl ToolArgs for GitWorktreePruneArgs {
@@ -45,6 +37,6 @@ impl ToolArgs for GitWorktreePruneArgs {
     type Prompts = WorktreePrunePrompts;
 
     const NAME: &'static str = GIT_WORKTREE_PRUNE;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Remove stale administrative files for deleted working trees";
 }

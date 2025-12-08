@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_WRITE_FILE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::WriteFilePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_write_file
-pub const FS_WRITE_FILE: &str = "fs_write_file";
 
 // ============================================================================
 // WRITE FILE ARGS
@@ -53,8 +47,6 @@ pub struct FsWriteFileOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_write_file",
-    category = "filesystem",
     description = "Write or append to file contents. Supports two modes: 'rewrite' (overwrite entire file) and 'append' (add to end of file)"
 )]
 impl ToolArgs for FsWriteFileArgs {
@@ -62,6 +54,6 @@ impl ToolArgs for FsWriteFileArgs {
     type Prompts = WriteFilePrompts;
 
     const NAME: &'static str = FS_WRITE_FILE;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Write or append to file contents. Supports two modes: 'rewrite' (overwrite entire file) and 'append' (add to end of file)";
 }

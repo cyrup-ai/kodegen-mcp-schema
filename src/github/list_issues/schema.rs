@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_LIST_ISSUES};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ListIssuesPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for listing issues
-pub const GITHUB_LIST_ISSUES: &str = "github_list_issues";
 
 // ============================================================================
 // ARGS STRUCT
@@ -70,8 +64,6 @@ pub struct GitHubIssueSummary {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_list_issues",
-    category = "github",
     description = "List issues in a GitHub repository"
 )]
 impl ToolArgs for ListIssuesArgs {
@@ -79,6 +71,6 @@ impl ToolArgs for ListIssuesArgs {
     type Prompts = ListIssuesPrompts;
 
     const NAME: &'static str = GITHUB_LIST_ISSUES;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "List issues in a GitHub repository";
 }

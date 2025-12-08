@@ -2,17 +2,11 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_PUSH_FILES};
 use std::collections::HashMap;
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::PushFilesPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for pushing files
-pub const GITHUB_PUSH_FILES: &str = "github_push_files";
 
 // ============================================================================
 // ARGS STRUCT
@@ -55,8 +49,6 @@ pub struct GitHubPushFilesOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_push_files",
-    category = "github",
     description = "Push files to a GitHub repository"
 )]
 impl ToolArgs for PushFilesArgs {
@@ -64,6 +56,6 @@ impl ToolArgs for PushFilesArgs {
     type Prompts = PushFilesPrompts;
 
     const NAME: &'static str = GITHUB_PUSH_FILES;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Push files to a GitHub repository";
 }

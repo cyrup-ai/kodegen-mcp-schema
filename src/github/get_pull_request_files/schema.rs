@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_GET_PULL_REQUEST_FILES};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::GetPullRequestFilesPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for getting pull request files
-pub const GITHUB_GET_PULL_REQUEST_FILES: &str = "github_get_pull_request_files";
 
 // ============================================================================
 // ARGS STRUCT
@@ -58,8 +52,6 @@ pub struct GitHubPrFile {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_get_pull_request_files",
-    category = "github",
     description = "Get all files changed in a pull request"
 )]
 impl ToolArgs for GetPullRequestFilesArgs {
@@ -67,6 +59,6 @@ impl ToolArgs for GetPullRequestFilesArgs {
     type Prompts = GetPullRequestFilesPrompts;
 
     const NAME: &'static str = GITHUB_GET_PULL_REQUEST_FILES;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get all files changed in a pull request";
 }

@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_WORKTREE_LOCK};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::WorktreeLockPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_worktree_lock
-pub const GIT_WORKTREE_LOCK: &str = "git_worktree_lock";
 
 // ============================================================================
 // GIT_WORKTREE_LOCK TOOL
@@ -46,8 +40,6 @@ pub struct GitWorktreeLockOutput {
 }
 
 #[tool_metadata(
-    name = "git_worktree_lock",
-    category = "git",
     description = "Lock a working tree to prevent automatic deletion"
 )]
 impl ToolArgs for GitWorktreeLockArgs {
@@ -55,6 +47,6 @@ impl ToolArgs for GitWorktreeLockArgs {
     type Prompts = WorktreeLockPrompts;
 
     const NAME: &'static str = GIT_WORKTREE_LOCK;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Lock a working tree to prevent automatic deletion";
 }

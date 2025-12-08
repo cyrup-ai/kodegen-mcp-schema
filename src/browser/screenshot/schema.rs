@@ -2,14 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_BROWSER, BROWSER_SCREENSHOT};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ScreenshotPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-pub const BROWSER_SCREENSHOT: &str = "browser_screenshot";
 
 // ============================================================================
 // INPUT ARGS
@@ -47,8 +42,6 @@ pub struct BrowserScreenshotOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "browser_screenshot",
-    category = "browser",
     description = "Capture a screenshot of the page or specific element in PNG format with base64 encoding"
 )]
 impl ToolArgs for BrowserScreenshotArgs {
@@ -56,6 +49,6 @@ impl ToolArgs for BrowserScreenshotArgs {
     type Prompts = ScreenshotPrompts;
 
     const NAME: &'static str = BROWSER_SCREENSHOT;
-    const CATEGORY: &'static str = "browser";
+    const CATEGORY: &'static str = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Capture a screenshot of the page or specific element in PNG format with base64 encoding";
 }

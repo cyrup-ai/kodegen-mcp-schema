@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_REMOTE_LIST};
 use crate::{ToolArgs, tool_metadata};
 use super::super::GitRemoteInfo;
 use super::prompts::RemoteListPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_remote_list
-pub const GIT_REMOTE_LIST: &str = "git_remote_list";
 
 // ============================================================================
 // GIT_REMOTE_LIST TOOL
@@ -37,8 +31,6 @@ pub struct GitRemoteListOutput {
 }
 
 #[tool_metadata(
-    name = "git_remote_list",
-    category = "git",
     description = "List all remote repository connections"
 )]
 impl ToolArgs for GitRemoteListArgs {
@@ -46,6 +38,6 @@ impl ToolArgs for GitRemoteListArgs {
     type Prompts = RemoteListPrompts;
 
     const NAME: &'static str = GIT_REMOTE_LIST;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "List all remote repository connections";
 }

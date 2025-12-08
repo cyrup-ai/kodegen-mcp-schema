@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_FILESYSTEM, FS_READ_MULTIPLE_FILES};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::ReadMultipleFilesPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANTS
-// ============================================================================
-
-/// Canonical tool name for fs_read_multiple_files
-pub const FS_READ_MULTIPLE_FILES: &str = "fs_read_multiple_files";
 
 // ============================================================================
 // READ MULTIPLE FILES ARGS
@@ -72,8 +66,6 @@ pub struct FileReadResult {
 // ============================================================================
 
 #[tool_metadata(
-    name = "fs_read_multiple_files",
-    category = "filesystem",
     description = "Read multiple files in parallel. Returns results for all files, including errors for individual files that fail"
 )]
 impl ToolArgs for FsReadMultipleFilesArgs {
@@ -81,6 +73,6 @@ impl ToolArgs for FsReadMultipleFilesArgs {
     type Prompts = ReadMultipleFilesPrompts;
 
     const NAME: &'static str = FS_READ_MULTIPLE_FILES;
-    const CATEGORY: &'static str = "filesystem";
+    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Read multiple files in parallel. Returns results for all files, including errors for individual files that fail";
 }

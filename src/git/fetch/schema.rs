@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_FETCH};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::FetchPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_fetch
-pub const GIT_FETCH: &str = "git_fetch";
 
 
 // ============================================================================
@@ -60,8 +54,6 @@ pub struct GitFetchOutput {
 }
 
 #[tool_metadata(
-    name = "git_fetch",
-    category = "git",
     description = "Download changes from a remote repository without merging"
 )]
 impl ToolArgs for GitFetchArgs {
@@ -69,6 +61,6 @@ impl ToolArgs for GitFetchArgs {
     type Prompts = FetchPrompts;
 
     const NAME: &'static str = GIT_FETCH;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Download changes from a remote repository without merging";
 }

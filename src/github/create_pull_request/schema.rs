@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GITHUB, GITHUB_CREATE_PULL_REQUEST};
 
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::CreatePullRequestPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for creating a pull request
-pub const GITHUB_CREATE_PULL_REQUEST: &str = "github_create_pull_request";
 
 // ============================================================================
 // ARGS STRUCT
@@ -61,8 +55,6 @@ pub struct GitHubCreatePrOutput {
 // ============================================================================
 
 #[tool_metadata(
-    name = "github_create_pull_request",
-    category = "github",
     description = "Create a new pull request"
 )]
 impl ToolArgs for CreatePullRequestArgs {
@@ -70,6 +62,6 @@ impl ToolArgs for CreatePullRequestArgs {
     type Prompts = CreatePullRequestPrompts;
 
     const NAME: &'static str = GITHUB_CREATE_PULL_REQUEST;
-    const CATEGORY: &'static str = "github";
+    const CATEGORY: &'static str = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create a new pull request";
 }

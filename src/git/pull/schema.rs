@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_PULL};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::PullPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_pull
-pub const GIT_PULL: &str = "git_pull";
 
 
 // ============================================================================
@@ -61,8 +55,6 @@ pub struct GitPullOutput {
 }
 
 #[tool_metadata(
-    name = "git_pull",
-    category = "git",
     description = "Fetch and integrate changes from a remote repository"
 )]
 impl ToolArgs for GitPullArgs {
@@ -70,6 +62,6 @@ impl ToolArgs for GitPullArgs {
     type Prompts = PullPrompts;
 
     const NAME: &'static str = GIT_PULL;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Fetch and integrate changes from a remote repository";
 }

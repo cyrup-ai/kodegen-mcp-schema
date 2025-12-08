@@ -2,16 +2,10 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_WORKTREE_LIST};
 use crate::{ToolArgs, tool_metadata};
 use super::super::GitWorktreeInfo;
 use super::prompts::WorktreeListPrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_worktree_list
-pub const GIT_WORKTREE_LIST: &str = "git_worktree_list";
 
 // ============================================================================
 // GIT_WORKTREE_LIST TOOL
@@ -37,8 +31,6 @@ pub struct GitWorktreeListOutput {
 }
 
 #[tool_metadata(
-    name = "git_worktree_list",
-    category = "git",
     description = "List all working trees in a repository"
 )]
 impl ToolArgs for GitWorktreeListArgs {
@@ -46,6 +38,6 @@ impl ToolArgs for GitWorktreeListArgs {
     type Prompts = WorktreeListPrompts;
 
     const NAME: &'static str = GIT_WORKTREE_LIST;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "List all working trees in a repository";
 }

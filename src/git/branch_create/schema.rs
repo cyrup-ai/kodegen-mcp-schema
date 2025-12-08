@@ -2,15 +2,9 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use kodegen_config::{CATEGORY_GIT, GIT_BRANCH_CREATE};
 use crate::{ToolArgs, tool_metadata};
 use super::prompts::BranchCreatePrompts;
-
-// ============================================================================
-// CANONICAL TOOL NAME CONSTANT
-// ============================================================================
-
-/// Canonical tool name for git_branch_create
-pub const GIT_BRANCH_CREATE: &str = "git_branch_create";
 
 // ============================================================================
 // GIT_BRANCH_CREATE TOOL
@@ -53,8 +47,6 @@ pub struct GitBranchCreateOutput {
 }
 
 #[tool_metadata(
-    name = "git_branch_create",
-    category = "git",
     description = "Create a new branch from a starting point"
 )]
 impl ToolArgs for GitBranchCreateArgs {
@@ -62,6 +54,6 @@ impl ToolArgs for GitBranchCreateArgs {
     type Prompts = BranchCreatePrompts;
 
     const NAME: &'static str = GIT_BRANCH_CREATE;
-    const CATEGORY: &'static str = "git";
+    const CATEGORY: &'static str = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create a new branch from a starting point";
 }

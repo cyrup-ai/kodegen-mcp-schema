@@ -16,36 +16,47 @@ pub mod search;
 // Re-export shared types
 pub use shared::*;
 
-// Re-export read_file tool
-pub use read_file::{
+// Re-export tool name constants from kodegen_config
+pub use kodegen_config::{
+    FS_CREATE_DIRECTORY,
+    FS_DELETE_DIRECTORY,
+    FS_DELETE_FILE,
+    FS_EDIT_BLOCK,
+    FS_GET_FILE_INFO,
+    FS_LIST_DIRECTORY,
+    FS_MOVE_FILE,
     FS_READ_FILE,
+    FS_READ_MULTIPLE_FILES,
+    FS_SEARCH,
+    FS_WRITE_FILE,
+};
+
+// Re-export read_file tool types
+pub use read_file::{
     FsReadFileArgs,
     FsReadFileOutput,
     FsReadFilePromptArgs,
     ReadFilePrompts,
 };
 
-// Re-export write_file tool
+// Re-export write_file tool types
 pub use write_file::{
-    FS_WRITE_FILE,
     FsWriteFileArgs,
     FsWriteFileOutput,
     FsWriteFilePromptArgs,
     WriteFilePrompts,
 };
 
-// Re-export edit_block tool
+// Re-export edit_block tool types
 pub use edit_block::{
-    FS_EDIT_BLOCK,
     FsEditBlockArgs,
     FsEditBlockOutput,
     FsEditBlockPromptArgs,
     EditBlockPrompts,
 };
 
-// Re-export read_multiple_files tool
+// Re-export read_multiple_files tool types
 pub use read_multiple_files::{
-    FS_READ_MULTIPLE_FILES,
     FsReadMultipleFilesArgs,
     FsReadMultipleFilesOutput,
     FsReadMultipleFilesPromptArgs,
@@ -53,9 +64,8 @@ pub use read_multiple_files::{
     FileReadResult,
 };
 
-// Re-export list_directory tool
+// Re-export list_directory tool types
 pub use list_directory::{
-    FS_LIST_DIRECTORY,
     FsListDirectoryArgs,
     FsListDirectoryOutput,
     FsListDirectoryPromptArgs,
@@ -63,54 +73,48 @@ pub use list_directory::{
     DirectoryEntry,
 };
 
-// Re-export create_directory tool
+// Re-export create_directory tool types
 pub use create_directory::{
-    FS_CREATE_DIRECTORY,
     FsCreateDirectoryArgs,
     FsCreateDirectoryOutput,
     FsCreateDirectoryPromptArgs,
     CreateDirectoryPrompts,
 };
 
-// Re-export delete_directory tool
+// Re-export delete_directory tool types
 pub use delete_directory::{
-    FS_DELETE_DIRECTORY,
     FsDeleteDirectoryArgs,
     FsDeleteDirectoryOutput,
     FsDeleteDirectoryPromptArgs,
     DeleteDirectoryPrompts,
 };
 
-// Re-export delete_file tool
+// Re-export delete_file tool types
 pub use delete_file::{
-    FS_DELETE_FILE,
     FsDeleteFileArgs,
     FsDeleteFileOutput,
     FsDeleteFilePromptArgs,
     DeleteFilePrompts,
 };
 
-// Re-export move_file tool
+// Re-export move_file tool types
 pub use move_file::{
-    FS_MOVE_FILE,
     FsMoveFileArgs,
     FsMoveFileOutput,
     FsMoveFilePromptArgs,
     MoveFilePrompts,
 };
 
-// Re-export get_file_info tool
+// Re-export get_file_info tool types
 pub use get_file_info::{
-    FS_GET_FILE_INFO,
     FsGetFileInfoArgs,
     FsGetFileInfoOutput,
     FsGetFileInfoPromptArgs,
     GetFileInfoPrompts,
 };
 
-// Re-export search tool
+// Re-export search tool types
 pub use search::{
-    FS_SEARCH,
     FsSearchArgs,
     FsSearchOutput,
     FsSearchPromptArgs,
