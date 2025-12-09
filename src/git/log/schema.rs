@@ -50,6 +50,6 @@ impl ToolArgs for GitLogArgs {
     type Prompts = LogPrompts;
 
     const NAME: &'static str = GIT_LOG;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "View commit history with optional filtering";
 }

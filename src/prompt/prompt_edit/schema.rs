@@ -51,6 +51,6 @@ impl ToolArgs for EditPromptArgs {
     type Prompts = PromptEditPrompts;
 
     const NAME: &'static str = PROMPT_EDIT;
-    const CATEGORY: &'static str = CATEGORY_PROMPT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_PROMPT;
     const DESCRIPTION: &'static str = "Update existing prompt template content, metadata, or variables with version iteration support";
 }

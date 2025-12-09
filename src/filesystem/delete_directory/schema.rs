@@ -46,6 +46,6 @@ impl ToolArgs for FsDeleteDirectoryArgs {
     type Prompts = DeleteDirectoryPrompts;
 
     const NAME: &'static str = FS_DELETE_DIRECTORY;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Delete a directory and all its contents recursively. This operation is permanent and cannot be undone";
 }

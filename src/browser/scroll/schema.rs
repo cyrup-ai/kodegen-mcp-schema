@@ -50,6 +50,6 @@ impl ToolArgs for BrowserScrollArgs {
     type Prompts = ScrollPrompts;
 
     const NAME: &'static str = BROWSER_SCROLL;
-    const CATEGORY: &'static str = CATEGORY_BROWSER;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Scroll the page in specified direction or to a specific element, useful for lazy-loaded content";
 }

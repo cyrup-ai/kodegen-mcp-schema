@@ -72,6 +72,6 @@ impl ToolArgs for SearchCodeArgs {
     type Prompts = SearchCodePrompts;
 
     const NAME: &'static str = GITHUB_SEARCH_CODE;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Search code across GitHub repositories using GitHub's code search syntax";
 }

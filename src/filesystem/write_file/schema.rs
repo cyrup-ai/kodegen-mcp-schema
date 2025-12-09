@@ -54,6 +54,6 @@ impl ToolArgs for FsWriteFileArgs {
     type Prompts = WriteFilePrompts;
 
     const NAME: &'static str = FS_WRITE_FILE;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Write or append to file contents. Supports two modes: 'rewrite' (overwrite entire file) and 'append' (add to end of file)";
 }

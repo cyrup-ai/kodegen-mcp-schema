@@ -52,6 +52,10 @@ impl ToolArgs for WebSearchArgs {
     type Prompts = WebSearchPrompts;
 
     const NAME: &'static str = WEB_SEARCH;
-    const CATEGORY: &'static str = CATEGORY_CITESCRAPE;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_CITESCRAPE;
     const DESCRIPTION: &'static str = "Perform web search using DuckDuckGo and return structured results with titles, URLs, and snippets";
+
+    fn icon() -> char {
+        '⚶'  // VESTA - tool-specific icon (overrides citescrape default)
+    }
 }

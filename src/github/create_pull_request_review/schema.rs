@@ -58,6 +58,6 @@ impl ToolArgs for CreatePullRequestReviewArgs {
     type Prompts = CreatePullRequestReviewPrompts;
 
     const NAME: &'static str = GITHUB_CREATE_PULL_REQUEST_REVIEW;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create a review on a pull request";
 }

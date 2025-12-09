@@ -93,6 +93,6 @@ impl ToolArgs for InspectToolCallsArgs {
     type Prompts = InspectToolCallsPrompts;
 
     const NAME: &'static str = INSPECT_TOOL_CALLS;
-    const CATEGORY: &'static str = CATEGORY_INTROSPECTION;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_INTROSPECTION;
     const DESCRIPTION: &'static str = "View tool invocation history with filtering by tool name, time range, and success status. Essential for debugging and workflow analysis";
 }

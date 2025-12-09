@@ -54,6 +54,6 @@ impl ToolArgs for GitBranchCreateArgs {
     type Prompts = BranchCreatePrompts;
 
     const NAME: &'static str = GIT_BRANCH_CREATE;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create a new branch from a starting point";
 }

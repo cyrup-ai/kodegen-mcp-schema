@@ -57,6 +57,6 @@ impl ToolArgs for GitRemoteAddArgs {
     type Prompts = RemoteAddPrompts;
 
     const NAME: &'static str = GIT_REMOTE_ADD;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Add a new remote repository connection";
 }

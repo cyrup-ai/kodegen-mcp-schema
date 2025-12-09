@@ -64,6 +64,6 @@ impl ToolArgs for GetIssueArgs {
     type Prompts = GetIssuePrompts;
 
     const NAME: &'static str = GITHUB_GET_ISSUE;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get details about a specific GitHub issue";
 }

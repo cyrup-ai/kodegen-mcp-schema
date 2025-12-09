@@ -79,6 +79,6 @@ impl ToolArgs for RecallArgs {
     type Prompts = MemoryRecallPrompts;
 
     const NAME: &'static str = MEMORY_RECALL;
-    const CATEGORY: &'static str = CATEGORY_MEMORY;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_MEMORY;
     const DESCRIPTION: &'static str = "Retrieve relevant memories from a library using semantic search. Searches for content similar to the provided context and returns the most relevant results. Uses vector similarity (cosine) to find semantically related memories.";
 }

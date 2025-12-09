@@ -70,6 +70,6 @@ impl ToolArgs for ListPullRequestsArgs {
     type Prompts = ListPullRequestsPrompts;
 
     const NAME: &'static str = GITHUB_LIST_PULL_REQUESTS;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "List pull requests in a GitHub repository";
 }

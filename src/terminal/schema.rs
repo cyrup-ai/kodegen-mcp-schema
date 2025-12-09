@@ -142,6 +142,6 @@ impl ToolArgs for TerminalInput {
     type Prompts = TerminalPrompts;
 
     const NAME: &'static str = TERMINAL;
-    const CATEGORY: &'static str = CATEGORY_TERMINAL;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_TERMINAL;
     const DESCRIPTION: &'static str = "Execute shell commands in persistent, stateful terminal sessions with support for parallel execution and background tasks";
 }

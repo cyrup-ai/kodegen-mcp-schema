@@ -61,6 +61,6 @@ impl ToolArgs for GitFetchArgs {
     type Prompts = FetchPrompts;
 
     const NAME: &'static str = GIT_FETCH;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Download changes from a remote repository without merging";
 }

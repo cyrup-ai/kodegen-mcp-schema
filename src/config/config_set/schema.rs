@@ -53,6 +53,6 @@ impl ToolArgs for SetConfigValueArgs {
     type Prompts = SetConfigValuePrompts;
 
     const NAME: &'static str = CONFIG_SET;
-    const CATEGORY: &'static str = CATEGORY_CONFIG;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_CONFIG;
     const DESCRIPTION: &'static str = "Set a specific configuration value by key. WARNING: Should be used in a separate chat from file operations and command execution to prevent security violations. Always read config_get first before making changes";
 }

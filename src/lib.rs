@@ -19,7 +19,7 @@ use serde_json::Value;
 /// the #[tool_metadata] proc macro. This enables automatic discovery in kodegen.
 pub struct ToolMetadata {
     pub name: &'static str,
-    pub category: &'static str,
+    pub category: &'static kodegen_config::Category,
     pub description: &'static str,
     pub args_schema: fn() -> Value,
     pub output_schema: fn() -> Value,
@@ -90,11 +90,19 @@ pub trait ToolArgs: DeserializeOwned + Serialize + JsonSchema + Send + 'static {
     /// Tool name (unique identifier)
     const NAME: &'static str;
 
-    /// Tool category for organization (e.g., "github", "filesystem", "git")
-    const CATEGORY: &'static str;
+    /// Tool category for organization - structured data with name and icon
+    const CATEGORY: &'static kodegen_config::Category;
 
     /// Human-readable tool description
     const DESCRIPTION: &'static str;
+
+    /// Tool icon character (UTF-8)
+    ///
+    /// Default implementation returns icon from category.
+    /// Individual tools can override for tool-specific icons.
+    fn icon() -> char {
+        Self::CATEGORY.icon
+    }
 }
 
 pub mod filesystem;

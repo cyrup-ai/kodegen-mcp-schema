@@ -133,6 +133,6 @@ impl ToolArgs for GitRevertArgs {
     type Prompts = RevertPrompts;
 
     const NAME: &'static str = GIT_REVERT;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create new commits that undo changes from previous commits";
 }

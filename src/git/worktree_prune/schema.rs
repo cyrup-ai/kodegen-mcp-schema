@@ -37,6 +37,6 @@ impl ToolArgs for GitWorktreePruneArgs {
     type Prompts = WorktreePrunePrompts;
 
     const NAME: &'static str = GIT_WORKTREE_PRUNE;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Remove stale administrative files for deleted working trees";
 }

@@ -240,6 +240,6 @@ impl ToolArgs for GetPromptArgs {
     type Prompts = PromptGetPrompts;
 
     const NAME: &'static str = PROMPT_GET;
-    const CATEGORY: &'static str = CATEGORY_PROMPT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_PROMPT;
     const DESCRIPTION: &'static str = "Retrieve prompt template by name, render with variables, or list available templates by category";
 }

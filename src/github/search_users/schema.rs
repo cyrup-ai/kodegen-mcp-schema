@@ -72,6 +72,6 @@ impl ToolArgs for SearchUsersArgs {
     type Prompts = SearchUsersPrompts;
 
     const NAME: &'static str = GITHUB_SEARCH_USERS;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Search users across GitHub using query syntax";
 }

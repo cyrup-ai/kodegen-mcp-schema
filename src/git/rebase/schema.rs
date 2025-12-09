@@ -66,6 +66,6 @@ impl ToolArgs for GitRebaseArgs {
     type Prompts = RebasePrompts;
 
     const NAME: &'static str = GIT_REBASE;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Reapply commits on top of another base";
 }

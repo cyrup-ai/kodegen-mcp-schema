@@ -65,6 +65,6 @@ impl ToolArgs for FsReadFileArgs {
     type Prompts = ReadFilePrompts;
 
     const NAME: &'static str = FS_READ_FILE;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Read the contents of a file from the filesystem or a URL. Supports text files (returned as text) and image files (returned as base64)";
 }

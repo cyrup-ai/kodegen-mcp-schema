@@ -62,6 +62,6 @@ impl ToolArgs for CreateOrUpdateFileArgs {
     type Prompts = CreateOrUpdateFilePrompts;
 
     const NAME: &'static str = GITHUB_CREATE_OR_UPDATE_FILE;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create or update a file in a repository";
 }

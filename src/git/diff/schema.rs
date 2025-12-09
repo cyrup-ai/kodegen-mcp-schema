@@ -49,6 +49,6 @@ impl ToolArgs for GitDiffArgs {
     type Prompts = DiffPrompts;
 
     const NAME: &'static str = GIT_DIFF;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Show differences between commits, branches, or working directory";
 }

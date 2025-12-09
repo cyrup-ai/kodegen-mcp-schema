@@ -47,6 +47,6 @@ impl ToolArgs for GetTableIndexesArgs {
     type Prompts = TableIndexesPrompts;
 
     const NAME: &'static str = DB_TABLE_INDEXES;
-    const CATEGORY: &'static str = CATEGORY_DATABASE;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "View indexes on a table including types (btree, hash, gin), columns, and uniqueness constraints for query optimization.";
 }

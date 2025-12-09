@@ -57,6 +57,6 @@ impl ToolArgs for GetPullRequestReviewsArgs {
     type Prompts = GetPullRequestReviewsPrompts;
 
     const NAME: &'static str = GITHUB_GET_PULL_REQUEST_REVIEWS;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get pull request reviews";
 }

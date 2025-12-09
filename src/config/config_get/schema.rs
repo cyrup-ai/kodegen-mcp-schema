@@ -95,6 +95,6 @@ impl ToolArgs for GetConfigArgs {
     type Prompts = ConfigGetPrompts;
 
     const NAME: &'static str = CONFIG_GET;
-    const CATEGORY: &'static str = CATEGORY_CONFIG;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_CONFIG;
     const DESCRIPTION: &'static str = "Get complete server configuration including security settings (blocked commands, allowed directories), shell preferences, resource limits, and live statistics";
 }

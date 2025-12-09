@@ -44,6 +44,6 @@ impl ToolArgs for GitBranchDeleteArgs {
     type Prompts = BranchDeletePrompts;
 
     const NAME: &'static str = GIT_BRANCH_DELETE;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Delete a branch from the repository";
 }

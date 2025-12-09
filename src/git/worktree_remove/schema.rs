@@ -44,6 +44,6 @@ impl ToolArgs for GitWorktreeRemoveArgs {
     type Prompts = WorktreeRemovePrompts;
 
     const NAME: &'static str = GIT_WORKTREE_REMOVE;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Remove a working tree and its administrative files";
 }

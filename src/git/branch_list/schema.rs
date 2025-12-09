@@ -37,6 +37,6 @@ impl ToolArgs for GitBranchListArgs {
     type Prompts = BranchListPrompts;
 
     const NAME: &'static str = GIT_BRANCH_LIST;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "List all branches in the repository";
 }

@@ -52,6 +52,6 @@ impl ToolArgs for ForkRepositoryArgs {
     type Prompts = ForkRepositoryPrompts;
 
     const NAME: &'static str = GITHUB_FORK_REPOSITORY;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Fork a repository to your account or organization";
 }

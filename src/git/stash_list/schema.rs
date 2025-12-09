@@ -52,6 +52,6 @@ impl ToolArgs for GitStashListArgs {
     type Prompts = StashListPrompts;
 
     const NAME: &'static str = GIT_STASH_LIST;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "List all stashed changes in the repository";
 }

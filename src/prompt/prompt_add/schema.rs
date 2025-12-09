@@ -58,6 +58,6 @@ impl ToolArgs for AddPromptArgs {
     type Prompts = PromptAddPrompts;
 
     const NAME: &'static str = PROMPT_ADD;
-    const CATEGORY: &'static str = CATEGORY_PROMPT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_PROMPT;
     const DESCRIPTION: &'static str = "Create new reusable Jinja2 prompt template with variables, metadata, and categorization";
 }

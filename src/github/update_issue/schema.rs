@@ -63,6 +63,6 @@ impl ToolArgs for UpdateIssueArgs {
     type Prompts = UpdateIssuePrompts;
 
     const NAME: &'static str = GITHUB_UPDATE_ISSUE;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Update an existing GitHub issue";
 }

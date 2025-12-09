@@ -125,6 +125,6 @@ impl ToolArgs for GitCherryPickArgs {
     type Prompts = CherryPickPrompts;
 
     const NAME: &'static str = GIT_CHERRY_PICK;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Apply changes from specific commits to current branch";
 }

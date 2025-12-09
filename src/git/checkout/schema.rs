@@ -55,6 +55,6 @@ impl ToolArgs for GitCheckoutArgs {
     type Prompts = GitCheckoutPrompts;
 
     const NAME: &'static str = GIT_CHECKOUT;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Switch branches or restore files from a specific revision";
 }

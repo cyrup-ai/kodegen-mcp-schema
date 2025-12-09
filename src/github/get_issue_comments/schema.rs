@@ -58,6 +58,6 @@ impl ToolArgs for GetIssueCommentsArgs {
     type Prompts = GetIssueCommentsPrompts;
 
     const NAME: &'static str = GITHUB_GET_ISSUE_COMMENTS;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get all comments on a GitHub issue";
 }

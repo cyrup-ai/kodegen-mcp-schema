@@ -38,6 +38,6 @@ impl ToolArgs for GitWorktreeListArgs {
     type Prompts = WorktreeListPrompts;
 
     const NAME: &'static str = GIT_WORKTREE_LIST;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "List all working trees in a repository";
 }

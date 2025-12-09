@@ -49,6 +49,6 @@ impl ToolArgs for DeletePromptArgs {
     type Prompts = PromptDeletePrompts;
 
     const NAME: &'static str = PROMPT_DELETE;
-    const CATEGORY: &'static str = CATEGORY_PROMPT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_PROMPT;
     const DESCRIPTION: &'static str = "Delete prompt template with required confirmation to prevent accidental removal";
 }

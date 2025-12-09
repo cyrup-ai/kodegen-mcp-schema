@@ -64,6 +64,6 @@ impl ToolArgs for GitStashApplyArgs {
     type Prompts = StashApplyPrompts;
 
     const NAME: &'static str = GIT_STASH_APPLY;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Apply stashed changes without removing from stash";
 }

@@ -77,6 +77,6 @@ impl ToolArgs for GetFileContentsArgs {
     type Prompts = GetFileContentsPrompts;
 
     const NAME: &'static str = GITHUB_GET_FILE_CONTENTS;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get file or directory contents from a GitHub repository";
 }

@@ -75,6 +75,6 @@ impl ToolArgs for AddPullRequestReviewCommentArgs {
     type Prompts = AddPullRequestReviewCommentPrompts;
 
     const NAME: &'static str = GITHUB_ADD_PULL_REQUEST_REVIEW_COMMENT;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Add a comment to a pull request review";
 }

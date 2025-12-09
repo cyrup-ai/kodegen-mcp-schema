@@ -60,6 +60,6 @@ impl ToolArgs for BrowserTypeTextArgs {
     type Prompts = TypeTextPrompts;
 
     const NAME: &'static str = BROWSER_TYPE_TEXT;
-    const CATEGORY: &'static str = CATEGORY_BROWSER;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Type text into input fields, textareas, and other editable elements with optional clear-first behavior";
 }

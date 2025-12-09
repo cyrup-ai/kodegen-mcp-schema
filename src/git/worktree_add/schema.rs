@@ -51,6 +51,6 @@ impl ToolArgs for GitWorktreeAddArgs {
     type Prompts = WorktreeAddPrompts;
 
     const NAME: &'static str = GIT_WORKTREE_ADD;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create a new linked working tree for parallel development";
 }

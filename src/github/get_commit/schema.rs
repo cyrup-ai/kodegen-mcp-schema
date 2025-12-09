@@ -86,6 +86,6 @@ impl ToolArgs for GetCommitArgs {
     type Prompts = GetCommitPrompts;
 
     const NAME: &'static str = GITHUB_GET_COMMIT;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get details about a specific commit";
 }

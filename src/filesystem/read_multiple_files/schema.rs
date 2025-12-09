@@ -73,6 +73,6 @@ impl ToolArgs for FsReadMultipleFilesArgs {
     type Prompts = ReadMultipleFilesPrompts;
 
     const NAME: &'static str = FS_READ_MULTIPLE_FILES;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Read multiple files in parallel. Returns results for all files, including errors for individual files that fail";
 }

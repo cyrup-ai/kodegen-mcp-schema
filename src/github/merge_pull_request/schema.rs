@@ -62,6 +62,6 @@ impl ToolArgs for MergePullRequestArgs {
     type Prompts = MergePullRequestPrompts;
 
     const NAME: &'static str = GITHUB_MERGE_PULL_REQUEST;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Merge a pull request";
 }

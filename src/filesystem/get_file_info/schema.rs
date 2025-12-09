@@ -55,6 +55,6 @@ impl ToolArgs for FsGetFileInfoArgs {
     type Prompts = GetFileInfoPrompts;
 
     const NAME: &'static str = FS_GET_FILE_INFO;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Retrieve detailed metadata about a file or directory including size, creation time, permissions, and type";
 }

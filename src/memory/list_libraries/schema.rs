@@ -40,6 +40,6 @@ impl ToolArgs for ListMemoryLibrariesArgs {
     type Prompts = MemoryListLibrariesPrompts;
 
     const NAME: &'static str = MEMORY_LIST_LIBRARIES;
-    const CATEGORY: &'static str = CATEGORY_MEMORY;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_MEMORY;
     const DESCRIPTION: &'static str = "List all unique memory library names that have been created. Returns a list of all libraries that contain at least one memory. Use this to discover what libraries are available for recall.";
 }

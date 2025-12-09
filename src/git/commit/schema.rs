@@ -53,6 +53,6 @@ impl ToolArgs for GitCommitArgs {
     type Prompts = CommitPrompts;
 
     const NAME: &'static str = GIT_COMMIT;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create a commit with staged changes";
 }

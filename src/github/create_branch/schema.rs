@@ -51,6 +51,6 @@ impl ToolArgs for CreateBranchArgs {
     type Prompts = CreateBranchPrompts;
 
     const NAME: &'static str = GITHUB_CREATE_BRANCH;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create a new branch in a repository";
 }

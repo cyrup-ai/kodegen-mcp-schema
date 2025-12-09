@@ -43,6 +43,6 @@ impl ToolArgs for FsCreateDirectoryArgs {
     type Prompts = CreateDirectoryPrompts;
 
     const NAME: &'static str = FS_CREATE_DIRECTORY;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Create a new directory or ensure a directory exists. Automatically creates parent directories (like mkdir -p)";
 }

@@ -52,6 +52,6 @@ impl ToolArgs for ExecuteSQLArgs {
     type Prompts = DbExecuteSqlPrompts;
 
     const NAME: &'static str = DB_EXECUTE_SQL;
-    const CATEGORY: &'static str = CATEGORY_DATABASE;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "Execute SQL query with connection pooling and timeout support. Prefer read-only SELECT queries over modifications.";
 }

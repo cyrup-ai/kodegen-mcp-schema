@@ -48,6 +48,6 @@ impl ToolArgs for GitBranchRenameArgs {
     type Prompts = BranchRenamePrompts;
 
     const NAME: &'static str = GIT_BRANCH_RENAME;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Rename an existing branch";
 }

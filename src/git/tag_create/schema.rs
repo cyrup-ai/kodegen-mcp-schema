@@ -55,6 +55,6 @@ impl ToolArgs for GitTagCreateArgs {
     type Prompts = TagCreatePrompts;
 
     const NAME: &'static str = GIT_TAG_CREATE;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create annotated or lightweight tags to mark specific points in repository history";
 }

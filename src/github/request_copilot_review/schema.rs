@@ -48,6 +48,6 @@ impl ToolArgs for RequestCopilotReviewArgs {
     type Prompts = RequestCopilotReviewPrompts;
 
     const NAME: &'static str = GITHUB_REQUEST_COPILOT_REVIEW;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Request Copilot review for pull request";
 }

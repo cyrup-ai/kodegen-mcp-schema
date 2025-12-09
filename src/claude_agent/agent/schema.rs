@@ -175,6 +175,6 @@ impl ToolArgs for ClaudeAgentArgs {
     type Prompts = ClaudeAgentPrompts;
 
     const NAME: &'static str = CLAUDE_AGENT;
-    const CATEGORY: &'static str = CATEGORY_CLAUDE_AGENT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_CLAUDE_AGENT;
     const DESCRIPTION: &'static str = "Unified Claude agent interface with action-based dispatch (SPAWN/SEND/READ/LIST/KILL). Spawn autonomous sub-agents for task delegation and parallel processing";
 }

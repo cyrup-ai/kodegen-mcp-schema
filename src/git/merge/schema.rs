@@ -61,6 +61,6 @@ impl ToolArgs for GitMergeArgs {
     type Prompts = MergePrompts;
 
     const NAME: &'static str = GIT_MERGE;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Merge changes from one branch into another";
 }

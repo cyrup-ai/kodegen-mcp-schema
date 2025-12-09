@@ -72,6 +72,6 @@ impl ToolArgs for GitPushArgs {
     type Prompts = PushPrompts;
 
     const NAME: &'static str = GIT_PUSH;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Push commits to a remote repository";
 }

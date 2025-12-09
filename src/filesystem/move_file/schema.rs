@@ -46,6 +46,6 @@ impl ToolArgs for FsMoveFileArgs {
     type Prompts = MoveFilePrompts;
 
     const NAME: &'static str = FS_MOVE_FILE;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Move or rename files and directories. Can move files between directories and rename them in a single operation";
 }

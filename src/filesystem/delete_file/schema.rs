@@ -42,6 +42,6 @@ impl ToolArgs for FsDeleteFileArgs {
     type Prompts = DeleteFilePrompts;
 
     const NAME: &'static str = FS_DELETE_FILE;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Delete a file from the filesystem. This operation is permanent and cannot be undone";
 }

@@ -59,6 +59,6 @@ impl ToolArgs for ListBranchesArgs {
     type Prompts = ListBranchesPrompts;
 
     const NAME: &'static str = GITHUB_LIST_BRANCHES;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "List branches in a GitHub repository";
 }

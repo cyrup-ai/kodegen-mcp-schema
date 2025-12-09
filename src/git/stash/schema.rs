@@ -67,6 +67,6 @@ impl ToolArgs for GitStashArgs {
     type Prompts = StashPrompts;
 
     const NAME: &'static str = GIT_STASH;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Temporarily store uncommitted changes and restore them later";
 }

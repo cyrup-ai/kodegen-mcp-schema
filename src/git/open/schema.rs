@@ -39,6 +39,6 @@ impl ToolArgs for GitOpenArgs {
     type Prompts = OpenPrompts;
 
     const NAME: &'static str = GIT_OPEN;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Open an existing Git repository and get its current state";
 }

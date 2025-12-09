@@ -54,6 +54,6 @@ impl ToolArgs for GitResetArgs {
     type Prompts = ResetPrompts;
 
     const NAME: &'static str = GIT_RESET;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Reset current HEAD to a specified state (soft/mixed/hard)";
 }

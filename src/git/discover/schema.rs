@@ -38,6 +38,6 @@ impl ToolArgs for GitDiscoverArgs {
     type Prompts = DiscoverPrompts;
 
     const NAME: &'static str = GIT_DISCOVER;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Find the Git repository root from any path inside it";
 }

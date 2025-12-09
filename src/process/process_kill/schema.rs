@@ -41,6 +41,6 @@ impl ToolArgs for ProcessKillArgs {
     type Prompts = ProcessKillPrompts;
 
     const NAME: &'static str = PROCESS_KILL;
-    const CATEGORY: &'static str = CATEGORY_PROCESS;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_PROCESS;
     const DESCRIPTION: &'static str = "Terminate a process by PID. Sends SIGKILL signal - the process cannot catch or ignore it. Use with caution";
 }

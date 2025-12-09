@@ -40,6 +40,6 @@ impl ToolArgs for GitWorktreeUnlockArgs {
     type Prompts = WorktreeUnlockPrompts;
 
     const NAME: &'static str = GIT_WORKTREE_UNLOCK;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Unlock a working tree to allow automatic cleanup";
 }

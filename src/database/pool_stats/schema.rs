@@ -40,6 +40,6 @@ impl ToolArgs for GetPoolStatsArgs {
     type Prompts = PoolStatsPrompts;
 
     const NAME: &'static str = DB_POOL_STATS;
-    const CATEGORY: &'static str = CATEGORY_DATABASE;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "Get connection pool statistics including active/idle connections, utilization, and health metrics.";
 }

@@ -51,6 +51,6 @@ impl ToolArgs for AddIssueCommentArgs {
     type Prompts = AddIssueCommentPrompts;
 
     const NAME: &'static str = GITHUB_ADD_ISSUE_COMMENT;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Add a comment to an existing GitHub issue";
 }

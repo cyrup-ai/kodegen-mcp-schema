@@ -47,6 +47,6 @@ impl ToolArgs for ListTablesArgs {
     type Prompts = ListTablesPrompts;
 
     const NAME: &'static str = DB_LIST_TABLES;
-    const CATEGORY: &'static str = CATEGORY_DATABASE;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "List all tables and views in a schema. Use this to discover available tables before querying.";
 }

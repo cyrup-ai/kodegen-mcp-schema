@@ -171,6 +171,6 @@ impl ToolArgs for BrowserResearchArgs {
     type Prompts = ResearchPrompts;
 
     const NAME: &'static str = BROWSER_RESEARCH;
-    const CATEGORY: &'static str = CATEGORY_BROWSER;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Conduct comprehensive web research with multi-page crawling, content analysis, and AI-powered synthesis";
 }

@@ -66,6 +66,6 @@ impl ToolArgs for CheckMemorizeStatusArgs {
     type Prompts = CheckMemorizeStatusPrompts;
 
     const NAME: &'static str = MEMORY_CHECK_MEMORIZE_STATUS;
-    const CATEGORY: &'static str = CATEGORY_MEMORY;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_MEMORY;
     const DESCRIPTION: &'static str = "Check the status of a memorize operation. Use this to verify if an asynchronous memorization has completed, is still in progress, or has failed.";
 }

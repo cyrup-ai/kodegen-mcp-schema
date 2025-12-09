@@ -65,6 +65,6 @@ impl ToolArgs for SearchIssuesArgs {
     type Prompts = SearchIssuesPrompts;
 
     const NAME: &'static str = GITHUB_SEARCH_ISSUES;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Search issues and pull requests across GitHub using query syntax";
 }

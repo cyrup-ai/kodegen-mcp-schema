@@ -52,6 +52,6 @@ impl ToolArgs for GitAddArgs {
     type Prompts = AddPrompts;
 
     const NAME: &'static str = GIT_ADD;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Stage file changes for the next commit";
 }

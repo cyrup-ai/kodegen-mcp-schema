@@ -90,6 +90,6 @@ impl ToolArgs for ReasonerArgs {
     type Prompts = ReasonerPrompts;
 
     const NAME: &'static str = REASONER;
-    const CATEGORY: &'static str = CATEGORY_REASONER;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_REASONER;
     const DESCRIPTION: &'static str = "Advanced reasoning tool with multiple strategies (beam search, MCTS). Processes thoughts step-by-step, supports branching and revision, and tracks best reasoning paths. Use for complex problem-solving that requires exploration of multiple solution approaches.";
 }

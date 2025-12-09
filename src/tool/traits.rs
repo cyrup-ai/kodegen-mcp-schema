@@ -420,7 +420,7 @@ pub trait Tool: Send + Sync + Sized + 'static {
         S: Send + Sync + 'static,
     {
         use rmcp::handler::server::router::tool::ToolRoute;
-        use rmcp::model::{Tool as RmcpTool, ToolAnnotations};
+        use rmcp::model::{Tool as RmcpTool, ToolAnnotations, Meta};
         use std::sync::Arc;
 
         // Build annotations from trait methods
@@ -429,6 +429,10 @@ pub trait Tool: Send + Sync + Sized + 'static {
             .destructive(Self::destructive())
             .idempotent(Self::idempotent())
             .open_world(Self::open_world());
+
+        // Store icon in meta field
+        let mut meta = Meta::new();
+        meta.0.insert("icon".to_string(), serde_json::json!(<Self::Args as ToolArgs>::icon().to_string()));
 
         // Build RMCP Tool metadata
         let metadata = RmcpTool {
@@ -439,7 +443,7 @@ pub trait Tool: Send + Sync + Sized + 'static {
             output_schema: Some(Self::output_schema()),
             annotations: Some(annotations),
             icons: None,
-            meta: None,
+            meta: Some(meta),
         };
 
         // Create handler with ToolHandler wrapper (HRTB-compatible, zero-cost)
@@ -496,7 +500,7 @@ pub trait Tool: Send + Sync + Sized + 'static {
         S: Send + Sync + 'static,
     {
         use rmcp::handler::server::router::tool::ToolRoute;
-        use rmcp::model::{Tool as RmcpTool, ToolAnnotations};
+        use rmcp::model::{Tool as RmcpTool, ToolAnnotations, Meta};
 
         // Build annotations from trait methods
         let annotations = ToolAnnotations::new()
@@ -504,6 +508,10 @@ pub trait Tool: Send + Sync + Sized + 'static {
             .destructive(Self::destructive())
             .idempotent(Self::idempotent())
             .open_world(Self::open_world());
+
+        // Store icon in meta field
+        let mut meta = Meta::new();
+        meta.0.insert("icon".to_string(), serde_json::json!(<Self::Args as ToolArgs>::icon().to_string()));
 
         // Build RMCP Tool metadata
         let metadata = RmcpTool {
@@ -514,7 +522,7 @@ pub trait Tool: Send + Sync + Sized + 'static {
             output_schema: Some(Self::output_schema()),
             annotations: Some(annotations),
             icons: None,
-            meta: None,
+            meta: Some(meta),
         };
 
         // Create handler with ToolHandler wrapper (HRTB-compatible, zero-cost)

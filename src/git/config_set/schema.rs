@@ -64,6 +64,6 @@ impl ToolArgs for GitConfigSetArgs {
     type Prompts = ConfigSetPrompts;
 
     const NAME: &'static str = GIT_CONFIG_SET;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Set Git configuration values";
 }

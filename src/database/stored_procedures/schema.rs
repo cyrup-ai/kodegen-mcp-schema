@@ -48,6 +48,6 @@ impl ToolArgs for GetStoredProceduresArgs {
     type Prompts = StoredProceduresPrompts;
 
     const NAME: &'static str = DB_STORED_PROCEDURES;
-    const CATEGORY: &'static str = CATEGORY_DATABASE;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "List stored procedures (functions) in a schema with parameters and return types.";
 }

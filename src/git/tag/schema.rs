@@ -78,6 +78,6 @@ impl ToolArgs for GitTagArgs {
     type Prompts = TagPrompts;
 
     const NAME: &'static str = GIT_TAG;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Create, list, or delete tags in a repository";
 }

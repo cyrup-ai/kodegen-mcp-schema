@@ -56,6 +56,6 @@ impl ToolArgs for PushFilesArgs {
     type Prompts = PushFilesPrompts;
 
     const NAME: &'static str = GITHUB_PUSH_FILES;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Push files to a GitHub repository";
 }

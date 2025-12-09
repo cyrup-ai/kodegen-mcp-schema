@@ -99,6 +99,6 @@ impl ToolArgs for SequentialThinkingArgs {
     type Prompts = SequentialThinkingPrompts;
 
     const NAME: &'static str = SEQUENTIAL_THINKING;
-    const CATEGORY: &'static str = CATEGORY_SEQUENTIAL_THINKING;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_SEQUENTIAL_THINKING;
     const DESCRIPTION: &'static str = "A detailed tool for dynamic and reflective problem-solving through thoughts. This tool helps analyze problems through a flexible thinking process that can adapt and evolve. Each thought can build on, question, or revise previous insights as understanding deepens.";
 }

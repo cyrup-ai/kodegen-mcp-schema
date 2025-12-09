@@ -39,6 +39,6 @@ impl ToolArgs for ListSchemasArgs {
     type Prompts = ListSchemasPrompts;
 
     const NAME: &'static str = DB_LIST_SCHEMAS;
-    const CATEGORY: &'static str = CATEGORY_DATABASE;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "List all schemas (namespaces) in the database. Use this to discover database structure before querying.";
 }

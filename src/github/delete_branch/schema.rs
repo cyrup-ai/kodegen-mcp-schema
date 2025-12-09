@@ -48,6 +48,6 @@ impl ToolArgs for DeleteBranchArgs {
     type Prompts = DeleteBranchPrompts;
 
     const NAME: &'static str = GITHUB_DELETE_BRANCH;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Delete a branch from a repository";
 }

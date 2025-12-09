@@ -71,6 +71,6 @@ impl ToolArgs for ListIssuesArgs {
     type Prompts = ListIssuesPrompts;
 
     const NAME: &'static str = GITHUB_LIST_ISSUES;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "List issues in a GitHub repository";
 }

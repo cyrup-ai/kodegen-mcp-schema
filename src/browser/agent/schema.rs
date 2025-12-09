@@ -171,6 +171,6 @@ impl ToolArgs for BrowserAgentArgs {
     type Prompts = AgentPrompts;
 
     const NAME: &'static str = BROWSER_AGENT;
-    const CATEGORY: &'static str = CATEGORY_BROWSER;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Autonomous AI agent that accomplishes complex web tasks through multi-step reasoning and adaptive decision-making";
 }

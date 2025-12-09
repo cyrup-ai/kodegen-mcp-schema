@@ -52,6 +52,6 @@ impl ToolArgs for GetMeArgs {
     type Prompts = GetMePrompts;
 
     const NAME: &'static str = GITHUB_GET_ME;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get authenticated user information";
 }

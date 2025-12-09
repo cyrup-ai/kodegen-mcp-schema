@@ -51,6 +51,6 @@ impl ToolArgs for GetTableSchemaArgs {
     type Prompts = TableSchemaPrompts;
 
     const NAME: &'static str = DB_TABLE_SCHEMA;
-    const CATEGORY: &'static str = CATEGORY_DATABASE;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_DATABASE;
     const DESCRIPTION: &'static str = "Get complete table structure including columns, data types, constraints, primary keys, and foreign key relationships.";
 }

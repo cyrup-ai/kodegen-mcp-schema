@@ -77,6 +77,6 @@ impl ToolArgs for ListCommitsArgs {
     type Prompts = ListCommitsPrompts;
 
     const NAME: &'static str = GITHUB_LIST_COMMITS;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "List commits in a GitHub repository";
 }

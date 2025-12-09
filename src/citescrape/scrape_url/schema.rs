@@ -204,6 +204,10 @@ impl ToolArgs for ScrapeUrlArgs {
     type Prompts = ScrapeUrlPrompts;
 
     const NAME: &'static str = SCRAPE_URL;
-    const CATEGORY: &'static str = CATEGORY_CITESCRAPE;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_CITESCRAPE;
     const DESCRIPTION: &'static str = "Unified website crawler with action-based dispatch (CRAWL/READ/LIST/KILL/SEARCH). Crawl entire sites, save to disk, build Tantivy search index";
+
+    fn icon() -> char {
+        '☄'  // COMET - tool-specific icon (overrides citescrape default)
+    }
 }

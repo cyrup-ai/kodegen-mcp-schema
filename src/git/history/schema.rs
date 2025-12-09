@@ -89,6 +89,6 @@ impl ToolArgs for GitHistoryArgs {
     type Prompts = HistoryPrompts;
 
     const NAME: &'static str = GIT_HISTORY;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "View commit history and changes for a specific file";
 }

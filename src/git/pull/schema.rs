@@ -62,6 +62,6 @@ impl ToolArgs for GitPullArgs {
     type Prompts = PullPrompts;
 
     const NAME: &'static str = GIT_PULL;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Fetch and integrate changes from a remote repository";
 }

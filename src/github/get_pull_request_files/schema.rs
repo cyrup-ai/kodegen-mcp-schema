@@ -59,6 +59,6 @@ impl ToolArgs for GetPullRequestFilesArgs {
     type Prompts = GetPullRequestFilesPrompts;
 
     const NAME: &'static str = GITHUB_GET_PULL_REQUEST_FILES;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get all files changed in a pull request";
 }

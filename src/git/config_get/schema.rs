@@ -84,6 +84,6 @@ impl ToolArgs for GitConfigGetArgs {
     type Prompts = ConfigGetPrompts;
 
     const NAME: &'static str = GIT_CONFIG_GET;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Read Git configuration values";
 }

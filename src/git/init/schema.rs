@@ -46,6 +46,6 @@ impl ToolArgs for GitInitArgs {
     type Prompts = InitPrompts;
 
     const NAME: &'static str = GIT_INIT;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Initialize a new Git repository at the specified path";
 }

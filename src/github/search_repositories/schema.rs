@@ -75,6 +75,6 @@ impl ToolArgs for SearchRepositoriesArgs {
     type Prompts = SearchRepositoriesPrompts;
 
     const NAME: &'static str = GITHUB_SEARCH_REPOSITORIES;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Search repositories across GitHub using query syntax";
 }

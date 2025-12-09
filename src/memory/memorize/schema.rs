@@ -49,6 +49,6 @@ impl ToolArgs for MemorizeArgs {
     type Prompts = MemorizePrompts;
 
     const NAME: &'static str = MEMORY_MEMORIZE;
-    const CATEGORY: &'static str = CATEGORY_MEMORY;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_MEMORY;
     const DESCRIPTION: &'static str = "Store content in a named memory library with automatic embedding generation. The memory will be tagged with the library name and can be retrieved later using recall(). Each library is a separate namespace for organizing memories.";
 }

@@ -62,6 +62,6 @@ impl ToolArgs for CreatePullRequestArgs {
     type Prompts = CreatePullRequestPrompts;
 
     const NAME: &'static str = GITHUB_CREATE_PULL_REQUEST;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create a new pull request";
 }

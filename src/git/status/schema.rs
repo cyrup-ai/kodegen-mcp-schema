@@ -45,6 +45,6 @@ impl ToolArgs for GitStatusArgs {
     type Prompts = StatusPrompts;
 
     const NAME: &'static str = GIT_STATUS;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Check working tree status and branch information";
 }

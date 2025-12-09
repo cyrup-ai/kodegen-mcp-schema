@@ -49,6 +49,6 @@ impl ToolArgs for BrowserScreenshotArgs {
     type Prompts = ScreenshotPrompts;
 
     const NAME: &'static str = BROWSER_SCREENSHOT;
-    const CATEGORY: &'static str = CATEGORY_BROWSER;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Capture a screenshot of the page or specific element in PNG format with base64 encoding";
 }

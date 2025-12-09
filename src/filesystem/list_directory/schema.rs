@@ -61,6 +61,6 @@ impl ToolArgs for FsListDirectoryArgs {
     type Prompts = ListDirectoryPrompts;
 
     const NAME: &'static str = FS_LIST_DIRECTORY;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "List all files and directories in a specified path. Returns entries prefixed with [DIR] or [FILE]";
 }

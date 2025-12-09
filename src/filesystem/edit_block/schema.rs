@@ -57,6 +57,6 @@ impl ToolArgs for FsEditBlockArgs {
     type Prompts = EditBlockPrompts;
 
     const NAME: &'static str = FS_EDIT_BLOCK;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Apply surgical text replacements to files. Takes old_string and new_string, performs exact string replacement";
 }

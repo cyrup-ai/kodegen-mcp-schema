@@ -53,6 +53,6 @@ impl ToolArgs for GitCloneArgs {
     type Prompts = ClonePrompts;
 
     const NAME: &'static str = GIT_CLONE;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Clone a remote Git repository to a local path";
 }

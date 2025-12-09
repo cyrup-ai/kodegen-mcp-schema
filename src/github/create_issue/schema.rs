@@ -58,6 +58,6 @@ impl ToolArgs for CreateIssueArgs {
     type Prompts = CreateIssuePrompts;
 
     const NAME: &'static str = GITHUB_CREATE_ISSUE;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Create a new issue in a repository";
 }

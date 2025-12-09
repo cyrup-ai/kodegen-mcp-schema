@@ -49,6 +49,6 @@ impl ToolArgs for BrowserClickArgs {
     type Prompts = ClickPrompts;
 
     const NAME: &'static str = BROWSER_CLICK;
-    const CATEGORY: &'static str = CATEGORY_BROWSER;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Click an element on the page using CSS selectors with automatic wait for clickability";
 }

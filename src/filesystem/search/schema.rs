@@ -306,6 +306,6 @@ impl ToolArgs for FsSearchArgs {
     type Prompts = SearchPrompts;
 
     const NAME: &'static str = FS_SEARCH;
-    const CATEGORY: &'static str = CATEGORY_FILESYSTEM;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_FILESYSTEM;
     const DESCRIPTION: &'static str = "Blazing-fast content and filename search powered by ripgrep. Respects .gitignore automatically. Supports regex, case modes, file filtering, and background execution";
 }

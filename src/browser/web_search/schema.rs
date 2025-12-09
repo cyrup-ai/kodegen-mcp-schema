@@ -61,6 +61,6 @@ impl ToolArgs for BrowserWebSearchArgs {
     type Prompts = WebSearchPrompts;
 
     const NAME: &'static str = BROWSER_WEB_SEARCH;
-    const CATEGORY: &'static str = CATEGORY_BROWSER;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Perform web searches using various search engines and retrieve ranked results with titles, URLs, and snippets";
 }

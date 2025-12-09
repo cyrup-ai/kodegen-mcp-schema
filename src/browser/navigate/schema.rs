@@ -49,6 +49,6 @@ impl ToolArgs for BrowserNavigateArgs {
     type Prompts = NavigatePrompts;
 
     const NAME: &'static str = BROWSER_NAVIGATE;
-    const CATEGORY: &'static str = CATEGORY_BROWSER;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Navigate browser to specified URL with configurable load timeout and error handling";
 }

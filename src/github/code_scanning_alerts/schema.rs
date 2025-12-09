@@ -70,6 +70,6 @@ impl ToolArgs for CodeScanningAlertsArgs {
     type Prompts = CodeScanningAlertsPrompts;
 
     const NAME: &'static str = GITHUB_CODE_SCANNING_ALERTS;
-    const CATEGORY: &'static str = CATEGORY_GITHUB;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GITHUB;
     const DESCRIPTION: &'static str = "Get code scanning alerts for a repository";
 }

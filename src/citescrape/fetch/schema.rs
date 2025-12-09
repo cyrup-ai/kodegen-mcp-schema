@@ -49,6 +49,6 @@ impl ToolArgs for FetchArgs {
     type Prompts = FetchPrompts;
 
     const NAME: &'static str = FETCH;
-    const CATEGORY: &'static str = CATEGORY_CITESCRAPE;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_CITESCRAPE;
     const DESCRIPTION: &'static str = "Fetch a single web page and display as ANSI-highlighted markdown. Simplified wrapper around scrape_url for quick page retrieval.";
 }

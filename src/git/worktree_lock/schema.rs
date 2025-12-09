@@ -47,6 +47,6 @@ impl ToolArgs for GitWorktreeLockArgs {
     type Prompts = WorktreeLockPrompts;
 
     const NAME: &'static str = GIT_WORKTREE_LOCK;
-    const CATEGORY: &'static str = CATEGORY_GIT;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_GIT;
     const DESCRIPTION: &'static str = "Lock a working tree to prevent automatic deletion";
 }

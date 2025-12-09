@@ -66,6 +66,6 @@ impl ToolArgs for InspectUsageStatsArgs {
     type Prompts = InspectUsageStatsPrompts;
 
     const NAME: &'static str = INSPECT_USAGE_STATS;
-    const CATEGORY: &'static str = CATEGORY_INTROSPECTION;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_INTROSPECTION;
     const DESCRIPTION: &'static str = "Analyze aggregated tool usage statistics including call counts, success rates, and performance metrics. Essential for optimization and performance analysis";
 }

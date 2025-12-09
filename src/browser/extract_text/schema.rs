@@ -41,6 +41,6 @@ impl ToolArgs for BrowserExtractTextArgs {
     type Prompts = ExtractTextPrompts;
 
     const NAME: &'static str = BROWSER_EXTRACT_TEXT;
-    const CATEGORY: &'static str = CATEGORY_BROWSER;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_BROWSER;
     const DESCRIPTION: &'static str = "Extract visible text content from the page or specific elements using CSS selectors";
 }

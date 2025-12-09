@@ -59,6 +59,6 @@ impl ToolArgs for ProcessListArgs {
     type Prompts = ProcessListPrompts;
 
     const NAME: &'static str = PROCESS_LIST;
-    const CATEGORY: &'static str = CATEGORY_PROCESS;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_PROCESS;
     const DESCRIPTION: &'static str = "List all running processes with PID, command name, CPU usage, and memory usage. Supports filtering by process name";
 }
