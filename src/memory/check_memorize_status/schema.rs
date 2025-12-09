@@ -2,7 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use kodegen_config::{CATEGORY_MEMORY, MEMORY_CHECK_MEMORIZE_STATUS};
+use kodegen_config::{CATEGORY_CANDLE_AGENT, MEMORY_CHECK_MEMORIZE_STATUS};
 
 // ============================================================================
 // MEMORY CHECK MEMORIZE STATUS TOOL
@@ -66,6 +66,6 @@ impl ToolArgs for CheckMemorizeStatusArgs {
     type Prompts = CheckMemorizeStatusPrompts;
 
     const NAME: &'static str = MEMORY_CHECK_MEMORIZE_STATUS;
-    const CATEGORY: &'static kodegen_config::Category = CATEGORY_MEMORY;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_CANDLE_AGENT;
     const DESCRIPTION: &'static str = "Check the status of a memorize operation. Use this to verify if an asynchronous memorization has completed, is still in progress, or has failed.";
 }

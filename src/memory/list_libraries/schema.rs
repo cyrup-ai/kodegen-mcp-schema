@@ -2,7 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use kodegen_config::{CATEGORY_MEMORY, MEMORY_LIST_LIBRARIES};
+use kodegen_config::{CATEGORY_CANDLE_AGENT, MEMORY_LIST_LIBRARIES};
 
 // ============================================================================
 // MEMORY LIST LIBRARIES TOOL
@@ -40,6 +40,6 @@ impl ToolArgs for ListMemoryLibrariesArgs {
     type Prompts = MemoryListLibrariesPrompts;
 
     const NAME: &'static str = MEMORY_LIST_LIBRARIES;
-    const CATEGORY: &'static kodegen_config::Category = CATEGORY_MEMORY;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_CANDLE_AGENT;
     const DESCRIPTION: &'static str = "List all unique memory library names that have been created. Returns a list of all libraries that contain at least one memory. Use this to discover what libraries are available for recall.";
 }

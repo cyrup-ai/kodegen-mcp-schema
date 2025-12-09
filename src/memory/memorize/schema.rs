@@ -2,7 +2,7 @@
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use kodegen_config::{CATEGORY_MEMORY, MEMORY_MEMORIZE};
+use kodegen_config::{CATEGORY_CANDLE_AGENT, MEMORY_MEMORIZE};
 
 // ============================================================================
 // MEMORY MEMORIZE TOOL
@@ -49,6 +49,6 @@ impl ToolArgs for MemorizeArgs {
     type Prompts = MemorizePrompts;
 
     const NAME: &'static str = MEMORY_MEMORIZE;
-    const CATEGORY: &'static kodegen_config::Category = CATEGORY_MEMORY;
+    const CATEGORY: &'static kodegen_config::Category = CATEGORY_CANDLE_AGENT;
     const DESCRIPTION: &'static str = "Store content in a named memory library with automatic embedding generation. The memory will be tagged with the library name and can be retrieved later using recall(). Each library is a separate namespace for organizing memories.";
 }
