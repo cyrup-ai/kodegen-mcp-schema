@@ -1,5 +1,5 @@
 use rmcp::handler::server::tool::schema_for_type;
-use rmcp::model::{Content, PromptArgument, PromptMessage};
+use rmcp::model::{CallToolResult, Content, Meta, PromptArgument, PromptMessage};
 use schemars::JsonSchema;
 use serde::{Serialize, de::DeserializeOwned};
 use serde_json::Value;
@@ -146,18 +146,40 @@ impl<M> ToolResponse<M> {
 }
 
 impl<M: Serialize> ToolResponse<M> {
-    /// Convert to `Vec<Content>` for MCP response.
+    /// Convert to `Vec<Content>` for MCP response (legacy format).
     ///
     /// Called by framework in `ToolHandler::call()`. Tools don't call this.
     ///
     /// # Content Layout
     /// - `Content[0]`: Human-readable display (always present, may be empty)
     /// - `Content[1]`: Typed metadata as pretty-printed JSON
+    ///
+    /// **Note**: Prefer `into_call_tool_result()` for RMCP v0.11+ structured validation.
+    #[deprecated(since = "0.11.0", note = "Use into_call_tool_result() for structured content")]
     pub fn into_contents(self) -> Result<Vec<Content>, serde_json::Error> {
         let display_content = Content::text(self.display);
         let json = serde_json::to_string_pretty(&self.metadata)?;
         let metadata_content = Content::text(json);
         Ok(vec![display_content, metadata_content])
+    }
+
+    /// Convert to CallToolResult with RMCP v0.11 structured content validation.
+    ///
+    /// # Content Layout (RMCP v0.11+)
+    /// - `content[0]`: Human-readable display text
+    /// - `structured_content`: Typed metadata validated against output_schema
+    ///
+    /// This enables RMCP to validate that tool outputs match their declared schemas.
+    pub fn into_call_tool_result(self) -> Result<CallToolResult, serde_json::Error> {
+        let display_content = Content::text(self.display);
+        let structured_metadata = serde_json::to_value(&self.metadata)?;
+
+        Ok(CallToolResult {
+            content: vec![display_content],
+            structured_content: Some(structured_metadata),
+            is_error: None,
+            meta: None,
+        })
     }
 
     /// Get metadata as JSON Value (for history recording).
@@ -467,6 +489,11 @@ pub trait Tool: Send + Sync + Sized + 'static {
         use rmcp::handler::server::wrapper::Parameters;
         use rmcp::model::{GetPromptResult, Prompt as RmcpPrompt};
 
+        // Build meta following the same pattern as tools (see line 434-435)
+        let mut meta = Meta::new();
+        meta.0.insert("category".to_string(), serde_json::json!(Self::Args::CATEGORY.name));
+        meta.0.insert("icon".to_string(), serde_json::json!(Self::Args::CATEGORY.icon.to_string()));
+
         // Build RMCP Prompt metadata using PromptProvider
         let metadata = RmcpPrompt {
             name: Self::prompt_name().into_owned(),
@@ -474,6 +501,7 @@ pub trait Tool: Send + Sync + Sized + 'static {
             description: Some(Self::prompt_description().to_string()),
             arguments: Some(<Self as ToolPrompts>::prompt_arguments()),
             icons: None,
+            meta: Some(meta),
         };
 
         // Handler calls static PromptProvider methods (no tool instance needed)
@@ -549,6 +577,11 @@ pub trait Tool: Send + Sync + Sized + 'static {
         use rmcp::handler::server::wrapper::Parameters;
         use rmcp::model::{GetPromptResult, Prompt as RmcpPrompt};
 
+        // Build meta following the same pattern as tools (see line 434-435)
+        let mut meta = Meta::new();
+        meta.0.insert("category".to_string(), serde_json::json!(Self::Args::CATEGORY.name));
+        meta.0.insert("icon".to_string(), serde_json::json!(Self::Args::CATEGORY.icon.to_string()));
+
         // Build RMCP Prompt metadata using PromptProvider
         let metadata = RmcpPrompt {
             name: Self::prompt_name().into_owned(),
@@ -556,6 +589,7 @@ pub trait Tool: Send + Sync + Sized + 'static {
             description: Some(Self::prompt_description().to_string()),
             arguments: Some(<Self as ToolPrompts>::prompt_arguments()),
             icons: None,
+            meta: Some(meta),
         };
 
         // Handler calls static PromptProvider methods (no tool instance needed)
@@ -890,8 +924,7 @@ where
     ) -> futures::future::BoxFuture<'_, Result<rmcp::model::CallToolResult, rmcp::ErrorData>> {
         use rmcp::handler::server::wrapper::Parameters;
         use rmcp::handler::server::common::FromContextPart;
-        use rmcp::model::CallToolResult;
-        
+
         Box::pin(async move {
             // Extract arguments and execution context
             let Parameters(args) = Parameters::<T::Args>::from_context_part(&mut context)?;
@@ -902,14 +935,14 @@ where
 
             match result {
                 Ok(response) => {
-                    // Convert ToolResponse to Vec<Content>
-                    let contents = response.into_contents()
+                    // Convert ToolResponse to CallToolResult with structured validation
+                    let result = response.into_call_tool_result()
                         .map_err(|e| rmcp::ErrorData::internal_error(
                             format!("Failed to serialize tool output: {}", e),
                             None
                         ))?;
 
-                    Ok(CallToolResult::success(contents))
+                    Ok(result)
                 }
                 Err(e) => {
                     Err(rmcp::ErrorData::from(e))
