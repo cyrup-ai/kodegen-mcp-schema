@@ -36,10 +36,6 @@ impl PromptProvider for SearchPrompts {
     }
 }
 
-// ============================================================================
-// HELPER FUNCTIONS - TEACH AI AGENTS HOW TO USE FS_SEARCH
-// ============================================================================
-
 /// Basic content and filename search
 fn prompt_basic() -> Vec<PromptMessage> {
     vec![

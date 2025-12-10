@@ -15,10 +15,6 @@ use super::prompts::SequentialThinkingPrompts;
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub struct SequentialThinkingArgs {
-    /// Optional session ID for maintaining state across calls
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub session_id: Option<String>,
-
     /// Your current thinking step
     pub thought: String,
 

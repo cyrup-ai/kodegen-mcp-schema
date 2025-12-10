@@ -58,45 +58,64 @@ pub trait PromptProvider: sealed::Sealed + Send + Sync + 'static {
 pub use sealed::Sealed as SealedPromptProvider;
 
 // ============================================================================
-// TOOL RESPONSE WRAPPER
+// BRANDED DISPLAY LINE
 // ============================================================================
 
-/// Framework-provided response wrapper for tool outputs.
+/// Tool execution status for branded line coloring
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ToolStatus {
+    /// Tool executed successfully
+    Success,
+    /// Tool execution failed
+    Error,
+}
+
+/// Add branded display line to CallToolResult as new Content[0].
 ///
-/// Tools return `ToolResponse<<Self::Args as ToolArgs>::Output>` from `execute()`.
-/// The output type is DERIVED from Args - tools cannot choose wrong output type.
+/// Inserts a branded line at the beginning of the content vector:
+/// - New Content[0]: Branded line (ⓚ icon tool_name duration)
+/// - Content[1]: Original Content[0] (display)
+/// - Content[2]: Original Content[1] (metadata)
+/// - etc.
 ///
-/// # Content Layout
-///
-/// - `display`: Human-readable output (Content[0]) - the full output humans see
-/// - `metadata`: Typed, schema-enforced data (Content[1]) - structured metadata
-///
-/// # Example
-///
-/// ```rust
-/// impl Tool for TerminalTool {
-///     type Args = TerminalInput;
-///     // Compiler forces: ToolResponse<TerminalOutput>
-///     // because TerminalInput::Output = TerminalOutput
-///
-///     async fn execute(&self, args: Self::Args, ctx: ToolExecutionContext)
-///         -> Result<ToolResponse<<Self::Args as ToolArgs>::Output>, McpError>
-///     {
-///         let output = run_command(&args.command).await?;
-///         
-///         Ok(ToolResponse::new(
-///             output.stdout,  // Human-readable: full command output
-///             TerminalOutput {
-///                 terminal: Some(args.terminal),
-///                 exit_code: output.exit_code,
-///                 cwd: output.cwd,
-///                 duration_ms: elapsed,
-///                 completed: true,
-///             }
-///         ))
-///     }
-/// }
-/// ```
+/// # Arguments
+/// - `call_result`: The CallToolResult to modify (Success case)
+/// - `tool_name`: Name of the tool being executed
+/// - `icon`: Tool icon character
+/// - `duration_ms`: Execution duration in milliseconds
+/// - `status`: Success or Error status for coloring
+pub fn add_branded_line_to_result(
+    call_result: &mut CallToolResult,
+    tool_name: &str,
+    icon: char,
+    duration_ms: u64,
+    status: ToolStatus,
+) {
+    // Calculate duration in seconds (ceil to >= 1s)
+    let duration_s = ((duration_ms as f64 / 1000.0).ceil() as u64).max(1);
+
+    // Select timing color based on status
+    // Success: green (35 #00af5f)
+    // Error: red (204 #ff5f87)
+    let timing_color = match status {
+        ToolStatus::Success => 35,
+        ToolStatus::Error => 204,
+    };
+
+    // Format branded line with ANSI colors
+    // ⓚ brand symbol: color 132 (#af5f87)
+    // icon + tool_name: color 32 (#0087d7)
+    // duration: status-based color
+    let branded_line = format!(
+        "\x1b[38;5;132mⓚ\x1b[0m   \x1b[38;5;32m{} {}\x1b[0m   \x1b[38;5;{}m{}s\x1b[0m",
+        icon, tool_name, timing_color, duration_s
+    );
+
+    // Insert branded content at position 0, shifting all existing content
+    let branded_content = Content::text(branded_line);
+    call_result.content.insert(0, branded_content);
+}
+
 #[derive(Debug, Clone)]
 pub struct ToolResponse<M> {
     /// Human-readable display output - goes to Content[0].
@@ -169,6 +188,59 @@ impl<M: Serialize> ToolResponse<M> {
     /// Get metadata as JSON Value (for history recording).
     pub fn metadata_as_json(&self) -> serde_json::Value {
         serde_json::to_value(&self.metadata).unwrap_or_else(|_| serde_json::json!({}))
+    }
+
+    /// Convert to CallToolResult with branded display line.
+    ///
+    /// Creates a branded line as a separate Content[0], shifting display and metadata:
+    /// - `content[0]`: Branded line (ⓚ icon tool_name duration)
+    /// - `content[1]`: Human-readable display (was content[0])
+    /// - `content[2]`: Typed metadata as pretty-printed JSON (was content[1])
+    ///
+    /// # Arguments
+    /// - `tool_name`: Name of the tool being executed
+    /// - `icon`: Tool icon character (from metadata or fallback)
+    /// - `duration_ms`: Execution duration in milliseconds
+    /// - `status`: Success or Error status for coloring
+    pub fn into_call_tool_result_with_branding(
+        self,
+        tool_name: &str,
+        icon: char,
+        duration_ms: u64,
+        status: ToolStatus,
+    ) -> Result<CallToolResult, serde_json::Error> {
+        // Calculate duration in seconds (ceil to >= 1s)
+        let duration_s = ((duration_ms as f64 / 1000.0).ceil() as u64).max(1);
+
+        // Select timing color based on status
+        // Success: green (35 #00af5f)
+        // Error: red (204 #ff5f87)
+        let timing_color = match status {
+            ToolStatus::Success => 35,
+            ToolStatus::Error => 204,
+        };
+
+        // Format branded line with ANSI colors
+        // ⓚ brand symbol: color 132 (#af5f87)
+        // icon + tool_name: color 32 (#0087d7)
+        // duration: status-based color
+        let branded_line = format!(
+            "\x1b[38;5;132mⓚ\x1b[0m   \x1b[38;5;32m{} {}\x1b[0m   \x1b[38;5;{}m{}s\x1b[0m",
+            icon, tool_name, timing_color, duration_s
+        );
+
+        // Create content vector with branded line first
+        let branded_content = Content::text(branded_line);
+        let display_content = Content::text(self.display);
+        let json = serde_json::to_string_pretty(&self.metadata)?;
+        let metadata_content = Content::text(json);
+
+        Ok(CallToolResult {
+            content: vec![branded_content, display_content, metadata_content],
+            structured_content: None,
+            is_error: None,
+            meta: None,
+        })
     }
 }
 

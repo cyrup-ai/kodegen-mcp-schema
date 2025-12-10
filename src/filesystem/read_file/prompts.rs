@@ -32,10 +32,6 @@ impl PromptProvider for ReadFilePrompts {
     }
 }
 
-// ============================================================================
-// HELPER FUNCTIONS - TEACH AI AGENTS HOW TO READ FILES
-// ============================================================================
-
 /// Basic file reading operations
 fn prompt_basic() -> Vec<PromptMessage> {
     vec![

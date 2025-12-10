@@ -18,7 +18,7 @@ impl PromptProvider for SequentialThinkingPrompts {
             Some("basic") => prompt_basic(),
             Some("revision") => prompt_revision(),
             Some("branching") => prompt_branching(),
-            Some("sessions") => prompt_sessions(),
+            Some("sessions") | Some("continuation") => prompt_continuation(),
             _ => prompt_basic(),
         }
     }
@@ -194,52 +194,41 @@ fn prompt_branching() -> Vec<PromptMessage> {
     ]
 }
 
-/// Session management for persistent thinking
-fn prompt_sessions() -> Vec<PromptMessage> {
+/// Continuing thoughts across calls (sessions are automatic)
+fn prompt_continuation() -> Vec<PromptMessage> {
     vec![
         PromptMessage {
             role: PromptMessageRole::User,
             content: PromptMessageContent::text(
-                "How do I manage thinking sessions for complex investigations?",
+                "How do I continue a thinking chain across multiple calls?",
             ),
         },
         PromptMessage {
             role: PromptMessageRole::Assistant,
             content: PromptMessageContent::text(
-                "MANAGING SESSIONS:\n\n\
-                 1. Start named session:\n\
+                "CONTINUING THOUGHTS:\n\n\
+                 Sessions are managed automatically per connection. Simply continue calling:\n\n\
+                 1. Start thinking:\n\
                     sequential_thinking({\n\
                         \"thought\": \"Investigating auth failure for user login flow.\",\n\
                         \"thought_number\": 1,\n\
                         \"total_thoughts\": 6,\n\
-                        \"next_thought_needed\": true,\n\
-                        \"session_id\": \"auth-investigation-001\"\n\
+                        \"next_thought_needed\": true\n\
                     })\n\n\
-                 2. Continue same session:\n\
+                 2. Continue (same connection = same session):\n\
                     sequential_thinking({\n\
                         \"thought\": \"Token validation passes but session creation fails.\",\n\
                         \"thought_number\": 2,\n\
                         \"total_thoughts\": 6,\n\
-                        \"next_thought_needed\": true,\n\
-                        \"session_id\": \"auth-investigation-001\"\n\
+                        \"next_thought_needed\": true\n\
                     })\n\n\
-                 3. Extend when needed:\n\
-                    sequential_thinking({\n\
-                        \"thought\": \"Need more analysis. Session table has constraint issue.\",\n\
-                        \"thought_number\": 6,\n\
-                        \"total_thoughts\": 8,\n\
-                        \"next_thought_needed\": true,\n\
-                        \"session_id\": \"auth-investigation-001\",\n\
-                        \"needs_more_thoughts\": true\n\
-                    })\n\n\
-                 SESSION BENEFITS:\n\
-                 - State maintained across calls\n\
-                 - Can pause and resume\n\
-                 - Organized investigation tracking\n\
-                 - Branch management per session\n\n\
+                 SESSION BEHAVIOR:\n\
+                 - One session per connection (automatic)\n\
+                 - State persists across all calls in same connection\n\
+                 - No session_id needed - managed automatically\n\n\
                  NEEDS_MORE_THOUGHTS:\n\
-                 - Extends total when estimate was low\n\
-                 - Dynamically adapts to problem complexity",
+                 - Use when you need more steps than initially estimated\n\
+                 - Dynamically extends total_thoughts",
             ),
         },
     ]

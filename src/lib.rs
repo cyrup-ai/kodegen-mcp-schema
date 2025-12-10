@@ -44,7 +44,7 @@ pub mod tool;
 // Re-export tool infrastructure for convenience
 pub use tool::{
     Tool, ToolResponse, ToolExecutionContext,
-    McpError, ToolCallRecord
+    McpError, ToolCallRecord, ToolStatus, add_branded_line_to_result
 };
 
 // ============================================================================

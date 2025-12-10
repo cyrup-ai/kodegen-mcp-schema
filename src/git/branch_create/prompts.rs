@@ -33,10 +33,6 @@ impl PromptProvider for BranchCreatePrompts {
     }
 }
 
-// ============================================================================
-// HELPER FUNCTIONS - TEACH AI AGENTS HOW TO CREATE GIT BRANCHES
-// ============================================================================
-
 /// Creating feature branches
 fn prompt_feature() -> Vec<PromptMessage> {
     vec![
