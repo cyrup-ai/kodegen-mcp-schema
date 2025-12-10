@@ -146,37 +146,21 @@ impl<M> ToolResponse<M> {
 }
 
 impl<M: Serialize> ToolResponse<M> {
-    /// Convert to `Vec<Content>` for MCP response (legacy format).
-    ///
-    /// Called by framework in `ToolHandler::call()`. Tools don't call this.
+    /// Convert to CallToolResult for MCP response.
     ///
     /// # Content Layout
-    /// - `Content[0]`: Human-readable display (always present, may be empty)
-    /// - `Content[1]`: Typed metadata as pretty-printed JSON
+    /// - `content[0]`: Human-readable display (always present, may be empty)
+    /// - `content[1]`: Typed metadata as pretty-printed JSON
     ///
-    /// **Note**: Prefer `into_call_tool_result()` for RMCP v0.11+ structured validation.
-    #[deprecated(since = "0.11.0", note = "Use into_call_tool_result() for structured content")]
-    pub fn into_contents(self) -> Result<Vec<Content>, serde_json::Error> {
+    /// Both display and metadata are in the content Vec - no structured_content.
+    pub fn into_call_tool_result(self) -> Result<CallToolResult, serde_json::Error> {
         let display_content = Content::text(self.display);
         let json = serde_json::to_string_pretty(&self.metadata)?;
         let metadata_content = Content::text(json);
-        Ok(vec![display_content, metadata_content])
-    }
-
-    /// Convert to CallToolResult with RMCP v0.11 structured content validation.
-    ///
-    /// # Content Layout (RMCP v0.11+)
-    /// - `content[0]`: Human-readable display text
-    /// - `structured_content`: Typed metadata validated against output_schema
-    ///
-    /// This enables RMCP to validate that tool outputs match their declared schemas.
-    pub fn into_call_tool_result(self) -> Result<CallToolResult, serde_json::Error> {
-        let display_content = Content::text(self.display);
-        let structured_metadata = serde_json::to_value(&self.metadata)?;
 
         Ok(CallToolResult {
-            content: vec![display_content],
-            structured_content: Some(structured_metadata),
+            content: vec![display_content, metadata_content],
+            structured_content: None,
             is_error: None,
             meta: None,
         })
