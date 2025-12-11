@@ -9,8 +9,6 @@ pub struct CodeScanningAlertsPromptArgs {
     /// Scenario to show examples for
     /// - "basic": Listing code scanning alerts
     /// - "filtering": Filter by severity, state
-    /// - "analysis": Analyzing security results
-    /// - "remediation": Fixing security issues
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scenario: Option<String>,
 }

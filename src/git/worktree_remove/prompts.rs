@@ -59,17 +59,22 @@ fn prompt_basic() -> Vec<PromptMessage> {
                  - When you no longer need parallel development environments\\n\\n\\\
                  TYPICAL WORKFLOW:\\n\\\
                  1. Check worktree status first:\\n\\\
-                    Use git_worktree_list to see all worktrees and their state\\n\\n\\\
+                    Use git_worktree_list to see all worktrees and their state\\n\\\
+                    Verify which worktrees exist and their current branches\\n\\\
+                    Confirm the worktree you want to remove is the correct one\\n\\n\\\
                  2. Ensure work is saved:\\n\\\
                     - Commit any changes in the worktree\\n\\\
                     - Or merge the worktree's branch into main\\n\\\
-                    - Or verify you don't need uncommitted changes\\n\\n\\\
+                    - Or verify you don't need uncommitted changes\\n\\\
+                    - Push commits to remote if you want them backed up\\n\\n\\\
                  3. Remove the worktree:\\n\\\
                     ```json\\n\\\
                     {\\\"path\\\": \\\"./repo\\\", \\\"worktree_path\\\": \\\"./repo-feature\\\"}\\n\\\
-                    ```\\n\\n\\\
+                    ```\\n\\\
+                    Git will verify the worktree is safe to remove before deleting\\n\\n\\\
                  4. Optional cleanup:\\n\\\
-                    Delete the branch if no longer needed (use git_branch_delete)\\n\\n\\\
+                    Delete the branch if no longer needed (use git_branch_delete)\\n\\\
+                    Clean up any associated remote tracking branches\\n\\n\\\
                  COMMON PATTERN:\\n\\\
                  After creating a worktree with git_worktree_add:\\n\\\
                  - Create worktree: git_worktree_add → work on feature\\n\\\

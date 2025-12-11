@@ -113,6 +113,13 @@ pub struct FsSearchArgs {
     #[serde(default)]
     pub literal_search: bool,
 
+    /// Pattern matching mode override for filename search
+    /// When omitted, pattern type is auto-detected from syntax.
+    /// When specified, forces the pattern to be interpreted as given type.
+    /// Has no effect on content search (always uses regex via ripgrep).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pattern_mode: Option<FsPatternMode>,
+
     /// DEPRECATED: Use `boundary_mode="word"` instead. Provided for backward compatibility.
     #[serde(default)]
     pub word_boundary: Option<bool>,
@@ -232,8 +239,6 @@ pub struct FsSearchOutput {
     /// Search instance ID (None for LIST action which returns multiple)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub search: Option<u32>,
-    /// Human-readable status message
-    pub output: String,
     /// Search pattern used (present for SEARCH/READ actions)
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub pattern: String,
@@ -270,6 +275,12 @@ pub struct FsSearchOutput {
     /// Error message if operation failed
     #[serde(skip_serializing_if = "Option::is_none")]
     pub error: Option<String>,
+
+    /// Pattern type that was detected/used for matching (filename search only)
+    /// Helps the AI agent understand how the pattern was interpreted.
+    /// Returns None for content search (always uses regex).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pattern_type: Option<FsPatternMode>,
 }
 
 // ============================================================================

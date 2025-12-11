@@ -9,9 +9,8 @@ pub struct GitBranchRenamePromptArgs {
     /// Optional: Use case for customized examples
     /// - "basic": Renaming a branch
     /// - "current": Renaming the current branch
-    /// - "conventions": Following naming conventions
     ///
-    /// Default if omitted: comprehensive overview covering all aspects
+    /// Default if omitted: basic scenario
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scenario: Option<String>,
 }

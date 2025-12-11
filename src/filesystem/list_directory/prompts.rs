@@ -33,10 +33,6 @@ impl PromptProvider for ListDirectoryPrompts {
     }
 }
 
-// ============================================================================
-// HELPER FUNCTIONS - TEACH AI AGENTS HOW TO LIST DIRECTORIES
-// ============================================================================
-
 /// Basic directory listing
 fn prompt_basic() -> Vec<PromptMessage> {
     vec![

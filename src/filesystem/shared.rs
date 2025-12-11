@@ -136,6 +136,25 @@ pub enum FsSearchResultType {
     FileList,
 }
 
+/// Pattern matching mode for filename search
+/// 
+/// When specified as INPUT: Forces the pattern to be interpreted as specified type.
+/// When returned as OUTPUT: Indicates how the pattern was actually interpreted.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Default)]
+#[serde(rename_all = "snake_case")]
+pub enum FsPatternMode {
+    /// Regular expression pattern
+    /// Detected by: ^, $, \., \d, \w, \s, .*, .+, (?...), |, [...]+ 
+    Regex,
+    /// Glob/shell wildcard pattern  
+    /// Detected by: *, ?, **, {a,b}, [abc]
+    Glob,
+    /// Plain substring match (default when no special characters detected)
+    /// Also used when literal_search=true
+    #[default]
+    Substring,
+}
+
 // ============================================================================
 // HELPER FUNCTIONS
 // ============================================================================

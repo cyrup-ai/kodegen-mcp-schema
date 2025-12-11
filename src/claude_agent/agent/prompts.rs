@@ -35,10 +35,6 @@ impl PromptProvider for ClaudeAgentPrompts {
     }
 }
 
-// ============================================================================
-// HELPER FUNCTIONS - TEACHING AI AGENTS META-COGNITION
-// ============================================================================
-
 /// Teach: Simple task delegation - when to delegate vs handle directly
 fn prompt_basic_delegation() -> Vec<PromptMessage> {
     vec![

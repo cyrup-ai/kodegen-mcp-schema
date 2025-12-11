@@ -17,6 +17,7 @@ impl PromptProvider for SearchPrompts {
         match args.scenario.as_deref() {
             Some("basic") => prompt_basic(),
             Some("patterns") => prompt_patterns(),
+            Some("pattern_modes") => prompt_pattern_modes(),
             Some("options") => prompt_options(),
             Some("background") => prompt_background(),
             Some("workflows") => prompt_workflows(),
@@ -29,7 +30,7 @@ impl PromptProvider for SearchPrompts {
             name: "scenario".to_string(),
             title: None,
             description: Some(
-                "Scenario to show (basic, patterns, options, background, workflows)".to_string(),
+                "Scenario to show (basic, patterns, pattern_modes, options, background, workflows)".to_string(),
             ),
             required: Some(false),
         }]
@@ -71,6 +72,7 @@ fn prompt_basic() -> Vec<PromptMessage> {
                     })\n\n\
                  RESPONSE:\n\
                  {\n\
+                   \"pattern_type\": \"substring\",\n\
                    \"matches\": [\n\
                      { \"path\": \"tests/unit_test.rs\" },\n\
                      { \"path\": \"tests/integration_test.rs\" }\n\
@@ -270,6 +272,95 @@ fn prompt_background() -> Vec<PromptMessage> {
                  - READ: Get current state\n\
                  - LIST: List active searches\n\
                  - KILL: Cancel search",
+            ),
+        },
+    ]
+}
+
+/// Pattern modes for filename searches (regex, glob, substring)
+fn prompt_pattern_modes() -> Vec<PromptMessage> {
+    vec![
+        PromptMessage {
+            role: PromptMessageRole::User,
+            content: PromptMessageContent::text("How do I use pattern_mode for filename searches?"),
+        },
+        PromptMessage {
+            role: PromptMessageRole::Assistant,
+            content: PromptMessageContent::text(
+                "PATTERN MODES (filename search only):\n\n\
+                 The pattern_mode parameter controls how filename patterns are interpreted.\n\
+                 It only works when search_in: \"filenames\".\n\n\
+                 AUTO-DETECTION PRIORITY:\n\
+                 1. Regex (if regex markers detected)\n\
+                 2. Glob (if glob markers detected)\n\
+                 3. Substring (fallback)\n\n\
+                 1. REGEX MODE:\n\
+                    fs_search({\n\
+                        \"pattern\": \"^test_.*\\\\.rs$\",\n\
+                        \"path\": \"./src\",\n\
+                        \"search_in\": \"filenames\",\n\
+                        \"pattern_mode\": \"regex\"\n\
+                    })\n\n\
+                 RESPONSE:\n\
+                 {\n\
+                   \"pattern_type\": \"regex\",\n\
+                   \"matches\": [\n\
+                     { \"path\": \"src/test_utils.rs\" },\n\
+                     { \"path\": \"src/test_helpers.rs\" }\n\
+                   ]\n\
+                 }\n\n\
+                 REGEX MARKERS (auto-detects as regex):\n\
+                 - Anchors: ^, $\n\
+                 - Escape sequences: \\., \\d, \\w, \\s\n\
+                 - Quantifiers: .*, .+, \\w+\n\
+                 - Alternation: |\n\
+                 - Character classes: [a-z]+, [0-9]{2,4}\n\n\
+                 2. GLOB MODE:\n\
+                    fs_search({\n\
+                        \"pattern\": \"**/*.test.{js,ts}\",\n\
+                        \"path\": \"./src\",\n\
+                        \"search_in\": \"filenames\",\n\
+                        \"pattern_mode\": \"glob\"\n\
+                    })\n\n\
+                 RESPONSE:\n\
+                 {\n\
+                   \"pattern_type\": \"glob\",\n\
+                   \"matches\": [\n\
+                     { \"path\": \"src/utils.test.ts\" },\n\
+                     { \"path\": \"src/helpers.test.js\" }\n\
+                   ]\n\
+                 }\n\n\
+                 GLOB MARKERS (auto-detects as glob):\n\
+                 - Wildcards: *, ?, **\n\
+                 - Brace expansion: {a,b,c}\n\
+                 - Character sets: [abc], [a-z]\n\n\
+                 3. SUBSTRING MODE:\n\
+                    fs_search({\n\
+                        \"pattern\": \"config\",\n\
+                        \"path\": \"./src\",\n\
+                        \"search_in\": \"filenames\",\n\
+                        \"pattern_mode\": \"substring\"\n\
+                    })\n\n\
+                 RESPONSE:\n\
+                 {\n\
+                   \"pattern_type\": \"substring\",\n\
+                   \"matches\": [\n\
+                     { \"path\": \"src/config.rs\" },\n\
+                     { \"path\": \"src/app_config.toml\" }\n\
+                   ]\n\
+                 }\n\n\
+                 DEFAULT: Substring (if no special markers)\n\n\
+                 AUTO-DETECTION EXAMPLES:\n\
+                 - \"test\" → substring (no markers)\n\
+                 - \"*.rs\" → glob (has *)\n\
+                 - \"^main\" → regex (has ^)\n\
+                 - \"foo|bar\" → regex (has |)\n\
+                 - \"test?.rs\" → glob (has ?)\n\
+                 - \"config.json\" → substring (no markers)\n\n\
+                 CONTENT SEARCH NOTE:\n\
+                 pattern_mode ONLY works with search_in: \"filenames\".\n\
+                 Content searches always use regex (via ripgrep).\n\
+                 When searching content, pattern_type returns None.",
             ),
         },
     ]

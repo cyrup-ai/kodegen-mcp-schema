@@ -124,3 +124,5 @@ pub use search::{
     SearchMatch,
     FileMatchCount,
 };
+
+// Note: FsPatternMode is already re-exported via `pub use shared::*;` above

@@ -4,4 +4,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
-pub struct GetPullRequestReviewsPromptArgs {}
+pub struct GetPullRequestReviewsPromptArgs {
+    /// Scenario to display: "basic" (default) or "review_analysis"
+    pub scenario: Option<String>,
+}

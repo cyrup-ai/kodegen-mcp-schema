@@ -157,42 +157,6 @@ fn prompt_filtering() -> Vec<PromptMessage> {
                         \"until\": \"2024-01-31T23:59:59Z\"\n\
                     })\n\
                     Returns commits within specific time window\n\n\
-                 COMBINING FILTERS:\n\
-                 All filters can be combined for precise queries:\n\
-                 1. Author + path:\n\
-                    github_list_commits({\n\
-                        \"owner\": \"user\",\n\
-                        \"repo\": \"project\",\n\
-                        \"author\": \"alice\",\n\
-                        \"path\": \"src/api\"\n\
-                    })\n\
-                    Alice's changes to the API directory\n\n\
-                 2. Author + date:\n\
-                    github_list_commits({\n\
-                        \"owner\": \"user\",\n\
-                        \"repo\": \"project\",\n\
-                        \"author\": \"bob\",\n\
-                        \"since\": \"2024-01-01T00:00:00Z\"\n\
-                    })\n\
-                    Bob's commits since January 1st, 2024\n\n\
-                 3. Path + date:\n\
-                    github_list_commits({\n\
-                        \"owner\": \"user\",\n\
-                        \"repo\": \"project\",\n\
-                        \"path\": \"README.md\",\n\
-                        \"since\": \"2024-01-01T00:00:00Z\"\n\
-                    })\n\
-                    Recent changes to README\n\n\
-                 4. All filters:\n\
-                    github_list_commits({\n\
-                        \"owner\": \"user\",\n\
-                        \"repo\": \"project\",\n\
-                        \"author\": \"alice\",\n\
-                        \"path\": \"src/lib.rs\",\n\
-                        \"since\": \"2024-01-01T00:00:00Z\",\n\
-                        \"until\": \"2024-06-30T23:59:59Z\"\n\
-                        })\n\
-                    Alice's changes to lib.rs in first half of 2024\n\n\
                  FILTER OPTIONS:\n\n\
                  AUTHOR FILTER:\n\
                  - author: GitHub username or email address\n\
