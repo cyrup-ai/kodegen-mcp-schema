@@ -29,6 +29,13 @@ pub struct SequentialThinkingArgs {
     /// Whether another thought step is needed
     pub next_thought_needed: bool,
 
+    /// Sequence identifier for this thought chain (0, 1, 2...)
+    /// Chains with different sequence_ids are isolated - use different numbers
+    /// for parallel reasoning chains on the same connection.
+    /// Default: 0 (for backward compatibility)
+    #[serde(default)]
+    pub sequence_id: u32,
+
     /// Whether this revises previous thinking
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub is_revision: Option<bool>,
@@ -57,6 +64,9 @@ pub struct SequentialThinkingArgs {
 pub struct SequentialThinkingOutput {
     /// Session identifier for maintaining state
     pub session_id: String,
+    /// Sequence identifier for this thought chain
+    /// Use this value in subsequent calls to continue the same chain
+    pub sequence_id: u32,
     /// Current thought number
     pub thought_number: u32,
     /// Total thoughts expected
