@@ -12,11 +12,11 @@ pub struct FetchArgs {
 }
 
 /// Output from `fetch` tool
+///
+/// Note: ANSI-highlighted markdown is returned in ToolResponse::display only.
+/// This struct contains only metadata about the fetched page.
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 pub struct FetchOutput {
-    /// ANSI syntax-highlighted markdown content for terminal display
-    pub display: String,
-
     /// Absolute file path to the saved markdown file
     pub path: String,
 
