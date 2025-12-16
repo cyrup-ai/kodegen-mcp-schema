@@ -239,7 +239,6 @@ impl tool::SealedPromptProvider for browser::type_text::TypeTextPrompts {}
 impl tool::SealedPromptProvider for browser::scroll::ScrollPrompts {}
 impl tool::SealedPromptProvider for browser::screenshot::ScreenshotPrompts {}
 impl tool::SealedPromptProvider for browser::extract_text::ExtractTextPrompts {}
-impl tool::SealedPromptProvider for browser::web_search::WebSearchPrompts {}
 impl tool::SealedPromptProvider for browser::research::ResearchPrompts {}
 impl tool::SealedPromptProvider for browser::agent::AgentPrompts {}
 

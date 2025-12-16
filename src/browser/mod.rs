@@ -4,13 +4,11 @@
 pub use kodegen_config::{
     BROWSER_AGENT, BROWSER_CLICK, BROWSER_EXTRACT_TEXT, BROWSER_NAVIGATE,
     BROWSER_RESEARCH, BROWSER_SCREENSHOT, BROWSER_SCROLL, BROWSER_TYPE_TEXT,
-    BROWSER_WEB_SEARCH,
 };
 
 pub mod shared;
 pub mod agent;
 pub mod research;
-pub mod web_search;
 pub mod navigate;
 pub mod click;
 pub mod type_text;
@@ -40,15 +38,6 @@ pub use research::{
     ResearchSource,
     BrowserResearchPromptArgs,
     ResearchPrompts,
-};
-
-// Re-export web_search tool
-pub use web_search::{
-    BrowserWebSearchArgs,
-    BrowserWebSearchOutput,
-    WebSearchResult,
-    BrowserWebSearchPromptArgs,
-    WebSearchPrompts,
 };
 
 // Re-export navigate tool

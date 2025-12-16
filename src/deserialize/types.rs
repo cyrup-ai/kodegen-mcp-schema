@@ -110,12 +110,11 @@ pub enum AnyToolOutput {
     GitHubRequestCopilotReview(github::GitHubRequestCopilotReviewOutput),
 
     // ========================================================================
-    // BROWSER TOOLS (11 tools)
+    // BROWSER TOOLS (10 tools)
     // ========================================================================
     BrowserAgent(browser::BrowserAgentOutput),
     BrowserAgentKill(browser::BrowserAgentKillOutput),
     BrowserResearch(browser::BrowserResearchOutput),
-    BrowserWebSearch(browser::BrowserWebSearchOutput),
     BrowserNavigate(browser::BrowserNavigateOutput),
     BrowserScreenshot(browser::BrowserScreenshotOutput),
     BrowserClick(browser::BrowserClickOutput),

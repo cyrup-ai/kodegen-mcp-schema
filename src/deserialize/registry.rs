@@ -120,11 +120,10 @@ tool_registry! {
     github::GITHUB_ADD_PULL_REQUEST_REVIEW_COMMENT => GitHubAddPrReviewComment(github::GitHubAddPrReviewCommentOutput),
     github::GITHUB_REQUEST_COPILOT_REVIEW => GitHubRequestCopilotReview(github::GitHubRequestCopilotReviewOutput),
 
-    // BROWSER (11 tools)
+    // BROWSER (10 tools)
     browser::BROWSER_AGENT => BrowserAgent(browser::BrowserAgentOutput),
     browser::BROWSER_AGENT_KILL => BrowserAgentKill(browser::BrowserAgentKillOutput),
     browser::BROWSER_RESEARCH => BrowserResearch(browser::BrowserResearchOutput),
-    browser::BROWSER_WEB_SEARCH => BrowserWebSearch(browser::BrowserWebSearchOutput),
     browser::BROWSER_NAVIGATE => BrowserNavigate(browser::BrowserNavigateOutput),
     browser::BROWSER_SCREENSHOT => BrowserScreenshot(browser::BrowserScreenshotOutput),
     browser::BROWSER_CLICK => BrowserClick(browser::BrowserClickOutput),
