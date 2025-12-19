@@ -8,8 +8,7 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::Arc;
 
-// Import log for schema validation logging
-use log;
+use log::{debug, error, info, warn};
 
 use super::error::McpError;
 
@@ -340,15 +339,15 @@ pub trait Tool: Send + Sync + Sized + 'static {
 
         // Slow path: generate and cache
         // Log schema generation attempt
-        log::debug!("Generating schema for tool: {}", name);
+        debug!("Generating schema for tool: {}", name);
         
         // Validate schema generation with panic catching
         if let Err(e) = Self::validate_schema() {
-            log::error!("{}", e);
+            error!("{}", e);
             // For now, still proceed but with warning - could be made fatal in future
-            log::warn!("Tool '{}' registered with potentially invalid schema", name);
+            warn!("Tool '{}' registered with potentially invalid schema", name);
         } else {
-            log::info!("✓ Schema generated successfully for tool: {}", name);
+            info!("✓ Schema generated successfully for tool: {}", name);
         }
         
         let schema = std::sync::Arc::new(schema_for_type::<Self::Args>());
